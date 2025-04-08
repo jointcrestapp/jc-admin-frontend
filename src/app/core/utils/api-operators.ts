@@ -9,7 +9,7 @@ export function apiOperators(errorHandler: ErrorHandlerService) {
     
   return (source: Observable<any>) =>
     source.pipe(
-      timeout(120000), // 10 seconds timeout
+      timeout(120000), // 120 seconds timeout
       retry(appConfig.API.RETRY), // Retry failed requests twice
       debounceTime(appConfig.API.DEBOUNCE_TIMEOUT), // Delay API calls slightly to prevent spam
       distinctUntilChanged(), // Avoid duplicate calls
