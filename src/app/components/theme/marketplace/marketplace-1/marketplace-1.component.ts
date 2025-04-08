@@ -34,7 +34,7 @@ import { ImageUploadComponent } from '../../../../shared/components/ui/image-upl
         FormFieldsComponent, LinkComponent, ImageUploadComponent,
         AdvanceDropdownComponent],
     templateUrl: './marketplace-1.component.html',
-    styleUrl: './marketplace-1.component.scss'
+    styleUrl: './marketplace-1.component.scss',
 })
 export class Marketplace1Component {
 

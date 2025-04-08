@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "multikart-admin": {
+    "jointcrest-admin": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -30,7 +30,7 @@
             "allowedCommonJsDependencies": [
               "apexcharts"
             ],
-            "outputPath": "dist/multikart-admin",
+            "outputPath": "dist/jointcrest-admin",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -89,10 +89,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "multikart-admin:build:production"
+              "buildTarget": "jointcrest-admin:build:production"
             },
             "development": {
-              "buildTarget": "multikart-admin:build:development"
+              "buildTarget": "jointcrest-admin:build:development"
             }
           },
           "defaultConfiguration": "development"
