@@ -50,7 +50,7 @@ Thumbs.db
 
 
 #angular cache
-.angular
+.angular/
 
 #qodo
-.qodo
+.qodo/
