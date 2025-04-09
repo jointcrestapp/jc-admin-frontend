@@ -3,19 +3,19 @@ import { Routes } from "@angular/router";
 export const content: Routes = [
   {
     path: 'dashboard',
-    loadChildren: () => import('../../components/dashboard/dashboard.routes')
+    loadChildren: () => import('../../pages/dashboard/dashboard.routes')
   },
   {
     path: 'account',
-    loadChildren: () => import('../../components/account/account.routes').then(r => r.accountRoutes)
+    loadChildren: () => import('../../pages/account/account.routes').then(r => r.accountRoutes)
   },
   {
     path: 'user',
-    loadChildren: () => import('../../components/user/user.routes').then(r => r.userRoutes)
+    loadChildren: () => import('../../pages/user/user.routes').then(r => r.userRoutes)
   },
   {
     path: 'role',
-    loadChildren: () => import('../../components/role/role.routes').then(r => r.roleRoutes)
+    loadChildren: () => import('../../pages/role/role.routes').then(r => r.roleRoutes)
   },
   {
     path: 'product',
@@ -59,7 +59,7 @@ export const content: Routes = [
   },
   {
     path: 'withdrawal',
-    loadChildren: () => import('../../components/withdrawal/withdrawal.routes').then(r => r.withdrawalRoutes)
+    loadChildren: () => import('../../pages/withdrawal/withdrawal.routes').then(r => r.withdrawalRoutes)
   },
   {
     path: 'payment-details',
@@ -95,7 +95,7 @@ export const content: Routes = [
   },
   {
     path: 'currency',
-    loadChildren: () => import('../../components/currency/currency.routes').then(r => r.currencyRoutes)
+    loadChildren: () => import('../../pages/currency/currency.routes').then(r => r.currencyRoutes)
   },
   {
     path: 'point',
@@ -127,7 +127,7 @@ export const content: Routes = [
   },
   {
     path: 'subscription',
-    loadChildren: () => import('../../components/subscription/subscription.routes').then(r => r.subscriptionRoutes)
+    loadChildren: () => import('../../pages/subscription/subscription.routes').then(r => r.subscriptionRoutes)
   },
   {
     path: 'theme',
@@ -143,6 +143,6 @@ export const content: Routes = [
   },
   {
     path: 'setting',
-    loadChildren: () => import('../../components/setting/setting.routes').then(r => r.SettingRoutes)
+    loadChildren: () => import('../../pages/setting/setting.routes').then(r => r.SettingRoutes)
   },
 ]
