@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
-import { ToastrService } from 'ngx-toastr';
 import { throwError, TimeoutError } from 'rxjs';
 import { appConfig } from '../config/config';
 
@@ -9,7 +8,7 @@ import { appConfig } from '../config/config';
 })
 export class ErrorHandlerService {
 
-  constructor(private toastr: ToastrService) {}
+  constructor() {}
 
   /** Handles different HTTP errors */
   handleError(error: any) {
@@ -48,7 +47,7 @@ export class ErrorHandlerService {
     }
 
     // Display error using Toastr
-    this.toastr.error(errorMessage, 'Error!');
+    alert(errorMessage);
 
     // Return an observable with a user-friendly error message
     return throwError(() => new Error(errorMessage));

@@ -14,7 +14,7 @@ import { AsyncPipe } from '@angular/common';
 @Component({
     selector: 'app-login',
     imports: [TranslateModule, FormsModule, ReactiveFormsModule,
-        RouterModule, AlertComponent, ButtonComponent, AsyncPipe
+      RouterModule, AlertComponent, ButtonComponent, AsyncPipe
     ],
     templateUrl: './login.component.html',
     styleUrl: './login.component.scss'
@@ -42,7 +42,8 @@ export class LoginComponent {
       this.store.dispatch(new Login(this.form.value)).subscribe({
           complete: () => {
             this.router.navigateByUrl('/dashboard');
-          }
+          },
+          
         }
       );
     }

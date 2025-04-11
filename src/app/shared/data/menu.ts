@@ -69,7 +69,7 @@ export const menu: Sidebar[] = [
         }
       ],
     },
-    {
+    /*{
       id: 3,
       title: "products",
       active: false,
@@ -391,7 +391,7 @@ export const menu: Sidebar[] = [
       type: "sub",
       level: 1,
       permission: ["notice.index"]
-    },
+    },*/
     {
       id: 19,
       title: "Subscription",
@@ -446,6 +446,43 @@ export const menu: Sidebar[] = [
       type: "sub",
       level: 1,
       permission: ["setting.index"]
+    },
+    {
+      id: 22,
+      title: "Savings",
+      active: false,
+      icon: "ri-bank-line",
+      type: "sub",
+      level: 1,
+      acl_permission: ["savings.index", "savings.create", "savings.edit"],
+      children: [
+        {
+          parent_id: 22,
+          title: "Savings",
+          path: "/savings",
+          type: "link",
+          level: 2,
+          permission: ["savings.index", "savings.create"]
+        },
+        {
+          parent_id: 22,
+          title: "add single savings",
+          path: "/savings/add-single-savings",
+          type: "link",
+          badgeType: 'badge bg-theme text-dark ml-3', 
+          badgeValue: 0,
+          level: 2,
+          permission: ["savings.create"]
+        },
+        {
+          parent_id: 22,
+          title: "add batch savings",
+          path: "/savings/add-batch-savings",
+          type: "link",
+          level: 2,
+          permission: ["savings.create"]
+        }
+      ],
     },
     // {
     //   id: 22,

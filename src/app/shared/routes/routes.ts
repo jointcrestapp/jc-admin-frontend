@@ -46,6 +46,10 @@ export const content: Routes = [
     loadChildren: () => import('../../components/license-key/license-key.routes').then(r => r.licenseKeyRoutes)
   },
   {
+    path: 'savings',
+    loadChildren: () => import('../../pages/savings/savings.routes').then(r => r.savingsRoutes)
+  },
+  {
     path: 'store',
     loadChildren: () => import('../../components/store/store.routes').then(r => r.storeRoutes)
   },

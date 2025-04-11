@@ -7,7 +7,7 @@ import { fullRoutes } from './shared/routes/full.routes';
 import { Error404Component } from './errors/error404/error404.component';
 
 export const routes: Routes = [
-   {
+  {
     path: "",
     redirectTo: "auth/login",
     pathMatch: "full",

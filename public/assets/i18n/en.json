@@ -1090,5 +1090,11 @@
     "save_and_continue": "Save And Contionue",
     "send_test_mail": "Send Test Mail",
     "total_refunds": "Total Refunds",
-    "enter_coupon_code_here": "Enter coupon code here"
+    "enter_coupon_code_here": "Enter coupon code here",
+    "add_single savings": "Add Single Savings",
+    "add_batch savings": "Add Batch Savings",
+    "total_savings": "Total Savings",
+    "today_savings": "Today's Savings",
+    "filtered_savings": "FIltered Savings",
+    "savings_id": "Member ID"
 }

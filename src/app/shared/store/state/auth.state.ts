@@ -56,6 +56,7 @@ export class AuthState {
 
   @Action(Login)
   login(ctx: StateContext<AuthStateModel>, action: Login) {
+    console.log("Farouk >>>>>>>>>>>>>>>>>>",action.payload);
     this.notificationService.notification = false;
     ctx.patchState({
       email: 'admin@example.com',
