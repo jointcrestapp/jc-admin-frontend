@@ -50,6 +50,58 @@ export const content: Routes = [
     loadChildren: () => import('../../pages/savings/savings.routes').then(r => r.savingsRoutes)
   },
   {
+    path: 'loan',
+    loadChildren: () => import('../../pages/loan/loan.routes').then(r => r.loanRoutes)
+  },
+  {
+    path: 'shares',
+    loadChildren: () => import('../../components/shares/shares.routes').then(r => r.sharesRoutes)
+  },
+  {
+    path: 'thrift',
+    loadChildren: () => import('../../pages/thrift/thrift.routes').then(r => r.thriftRoutes)
+  },
+  {
+    path: 'credit_sales',
+    loadChildren: () => import('../../pages/credit-sales/credit-sales.routes').then(r => r.creditSalesRoutes)
+  },
+  {
+    path: 'share_withdrawal',
+    loadChildren: () => import('../../pages/share-withdrawal/share-withdrawal.routes').then(r => r.shareWithdrawalRoutes)
+  },
+  {
+    path: 'dividend',
+    loadChildren: () => import('../../pages/dividend/dividend.routes').then(r => r.dividendRoutes)
+  },
+  {
+    path: 'wallet_transaction',
+    loadChildren: () => import('../../pages/wallet-transaction/wallet-transaction.routes').then(r => r.walletTransactionRoutes)
+  },
+  {
+    path: 'communication',
+    loadChildren: () => import('../../pages/communication/communication.routes').then(r => r.communicationRoutes)
+  },
+  {
+    path: 'reporting',
+    loadChildren: () => import('../../pages/reporting/reporting.routes').then(r => r.reportingRoutes)
+  },
+  {
+    path: 'investment',
+    loadChildren: () => import('../../pages/investment/investment.routes').then(r => r.investmentRoutes)
+  },
+  {
+    path: 'miscellaneous',
+    loadChildren: () => import('../../pages/miscellaneous/miscellaneous.routes').then(r => r.miscellaneousRoutes)
+  },
+  {
+    path: 'agent',
+    loadChildren: () => import('../../pages/agent/agent.routes').then(r => r.agentRoutes)
+  },
+  {
+    path: 'user_trail',
+    loadChildren: () => import('../../pages/user-trails/user-trails.routes').then(r => r.userTrialsRoutes)
+  },
+  {
     path: 'store',
     loadChildren: () => import('../../components/store/store.routes').then(r => r.storeRoutes)
   },

@@ -15,9 +15,9 @@ import { environment } from 'src/environments/environment.development';
 export class SavingsService {
   
   constructor(private http: HttpClient, 
-    private router: Router,
+    // private router: Router,
     // private headerService: HeaderService,
-    private errorHandler: ErrorHandlerService
+    // private errorHandler: ErrorHandlerService
   ) { 
     
    
@@ -27,9 +27,13 @@ export class SavingsService {
   
 
   allSavings(data: any): Observable<any> {
+    // let data = {};
+    // return this.http.post(environment.apiURL + '/get_savings_histories', data).pipe(
+    //   // apiOperators(this.errorHandler)
+    // )
     return this.http.post(environment.apiURL+ '/get_savings_histories', data) 
      .pipe(
-      apiOperators(this.errorHandler)
+      // apiOperators(this.errorHandler)
     );
   }
 

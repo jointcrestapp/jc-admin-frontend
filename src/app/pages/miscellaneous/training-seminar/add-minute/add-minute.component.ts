@@ -6,6 +6,6 @@ import { Component } from '@angular/core';
   templateUrl: './add-minute.component.html',
   styleUrl: './add-minute.component.scss'
 })
-export class AddMinuteComponent {
+export class AddTrainingSeminarComponent {
 
 }
