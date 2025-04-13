@@ -15,19 +15,19 @@ export const creditSalesRoutes: Routes = [
     component: OrderCreditSalesComponent
   },
   {
-    path: "requested_credit_sales",
+    path: "requested-credit-sales",
     component: RequestedCreditSalesComponent
   },
   {
-    path: "approved_credit_sales",
+    path: "approved-credit-sales",
     component: ApprovedCreditSalesComponent
   },
   {
-    path: "dispatched_credit_sales",
+    path: "dispatched-credit-sales",
     component: DispatchedCreditSalesComponent
   },
   {
-    path: "ordered_products",
+    path: "ordered-products",
     component: OrderedProductsComponent
   },
   {
@@ -35,7 +35,7 @@ export const creditSalesRoutes: Routes = [
     component: RepaymentComponent
   },
   {
-    path: "add_batch_repayment",
+    path: "add-batch-repayment",
     component: AddBatchRepaymentComponent
   },
 ];

@@ -5,23 +5,17 @@ import { AddAgentComponent } from './agents/add-agent/add-agent.component';
 import { EditAgentComponent } from './agents/edit-agent/edit-agent.component';
 import { AllTransactionsComponent } from './transaction/all-transactions/all-transactions.component';
 
-
-
-
-
-
-
 export const agentRoutes: Routes = [
   {
     path: '',
     component: AllAgentsComponent
   },
   {
-    path: 'add_agent',
+    path: 'add-agent',
     component: AddAgentComponent
   },
   {
-    path: 'edit_agent',
+    path: 'edit-agent',
     component: EditAgentComponent
   },
   {

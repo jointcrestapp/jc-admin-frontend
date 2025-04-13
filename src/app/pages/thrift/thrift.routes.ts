@@ -12,15 +12,15 @@ export const thriftRoutes: Routes = [
     component: AllSavingsComponent
   },
   {
-    path: "add_single_savings",
+    path: "add-single-savings",
     component: AddSingleSavingsComponent
   },
   {
-    path: "add_batch_savings",
+    path: "add-batch-savings",
     component: AddBatchSavingsComponent
   },
   {
-    path: "edit_savings/:id",
+    path: "edit-savings/:id",
     component: EditSavingsComponent
   }
 ];

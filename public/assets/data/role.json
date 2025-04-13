@@ -1284,6 +1284,39 @@
                         "role_id": "1",
                         "permission_id": "116"
                     }
+                },
+                {
+                    "id": 117,
+                    "name": "configurations.create",
+                    "guard_name": "web",
+                    "created_at": "2024-05-02T08:34:46.000000Z",
+                    "updated_at": "2024-05-02T08:34:46.000000Z",
+                    "pivot": {
+                        "role_id": "1",
+                        "permission_id": "117"
+                    }
+                },
+                {
+                    "id": 118,
+                    "name": "configurations.edit",
+                    "guard_name": "web",
+                    "created_at": "2024-05-02T08:34:46.000000Z",
+                    "updated_at": "2024-05-02T08:34:46.000000Z",
+                    "pivot": {
+                        "role_id": "1",
+                        "permission_id": "118"
+                    }
+                },
+                {
+                    "id": 119,
+                    "name": "configurations.index",
+                    "guard_name": "web",
+                    "created_at": "2024-05-02T08:34:46.000000Z",
+                    "updated_at": "2024-05-02T08:34:46.000000Z",
+                    "pivot": {
+                        "role_id": "1",
+                        "permission_id": "119"
+                    }
                 }
             ]
         },

@@ -17,23 +17,23 @@ export const reportingRoutes: Routes = [
     component: SavingsReportComponent
   },
   {
-    path: 'shares_report',
+    path: 'shares-report',
     component: SharesReportComponent
   },
   {
-    path: 'revenue_report',
+    path: 'revenue-report',
     component: RevenueReportComponent
   },
   {
-    path: 'loan_report',
+    path: 'loan-report',
     component: LoanReportComponent
   },
   {
-    path: 'credit_sales_report',
+    path: 'credit-sales-report',
     component: CreditSalesReportComponent
   },
   {
-    path: 'ledger_balance_report',
+    path: 'ledger-balance-report',
     component: LedgerBalanceComponent
   },
   {

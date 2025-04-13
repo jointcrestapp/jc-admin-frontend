@@ -21,11 +21,11 @@ export const miscellaneousRoutes: Routes = [
     component: AllByeLawsComponent
   },
   {
-    path: 'add_bye_law',
+    path: 'add-bye-law',
     component: AddByeLawComponent
   },
   {
-    path: 'edit_bye_law:/id',
+    path: 'edit-bye-law:/id',
     component: EditByeLawComponent
   },
   {
@@ -33,23 +33,23 @@ export const miscellaneousRoutes: Routes = [
     component: AllMinutesComponent
   },
   {
-    path: 'add_minute',
+    path: 'add-minute',
     component: AddMinuteComponent
   },
   {
-    path: 'edit_minute',
+    path: 'edit-minute',
     component: AditMinuteComponent
   },
   {
-    path: 'training_seminar',
+    path: 'training-seminar',
     component: AllTrainingSeminarComponent
   },
   {
-    path: 'add_training_seminar',
+    path: 'add-training-seminar',
     component: AddTrainingSeminarComponent
   },
   {
-    path: 'edit_training_seminar',
+    path: 'edit-training-seminar',
     component: EditTrainingSeminarComponent
   },
 ];

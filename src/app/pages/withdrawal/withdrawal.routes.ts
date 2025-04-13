@@ -12,15 +12,15 @@ export const withdrawalRoutes: Routes = [
     component: WithdrawalComponent
   },
   {
-    path: 'add_withdrawal',
+    path: 'add-withdrawal',
     component: AddWithdrawalComponent
   },
   {
-    path: 'pending_withdrawal',
+    path: 'pending-withdrawal',
     component: PendingWithdrawalsComponent
   },
   {
-    path: 'batch_withdrawals',
+    path: 'batch-withdrawals',
     component: BatchWithdrawalComponent
   },
   {

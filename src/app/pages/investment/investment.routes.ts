@@ -14,11 +14,11 @@ export const investmentRoutes: Routes = [
     component: AllInvestmentsComponent
   },
   {
-    path: 'add_investment',
+    path: 'add-investment',
     component: AddInvestmentComponent
   },
   {
-    path: 'edit_investment:/id',
+    path: 'edit-investment:/id',
     component: EditInvestmentComponent
   }
 ];

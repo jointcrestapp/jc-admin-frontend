@@ -11,7 +11,11 @@ export const communicationRoutes: Routes = [
     component: BroadcastComponent
   },
   {
-    path: 'sms_report',
+    path: 'broadcast',
+    component: BroadcastComponent
+  },
+  {
+    path: 'sms-report',
     component: SmsReportComponent
   }
 ];

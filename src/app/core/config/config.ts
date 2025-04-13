@@ -7,7 +7,6 @@ export const appConfig = {
     perPageTblArray: [10, 20, 30, 40, 50, 100],
     perPageTblDefault: 1,
     date_format: 'DD-MM-YYYY',
-    google_doc_path: window.location.protocol + "//docs.google.com/viewer?url=",
     yearRange: 100,
     statusCode: {
         'ok':200,

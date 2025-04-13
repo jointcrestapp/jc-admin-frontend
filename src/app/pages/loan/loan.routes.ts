@@ -17,31 +17,31 @@ export const loanRoutes: Routes = [
     component: AddSingleLoanComponent
   },
   {
-    path: "requested_loans",
+    path: "requested-loans",
     component: RequestedLoansComponent
   },
   {
-    path: "approved_loans",
+    path: "approved-loans",
     component: ApprovedLoansComponent
   },
   {
-    path: "disbursed_loans",
+    path: "disbursed-loans",
     component: DisbursedLoansComponent
   },
   {
-    path: "finished_loans",
+    path: "finished-loans",
     component: FinishedLoansComponent
   },
   {
-    path: "loan_repayment",
+    path: "loan-repayment",
     component: LoanRepaymentComponent
   },
   {
-    path: "dual_loan_repayment",
+    path: "dual-loan-repayment",
     component: DualLoanPaymentComponent
   },
   {
-    path: "add_batch_repayment",
+    path: "add-batch-repayment",
     component: AddBatchRepaymentComponent
   },
   {

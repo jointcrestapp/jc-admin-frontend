@@ -62,19 +62,15 @@ export const content: Routes = [
     loadChildren: () => import('../../pages/thrift/thrift.routes').then(r => r.thriftRoutes)
   },
   {
-    path: 'credit_sales',
+    path: 'credit-sales',
     loadChildren: () => import('../../pages/credit-sales/credit-sales.routes').then(r => r.creditSalesRoutes)
-  },
-  {
-    path: 'share_withdrawal',
-    loadChildren: () => import('../../pages/share-withdrawal/share-withdrawal.routes').then(r => r.shareWithdrawalRoutes)
   },
   {
     path: 'dividend',
     loadChildren: () => import('../../pages/dividend/dividend.routes').then(r => r.dividendRoutes)
   },
   {
-    path: 'wallet_transaction',
+    path: 'wallet-transaction',
     loadChildren: () => import('../../pages/wallet-transaction/wallet-transaction.routes').then(r => r.walletTransactionRoutes)
   },
   {
@@ -98,7 +94,7 @@ export const content: Routes = [
     loadChildren: () => import('../../pages/agent/agent.routes').then(r => r.agentRoutes)
   },
   {
-    path: 'user_trail',
+    path: 'user-trail',
     loadChildren: () => import('../../pages/user-trails/user-trails.routes').then(r => r.userTrialsRoutes)
   },
   {
@@ -200,5 +196,9 @@ export const content: Routes = [
   {
     path: 'setting',
     loadChildren: () => import('../../pages/setting/setting.routes').then(r => r.SettingRoutes)
+  },
+  {
+    path: 'configurations',
+    loadChildren: () => import('../../pages/configurations/configurations.routes').then(r => r.configurationRoutes)
   },
 ]

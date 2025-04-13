@@ -38,15 +38,15 @@ export const menu: Sidebar[] = [
         {
           parent_id: 2,
           title: "pending members",
-          path: "/user",
+          path: "/user/pending-members",
           type: "link",
           level: 2,
           permission: ["user.index"],
         },
         {
           parent_id: 2,
-          title: "account closure request",
-          path: "/user",
+          title: "account closure",
+          path: "/user/account-closure-request",
           type: "link",
           level: 2,
           permission: ["user.index"],
@@ -54,7 +54,7 @@ export const menu: Sidebar[] = [
         {
           parent_id: 2,
           title: "exited members",
-          path: "/user",
+          path: "/user/exited-members",
           type: "link",
           level: 2,
           permission: ["user.index"],
@@ -69,7 +69,591 @@ export const menu: Sidebar[] = [
         }
       ],
     },
-    /*{
+    {
+      id: 19,
+      title: "subscription",
+      path: "/subscription",
+      active: false,
+      icon: "ri-settings-3-line",
+      type: "sub",
+      level: 1,
+      permission: ["subscribe.index"]
+    },
+    {
+      id: 22,
+      title: "savings",
+      active: false,
+      icon: "ri-bank-line",
+      type: "sub",
+      level: 1,
+      acl_permission: ["savings.index", "savings.create", "savings.edit"],
+      children: [
+        {
+          parent_id: 22,
+          title: "all savings",
+          path: "/savings",
+          type: "link",
+          level: 2,
+          permission: ["savings.index", "savings.create"]
+        },
+        {
+          parent_id: 22,
+          title: "add single savings",
+          path: "/savings/add-single-savings",
+          type: "link",
+          badgeType: 'badge bg-theme text-dark ml-3', 
+          badgeValue: 0,
+          level: 2,
+          permission: ["savings.create"]
+        },
+        {
+          parent_id: 22,
+          title: "add batch savings",
+          path: "/savings/add-batch-savings",
+          type: "link",
+          level: 2,
+          permission: ["savings.create"]
+        }
+      ],
+    },
+    {
+      id: 23,
+      title: "loan",
+      active: false,
+      icon: "ri-exchange-funds-line",
+      type: "sub",
+      level: 1,
+      acl_permission: ["loan.index", "loan.create", "loan.edit"],
+      children: [
+        {
+          parent_id: 23,
+          title: "add single loan",
+          path: "/loan/add-single-loan",
+          type: "link",
+          level: 2,
+          permission: ["loan.index", "loan.create"]
+        },
+        {
+          parent_id: 23,
+          title: "requested loans",
+          path: "/loan/requested-loans",
+          type: "link",
+          badgeType: 'badge bg-theme text-dark ml-3', 
+          badgeValue: 0,
+          level: 2,
+          permission: ["loan.index"]
+        },
+        {
+          parent_id: 23,
+          title: "approved loans",
+          path: "/loan/approved-loans",
+          type: "link",
+          level: 2,
+          permission: ["loan.index"]
+        },
+        {
+          parent_id: 23,
+          title: "disbursed loans",
+          path: "/loan/disbursed loans",
+          type: "link",
+          level: 2,
+          permission: ["loan.index"]
+        },
+        {
+          parent_id: 23,
+          title: "finished loans",
+          path: "/loan/finished-loans",
+          type: "link",
+          level: 2,
+          permission: ["loan.index"]
+        },
+        {
+          parent_id: 23,
+          title: "loan repayment",
+          path: "/loan/loan-repayment",
+          type: "link",
+          level: 2,
+          permission: ["loan.index"]
+        },
+        {
+          parent_id: 23,
+          title: "dual loan repayment",
+          path: "/loan/dual-loan-repayment",
+          type: "link",
+          level: 2,
+          permission: ["loan.create"]
+        },
+        {
+          parent_id: 23,
+          title: "add batch payment",
+          path: "/loan/add-batch-repayment",
+          type: "link",
+          level: 2,
+          permission: ["loan.create"]
+        }
+      ],
+    },
+    {
+      id: 24,
+      title: "shares",
+      active: false,
+      icon: "ri-stock-line",
+      type: "sub",
+      level: 1,
+      acl_permission: ["shares.index", "shares.create", "shares.edit"],
+      children: [
+        {
+          parent_id: 24,
+          title: "all shares",
+          path: "/shares",
+          type: "link",
+          level: 2,
+          permission: ["shares.index", "shares.create"]
+        },
+        {
+          parent_id: 24,
+          title: "add single share",
+          path: "/shares/add-single-share",
+          type: "link",
+          badgeType: 'badge bg-theme text-dark ml-3', 
+          badgeValue: 0,
+          level: 2,
+          permission: ["savings.create"]
+        },
+        {
+          parent_id: 24,
+          title: "add batch shares",
+          path: "/shares/add-batch-shares",
+          type: "link",
+          level: 2,
+          permission: ["shares.create"]
+        }
+      ],
+    },
+    {
+      id: 25,
+      title: "thrift",
+      active: false,
+      icon: "ri-stock-line",
+      type: "sub",
+      level: 1,
+      acl_permission: ["thrift.index", "thrift.create", "thrift.edit"],
+      children: [
+        {
+          parent_id: 25,
+          title: "all thrifts",
+          path: "/thrift",
+          type: "link",
+          level: 2,
+          permission: ["thrift.index", "thrift.create"]
+        },
+        {
+          parent_id: 25,
+          title: "thrift tiers",
+          path: "/thrift/thrift-tiers",
+          type: "link",
+          badgeType: 'badge bg-theme text-dark ml-3', 
+          badgeValue: 0,
+          level: 2,
+          permission: ["thrift.create"]
+        },
+        {
+          parent_id: 25,
+          title: "thrift category",
+          path: "/thrift/thrift-category",
+          type: "link",
+          level: 2,
+          permission: ["thrift.create"]
+        }
+      ],
+    },
+    {
+      id: 26,
+      title: "credit sales",
+      active: false,
+      icon: "ri-exchange-dollar-line",
+      type: "sub",
+      level: 1,
+      acl_permission: ["credit.index", "credit.create", "credit.edit"],
+      children: [
+        {
+          parent_id: 26,
+          title: "order credit sales",
+          path: "/credit-sales/order-credit-sales",
+          type: "link",
+          level: 2,
+          permission: ["credit.index", "credit.create"]
+        },
+        {
+          parent_id: 26,
+          title: "requested credit sales",
+          path: "/credit-sales/requested-credit-sales",
+          type: "link",
+          badgeType: 'badge bg-theme text-dark ml-3', 
+          badgeValue: 0,
+          level: 2,
+          permission: ["credit.index"]
+        },
+        {
+          parent_id: 26,
+          title: "approved credit sales",
+          path: "/credit-sales/approved-credit-sales",
+          type: "link",
+          level: 2,
+          permission: ["credit.index"]
+        },
+        {
+          parent_id: 26,
+          title: "dispatched credit sales",
+          path: "/credit-sales/dispatched-credit-sales",
+          type: "link",
+          level: 2,
+          permission: ["credit.index"]
+        },
+        {
+          parent_id: 26,
+          title: "ordered products",
+          path: "/credit-sales/ordered-products",
+          type: "link",
+          level: 2,
+          permission: ["credit.index"]
+        },
+        {
+          parent_id: 26,
+          title: "repayment",
+          path: "/credit-sales/repayment",
+          type: "link",
+          level: 2,
+          permission: ["credit.index"]
+        },
+        {
+          parent_id: 26,
+          title: "add batch repayment",
+          path: "/credit-sales/add-batch-repayment",
+          type: "link",
+          level: 2,
+          permission: ["credit.create"]
+        }
+      ],
+    },
+    {
+      id: 27,
+      title: "withdrawal",
+      active: false,
+      icon: "ri-money-dollar-line",
+      type: "sub",
+      level: 1,
+      acl_permission: ["withdrawal.index", "withdrawal.create", "withdrawal.edit"],
+      children: [
+        {
+          parent_id: 27,
+          title: "withdrawal",
+          path: "/withdrawals",
+          type: "link",
+          level: 2,
+          permission: ["withdrawal.index", "withdrawal.create"]
+        },
+        {
+          parent_id: 27,
+          title: "add withdrawal",
+          path: "/withdrawal/add-withdrawal",
+          type: "link",
+          badgeType: 'badge bg-theme text-dark ml-3', 
+          badgeValue: 0,
+          level: 2,
+          permission: ["withdrawal.create"]
+        },
+        {
+          parent_id: 27,
+          title: "pending withdrawal",
+          path: "/withdrawal/pending-withdrawal",
+          type: "link",
+          level: 2,
+          permission: ["withdrawal.index"]
+        },
+        {
+          parent_id: 27,
+          title: "batch withdrawals",
+          path: "/withdrawal/batch-withdrawal",
+          type: "link",
+          level: 2,
+          permission: ["withdrawal.create"]
+        }
+      ],
+    },
+    {
+      id: 29,
+      title: "dividend",
+      active: false,
+      icon: "ri-coin-line",
+      type: "sub",
+      level: 1,
+      acl_permission: ["dividend.index", "dividend.create", "dividend.edit"],
+      children: [
+        {
+          parent_id: 29,
+          title: "dividend history",
+          path: "/dividend",
+          type: "link",
+          level: 2,
+          permission: ["dividend.index", "dividend.create"]
+        },
+        {
+          parent_id: 29,
+          title: "generate dividend",
+          path: "/dividend/generate-dividend",
+          type: "link",
+          badgeType: 'badge bg-theme text-dark ml-3', 
+          badgeValue: 0,
+          level: 2,
+          permission: ["dividend.create"]
+        }
+      ],
+    },
+    {
+      id: 30,
+      title: "wallet transaction",
+      path: "/wallet-transaction",
+      active: false,
+      icon: "ri-exchange-line",
+      type: "sub",
+      level: 1,
+      permission: ["wallet.index"]
+    },
+    {
+      id: 31,
+      title: "communication",
+      active: false,
+      icon: "ri-customer-service-2-line",
+      type: "sub",
+      level: 1,
+     acl_permission: ["communication.index", "communication.create", "communication.edit"],
+      children: [
+        {
+          parent_id: 31,
+          title: "broadcast",
+          path: "/communication/broadcast",
+          type: "link",
+          level: 2,
+          permission: ["communication.index", "communication.create"]
+        },
+        {
+          parent_id: 31,
+          title: "sms report",
+          path: "/communication/sms-report",
+          type: "link",
+          badgeType: 'badge bg-theme text-dark ml-3', 
+          badgeValue: 0,
+          level: 2,
+          permission: ["communication.create"]
+        }
+      ],
+    },
+    {
+      id: 32,
+      title: "reporting",
+      active: false,
+      icon: "ri-file-chart-line",
+      type: "sub",
+      level: 1,
+      acl_permission: ["reporting.index"],
+      children: [
+        {
+          parent_id: 32,
+          title: "savings report",
+          path: "/reporting/savings",
+          type: "link",
+          level: 2,
+          permission: ["reporting.index", "reporting.create"]
+        },
+        {
+          parent_id: 32,
+          title: "shares report",
+          path: "/reporting/shares-report",
+          type: "link",
+          level: 2,
+          permission: ["reporting.index", "reporting.create"]
+        },
+        {
+          parent_id: 32,
+          title: "revenue report",
+          path: "/reporting/revenue-report",
+          type: "link",
+          level: 2,
+          permission: ["reporting.index"]
+        },
+        {
+          parent_id: 32,
+          title: "loan report",
+          path: "/reporting/loan-report",
+          type: "link",
+          level: 2,
+          permission: ["reporting.index"]
+        },
+        {
+          parent_id: 32,
+          title: "credit sales report",
+          path: "/reporting/credit-sales-report",
+          type: "link",
+          level: 2,
+          permission: ["reporting.index", "reporting.create"]
+        },
+        {
+          parent_id: 32,
+          title: "ledger balance report",
+          path: "/reporting/ledger-balance-report",
+          type: "link",
+          level: 2,
+          permission: ["reporting.index", "reporting.create"]
+        },
+        {
+          parent_id: 32,
+          title: "statement",
+          path: "/reporting/statement",
+          type: "link",
+          level: 2,
+          permission: ["reporting.index", "reporting.create"]
+        }
+      ],
+    },
+    {
+      id: 33,
+      title: "investment",
+      path: "/investment",
+      active: false,
+      icon: "ri-line-chart-line",
+      type: "sub",
+      level: 1,
+      acl_permission: ["investment.index"]
+    },
+    {
+      id: 34,
+      title: "miscellaneous",
+      active: false,
+      icon: "ri-bank-line",
+      type: "sub",
+      level: 1,
+      acl_permission: ["miscellaneous.index","miscellaneous.create","miscellaneous.edit"],
+      children: [
+        {
+          parent_id: 34,
+          title: "bye law",
+          path: "/miscellaneous/bye-law",
+          type: "link",
+          level: 2,
+          permission: ["miscellaneous.index", "miscellaneous.create"]
+        },
+        {
+          parent_id: 34,
+          title: "minutes",
+          path: "/miscellaneous/minutes",
+          type: "link",
+          level: 2,
+          permission: ["miscellaneous.index", "miscellaneous.create"]
+        },
+        {
+          parent_id: 34,
+          title: "training",
+          path: "/miscellaneous/training-seminar",
+          type: "link",
+          level: 2,
+          permission: ["miscellaneous.index", "miscellaneous.create"]
+        },
+      ],
+    },
+    {
+      id: 35,
+      title: "agent",
+      active: false,
+      icon: "ri-team-line",
+      type: "sub",
+      level: 1,
+      acl_permission: ["agent.index","agent.create","agent.edit"],
+      children: [
+        {
+          parent_id: 35,
+          title: "all agents",
+          path: "/agent",
+          type: "link",
+          level: 2,
+          permission: ["agent.index", "agent.create"]
+        },
+        {
+          parent_id: 35,
+          title: "transaction",
+          path: "/agent/transaction",
+          type: "link",
+          level: 2,
+          permission: ["agent.index"]
+        }
+      ],
+    },
+    {
+      id: 36,
+      title: "user trail",
+      active: false,
+      icon: "ri-user-star-line",
+      type: "sub",
+      level: 1,
+      acl_permission: ["trail.index","trail.create","trail.edit"],
+      children: [
+        {
+          parent_id: 36,
+          title: "users activities",
+          path: "/user-trail/user-activities",
+          type: "link",
+          level: 2,
+          permission: ["trail.index", "trail.create"]
+        },
+        {
+          parent_id: 36,
+          title: "users login",
+          path: "/user-trail/users-login",
+          type: "link",
+          level: 2,
+          permission: ["trail.index", "trail.create"]
+        }
+      ],
+  },
+    {
+      id: 37,
+      title: "settings",
+      path: "/setting",
+      active: false,
+      icon: "ri-settings-3-line",
+      type: "sub",
+      level: 1,
+      permission: ["setting.index"]
+  },
+     {
+      id: 38,
+      title: "configurations",
+      active: false,
+      icon: "ri-settings-3-line",
+      type: "sub",
+      level: 1,
+       permission: ["configurations.index"],
+      children: [
+        {
+          parent_id: 38,
+          title: "categories",
+          path: "/configurations/categories",
+          type: "link",
+          level: 2,
+          permission: ["configurations.index","configurations.create"]
+        },
+        {
+          parent_id: 38,
+          title: "users role",
+          path: "/configurations/users-role",
+          type: "link",
+          level: 2,
+          permission: ["configurations.index", "configurations.create"]
+        }
+      ]
+  },
+
+      /*{
       id: 3,
       title: "products",
       active: false,
@@ -392,634 +976,8 @@ export const menu: Sidebar[] = [
       level: 1,
       permission: ["notice.index"]
     },*/
-    {
-      id: 19,
-      title: "Subscription",
-      path: "/subscription",
-      active: false,
-      icon: "ri-settings-3-line",
-      type: "sub",
-      level: 1,
-      permission: ["subscribe.index"]
-    },
-    {
-      id: 20,
-      title: "store front",
-      active: false,
-      icon: "ri-window-line",
-      type: "sub",
-      level: 1,
-      acl_permission: ["theme.index", "theme_option.index"],
-      children: [
-        {
-          parent_id: 20,
-          title: "themes",
-          path: "/theme",
-          type: "link",
-          level: 2,
-          permission: ["theme.index"]
-        },
-        {
-          parent_id: 20,
-          title: "theme options",
-          path: "/theme-option",
-          type: "link",
-          level: 2,
-          permission: ["theme_option.index"]
-        },
-        {
-          parent_id: 20,
-          title: "Menu",
-          path: "/menu",
-          type: "link",
-          level: 2,
-          permission: ["theme_option.index"]
-        }
-      ]
-    },
-    {
-      id: 22,
-      title: "Savings",
-      active: false,
-      icon: "ri-bank-line",
-      type: "sub",
-      level: 1,
-      acl_permission: ["savings.index", "savings.create", "savings.edit"],
-      children: [
-        {
-          parent_id: 22,
-          title: "Savings",
-          path: "/savings",
-          type: "link",
-          level: 2,
-          permission: ["savings.index", "savings.create"]
-        },
-        {
-          parent_id: 22,
-          title: "add single savings",
-          path: "/savings/add-single-savings",
-          type: "link",
-          badgeType: 'badge bg-theme text-dark ml-3', 
-          badgeValue: 0,
-          level: 2,
-          permission: ["savings.create"]
-        },
-        {
-          parent_id: 22,
-          title: "add batch savings",
-          path: "/savings/add-batch-savings",
-          type: "link",
-          level: 2,
-          permission: ["savings.create"]
-        }
-      ],
-    },
-    {
-      id: 23,
-      title: "Loan",
-      active: false,
-      icon: "ri-exchange-funds-line",
-      type: "sub",
-      level: 1,
-      acl_permission: ["savings.index", "savings.create", "savings.edit"],
-      children: [
-        {
-          parent_id: 23,
-          title: "add_single_loan",
-          path: "/loan",
-          type: "link",
-          level: 2,
-          permission: ["savings.index", "savings.create"]
-        },
-        {
-          parent_id: 23,
-          title: "requested_loans",
-          path: "/loan/requested_loans",
-          type: "link",
-          badgeType: 'badge bg-theme text-dark ml-3', 
-          badgeValue: 0,
-          level: 2,
-          permission: ["savings.create"]
-        },
-        {
-          parent_id: 23,
-          title: "approved_loans",
-          path: "/loan/approved_loans",
-          type: "link",
-          level: 2,
-          permission: ["savings.create"]
-        },
-        {
-          parent_id: 23,
-          title: "disbursed_loans",
-          path: "/loan/disbursed_loans",
-          type: "link",
-          level: 2,
-          permission: ["savings.create"]
-        },
-        {
-          parent_id: 23,
-          title: "finished_loans",
-          path: "/loan/finished_loans",
-          type: "link",
-          level: 2,
-          permission: ["savings.create"]
-        },
-        {
-          parent_id: 23,
-          title: "loan_repayment",
-          path: "/loan/loan_repayment",
-          type: "link",
-          level: 2,
-          permission: ["savings.create"]
-        },
-        {
-          parent_id: 23,
-          title: "dual_loan_repayment",
-          path: "/loan/dual_loan_repayment",
-          type: "link",
-          level: 2,
-          permission: ["savings.create"]
-        },
-        {
-          parent_id: 23,
-          title: "add_batch_payment",
-          path: "/loan/add_batch_repayment",
-          type: "link",
-          level: 2,
-          permission: ["savings.create"]
-        }
-      ],
-    },
-    {
-      id: 24,
-      title: "Shares",
-      active: false,
-      icon: "ri-stock-line",
-      type: "sub",
-      level: 1,
-      acl_permission: ["savings.index", "savings.create", "savings.edit"],
-      children: [
-        {
-          parent_id: 23,
-          title: "all_shares",
-          path: "/shares",
-          type: "link",
-          level: 2,
-          permission: ["savings.index", "savings.create"]
-        },
-        {
-          parent_id: 23,
-          title: "add_single_share",
-          path: "/shares/add_single_share",
-          type: "link",
-          badgeType: 'badge bg-theme text-dark ml-3', 
-          badgeValue: 0,
-          level: 2,
-          permission: ["savings.create"]
-        },
-        {
-          parent_id: 23,
-          title: "add_batch_shares",
-          path: "/shares/add_batch_shares",
-          type: "link",
-          level: 2,
-          permission: ["savings.create"]
-        }
-      ],
-    },
-    {
-      id: 25,
-      title: "Thrift",
-      active: false,
-      icon: "ri-stock-line",
-      type: "sub",
-      level: 1,
-      acl_permission: ["savings.index", "savings.create", "savings.edit"],
-      children: [
-        {
-          parent_id: 25,
-          title: "Savings",
-          path: "/thrift",
-          type: "link",
-          level: 2,
-          permission: ["savings.index", "savings.create"]
-        },
-        {
-          parent_id: 25,
-          title: "add_single_savings",
-          path: "/thrift/add_single_savings",
-          type: "link",
-          badgeType: 'badge bg-theme text-dark ml-3', 
-          badgeValue: 0,
-          level: 2,
-          permission: ["savings.create"]
-        },
-        {
-          parent_id: 25,
-          title: "add_batch_savings",
-          path: "/thrift/add_batch_savings",
-          type: "link",
-          level: 2,
-          permission: ["savings.create"]
-        }
-      ],
-    },
-    {
-      id: 26,
-      title: "Credit Sales",
-      active: false,
-      icon: "ri-exchange-dollar-line",
-      type: "sub",
-      level: 1,
-      acl_permission: ["savings.index", "savings.create", "savings.edit"],
-      children: [
-        {
-          parent_id: 26,
-          title: "order_credit_sales",
-          path: "/credit_sales",
-          type: "link",
-          level: 2,
-          permission: ["savings.index", "savings.create"]
-        },
-        {
-          parent_id: 26,
-          title: "requested_credit_sales",
-          path: "/credit_sales/requested_credit_sales",
-          type: "link",
-          badgeType: 'badge bg-theme text-dark ml-3', 
-          badgeValue: 0,
-          level: 2,
-          permission: ["savings.create"]
-        },
-        {
-          parent_id: 26,
-          title: "approved_credit_sales",
-          path: "/credit_sales/approved_credit_sales",
-          type: "link",
-          level: 2,
-          permission: ["savings.create"]
-        },
-        {
-          parent_id: 26,
-          title: "dispatched_credit_sales",
-          path: "/credit_sales/dispatched_credit_sales",
-          type: "link",
-          level: 2,
-          permission: ["savings.create"]
-        },
-        {
-          parent_id: 26,
-          title: "ordered_products",
-          path: "/credit_sales/ordered_products",
-          type: "link",
-          level: 2,
-          permission: ["savings.create"]
-        },
-        {
-          parent_id: 26,
-          title: "repayment",
-          path: "/credit_sales/repayment",
-          type: "link",
-          level: 2,
-          permission: ["savings.create"]
-        },
-        {
-          parent_id: 26,
-          title: "add_batch_repayment",
-          path: "/credit_sales/add_batch_repayment",
-          type: "link",
-          level: 2,
-          permission: ["savings.create"]
-        }
-      ],
-    },
-    {
-      id: 27,
-      title: "Withdrawal",
-      active: false,
-      icon: "ri-money-dollar-line",
-      type: "sub",
-      level: 1,
-      acl_permission: ["savings.index", "savings.create", "savings.edit"],
-      children: [
-        {
-          parent_id: 27,
-          title: "withdrawals",
-          path: "/withdrawal",
-          type: "link",
-          level: 2,
-          permission: ["savings.index", "savings.create"]
-        },
-        {
-          parent_id: 27,
-          title: "add_withdrawal",
-          path: "/withdrawal/add_withdrawal",
-          type: "link",
-          badgeType: 'badge bg-theme text-dark ml-3', 
-          badgeValue: 0,
-          level: 2,
-          permission: ["savings.create"]
-        },
-        {
-          parent_id: 27,
-          title: "pending_withdrawal",
-          path: "/withdrawal/pending_withdrawal",
-          type: "link",
-          level: 2,
-          permission: ["savings.create"]
-        },
-        {
-          parent_id: 27,
-          title: "batch_withdrawals",
-          path: "/withdrawal/batch_withdrawals",
-          type: "link",
-          level: 2,
-          permission: ["savings.create"]
-        }
-      ],
-    },
-    {
-      id: 28,
-      title: "Share Withdrawal",
-      active: false,
-      icon: "ri-money-dollar-line",
-      type: "sub",
-      level: 1,
-      acl_permission: ["savings.index", "savings.create", "savings.edit"],
-      children: [
-        {
-          parent_id: 28,
-          title: "share_withdrawals",
-          path: "/share_withdrawal",
-          type: "link",
-          level: 2,
-          permission: ["savings.index", "savings.create"]
-        },
-        {
-          parent_id: 28,
-          title: "add_share_withdrawal",
-          path: "/share_withdrawal/add_share_withdrawal",
-          type: "link",
-          badgeType: 'badge bg-theme text-dark ml-3', 
-          badgeValue: 0,
-          level: 2,
-          permission: ["savings.create"]
-        },
-        {
-          parent_id: 28,
-          title: "pending_share_withdrawal",
-          path: "/share_withdrawal/pending_share_withdrawal",
-          type: "link",
-          level: 2,
-          permission: ["savings.create"]
-        },
-      ],
-    },
-    {
-      id: 29,
-      title: "Dividend",
-      active: false,
-      icon: "ri-coin-line",
-      type: "sub",
-      level: 1,
-      acl_permission: ["savings.index", "savings.create", "savings.edit"],
-      children: [
-        {
-          parent_id: 29,
-          title: "dividend_history",
-          path: "/dividend",
-          type: "link",
-          level: 2,
-          permission: ["savings.index", "savings.create"]
-        },
-        {
-          parent_id: 29,
-          title: "generate_dividend",
-          path: "/dividend/generate_dividend",
-          type: "link",
-          badgeType: 'badge bg-theme text-dark ml-3', 
-          badgeValue: 0,
-          level: 2,
-          permission: ["savings.create"]
-        }
-      ],
-    },
-    {
-      id: 30,
-      title: "Wallet Transaction",
-      path: "/wallet_transaction",
-      active: false,
-      icon: "ri-exchange-line",
-      type: "sub",
-      level: 1,
-      permission: ["savings.index"]
-    },
-    {
-      id: 31,
-      title: "Communication",
-      active: false,
-      icon: "ri-customer-service-2-line",
-      type: "sub",
-      level: 1,
-      permission: ["savings.index"],
-      children: [
-        {
-          parent_id: 31,
-          title: "broadcast",
-          path: "/communication",
-          type: "link",
-          level: 2,
-          permission: ["savings.index", "savings.create"]
-        },
-        {
-          parent_id: 31,
-          title: "sms_report",
-          path: "/communication/sms_report",
-          type: "link",
-          badgeType: 'badge bg-theme text-dark ml-3', 
-          badgeValue: 0,
-          level: 2,
-          permission: ["savings.create"]
-        }
-      ],
-    },
-    {
-      id: 32,
-      title: "Reporting",
-      active: false,
-      icon: "ri-file-chart-line",
-      type: "sub",
-      level: 1,
-      permission: ["savings.index"],
-      children: [
-        {
-          parent_id: 32,
-          title: "savings_report",
-          path: "/reporting",
-          type: "link",
-          level: 2,
-          permission: ["savings.index", "savings.create"]
-        },
-        {
-          parent_id: 32,
-          title: "shares_report",
-          path: "/reporting/shares_report",
-          type: "link",
-          level: 2,
-          permission: ["savings.index", "savings.create"]
-        },
-        {
-          parent_id: 32,
-          title: "revenue_report",
-          path: "/reporting/revenue_report",
-          type: "link",
-          level: 2,
-          permission: ["savings.index", "savings.create"]
-        },
-        {
-          parent_id: 32,
-          title: "loan_report",
-          path: "/reporting/loan_report",
-          type: "link",
-          level: 2,
-          permission: ["savings.index", "savings.create"]
-        },
-        {
-          parent_id: 32,
-          title: "credit_sales_report",
-          path: "/reporting/credit_sales_report",
-          type: "link",
-          level: 2,
-          permission: ["savings.index", "savings.create"]
-        },
-        {
-          parent_id: 32,
-          title: "ledger_balance_report",
-          path: "/reporting/ledger_balance_report",
-          type: "link",
-          level: 2,
-          permission: ["savings.index", "savings.create"]
-        },
-        {
-          parent_id: 32,
-          title: "statement",
-          path: "/reporting/statement",
-          type: "link",
-          level: 2,
-          permission: ["savings.index", "savings.create"]
-        }
-      ],
-    },
-    {
-      id: 33,
-      title: "Investment",
-      path: "/investment",
-      active: false,
-      icon: "ri-line-chart-line",
-      type: "sub",
-      level: 1,
-      permission: ["savings.index"]
-    },
-    {
-      id: 34,
-      title: "Miscellaneous",
-      active: false,
-      icon: "ri-bank-line",
-      type: "sub",
-      level: 1,
-      permission: ["savings.index"],
-      children: [
-        {
-          parent_id: 34,
-          title: "bye_law",
-          path: "/miscellaneous",
-          type: "link",
-          level: 2,
-          permission: ["savings.index", "savings.create"]
-        },
-        {
-          parent_id: 34,
-          title: "minutes",
-          path: "/miscellaneous/minutes",
-          type: "link",
-          level: 2,
-          permission: ["savings.index", "savings.create"]
-        },
-        {
-          parent_id: 34,
-          title: "training / seminar",
-          path: "/miscellaneous/training_seminar",
-          type: "link",
-          level: 2,
-          permission: ["savings.index", "savings.create"]
-        },
-      ],
-    },
-    {
-      id: 35,
-      title: "Agent",
-      active: false,
-      icon: "ri-team-line",
-      type: "sub",
-      level: 1,
-      permission: ["savings.index"],
-      children: [
-        {
-          parent_id: 35,
-          title: "all agents",
-          path: "/agent",
-          type: "link",
-          level: 2,
-          permission: ["savings.index", "savings.create"]
-        },
-        {
-          parent_id: 35,
-          title: "transaction",
-          path: "/agent/transaction",
-          type: "link",
-          level: 2,
-          permission: ["savings.index", "savings.create"]
-        }
-      ],
-    },
-    {
-      id: 36,
-      title: "User Trail",
-      active: false,
-      icon: "ri-user-star-line",
-      type: "sub",
-      level: 1,
-      permission: ["savings.index"],
-      children: [
-        {
-          parent_id: 36,
-          title: "users_activities",
-          path: "/user_trail",
-          type: "link",
-          level: 2,
-          permission: ["savings.index", "savings.create"]
-        },
-        {
-          parent_id: 36,
-          title: "users_login",
-          path: "/user_trail/users_login",
-          type: "link",
-          level: 2,
-          permission: ["savings.index", "savings.create"]
-        }
-      ],
-    },
-    {
-      id: 37,
-      title: "settings",
-      path: "/setting",
-      active: false,
-      icon: "ri-settings-3-line",
-      type: "sub",
-      level: 1,
-      permission: ["setting.index"]
-    },
+  
+    /*  */
     // {
     //   id: 22,
     //   title: "app settings",
