@@ -20,11 +20,11 @@ export const withdrawalRoutes: Routes = [
     component: PendingWithdrawalsComponent
   },
   {
-    path: 'batch-withdrawals',
+    path: 'batch-withdrawal',
     component: BatchWithdrawalComponent
   },
   {
-    path: 'edit_withdrawal:/id',
+    path: 'edit-withdrawal:/id',
     component: EditWithdrawalComponent
   }
 ];

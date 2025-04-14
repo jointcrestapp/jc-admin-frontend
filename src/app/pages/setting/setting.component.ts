@@ -13,13 +13,14 @@ import { NotificationService } from '../../shared/services/notification.service'
 import { GetSettingOption, TestEmail, UpdateSettingOption } from '../../shared/store/action/setting.action';
 import { GetCurrencies } from '../../shared/store/action/currency.action';
 import { Attachment } from '../../shared/interface/attachment.interface';
-import { ImageUploadComponent } from '../../shared/components/ui/image-upload/image-upload.component';
 import { PageWrapperComponent } from '../../shared/components/page-wrapper/page-wrapper.component';
-import { FormFieldsComponent } from '../../shared/components/ui/form-fields/form-fields.component';
+import { BasicComponent } from './basic/basic.component';
+import { LoanComponent } from './loan/loan.component';
+import { NotificationComponent } from './notification/notification.component';
+import { OthersComponent } from './others/others.component';
+import { PaymentComponent } from './payment/payment.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { ButtonComponent } from '../../shared/components/ui/button/button.component';
-import { HasPermissionDirective } from '../../shared/directive/has-permission.directive';
 
 function convertToNgbDate(date: NgbDateStruct): NgbDate {
   return new NgbDate(date?.year, date?.month, date?.day);
@@ -27,8 +28,10 @@ function convertToNgbDate(date: NgbDateStruct): NgbDate {
 
 @Component({
     selector: 'app-setting',
-    imports: [CommonModule, PageWrapperComponent, ImageUploadComponent, FormsModule, ReactiveFormsModule,
-        FormFieldsComponent, TranslateModule, NgbModule, Select2Module, ButtonComponent, HasPermissionDirective],
+    imports: [CommonModule, PageWrapperComponent, FormsModule, ReactiveFormsModule,
+        TranslateModule, NgbModule, Select2Module,
+        BasicComponent, LoanComponent, NotificationComponent, OthersComponent, PaymentComponent
+      ],
     templateUrl: './setting.component.html',
     styleUrl: './setting.component.scss'
 })
@@ -38,7 +41,7 @@ export class SettingComponent {
   setting$: Observable<Values> = inject(Store).select(SettingState.setting) as Observable<Values>;
 
   public form: FormGroup;
-  public active = 'general';
+  public active = 'basic';
   public active_payment = 1;
   public time_zone = data.time_zone;
   public active_analytics = 'facebook';

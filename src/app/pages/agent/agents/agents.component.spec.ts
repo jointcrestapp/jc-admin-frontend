@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AllSavingsComponent } from './all-savings.component';
+import { AllAgentsComponent } from './agents.component';
 
-describe('AllSavingsComponent', () => {
-  let component: AllSavingsComponent;
-  let fixture: ComponentFixture<AllSavingsComponent>;
+describe('AllAgentsComponent', () => {
+  let component: AllAgentsComponent;
+  let fixture: ComponentFixture<AllAgentsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AllSavingsComponent]
+      imports: [AllAgentsComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(AllSavingsComponent);
+    fixture = TestBed.createComponent(AllAgentsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

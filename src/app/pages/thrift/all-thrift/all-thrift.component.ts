@@ -31,16 +31,16 @@ import { SavingsService } from 'src/app/core/services/savings.service';
 import { appConfig } from 'src/app/core/config/config';
 
 @Component({
-    selector: 'app-all-savings',
+    selector: 'app-all-thrift',
     imports: [CommonModule, TranslateModule, RouterModule, HasPermissionDirective,
         Select2Module, PageWrapperComponent, TableComponent,
         AdvanceDropdownComponent, ImportCsvModalComponent, DigitalDownloadModalComponent,
         CurrencySymbolPipe
     ],
-    templateUrl: './all-savings.component.html',
-    styleUrl: './all-savings.component.scss'
+    templateUrl: './all-thrift.component.html',
+    styleUrl: './all-thrift.component.scss'
 })
-export class AllSavingsComponent {
+export class AllThriftComponent {
   product$: Observable<ProductModel> = inject(Store).select(ProductState.product);
   setting$: Observable<Values> = inject(Store).select(SettingState.setting) as Observable<Values>;
   category$: Observable<CategoryModel> = inject(Store).select(CategoryState.category) as Observable<CategoryModel>;

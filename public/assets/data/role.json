@@ -1317,6 +1317,380 @@
                         "role_id": "1",
                         "permission_id": "119"
                     }
+                },
+                {
+                    "id": 120,
+                    "name": "loan.index",
+                    "guard_name": "web",
+                    "created_at": "2024-05-02T08:34:46.000000Z",
+                    "updated_at": "2024-05-02T08:34:46.000000Z",
+                    "pivot": {
+                        "role_id": "1",
+                        "permission_id": "120"
+                    }
+                },
+                {
+                    "id": 121,
+                    "name": "loan.create",
+                    "guard_name": "web",
+                    "created_at": "2024-05-02T08:34:46.000000Z",
+                    "updated_at": "2024-05-02T08:34:46.000000Z",
+                    "pivot": {
+                        "role_id": "1",
+                        "permission_id": "121"
+                    }
+                },
+                {
+                    "id": 122,
+                    "name": "loan.edit",
+                    "guard_name": "web",
+                    "created_at": "2024-05-02T08:34:46.000000Z",
+                    "updated_at": "2024-05-02T08:34:46.000000Z",
+                    "pivot": {
+                        "role_id": "1",
+                        "permission_id": "122"
+                    }
+                },
+                {
+                    "id": 123,
+                    "name": "shares.index",
+                    "guard_name": "web",
+                    "created_at": "2024-05-02T08:34:46.000000Z",
+                    "updated_at": "2024-05-02T08:34:46.000000Z",
+                    "pivot": {
+                        "role_id": "1",
+                        "permission_id": "123"
+                    }
+                },
+                {
+                    "id": 124,
+                    "name": "shares.create",
+                    "guard_name": "web",
+                    "created_at": "2024-05-02T08:34:46.000000Z",
+                    "updated_at": "2024-05-02T08:34:46.000000Z",
+                    "pivot": {
+                        "role_id": "1",
+                        "permission_id": "124"
+                    }
+                },
+                {
+                    "id": 125,
+                    "name": "shares.edit",
+                    "guard_name": "web",
+                    "created_at": "2024-05-02T08:34:46.000000Z",
+                    "updated_at": "2024-05-02T08:34:46.000000Z",
+                    "pivot": {
+                        "role_id": "1",
+                        "permission_id": "125"
+                    }
+                },
+                {
+                    "id": 126,
+                    "name": "thrift.index",
+                    "guard_name": "web",
+                    "created_at": "2024-05-02T08:34:46.000000Z",
+                    "updated_at": "2024-05-02T08:34:46.000000Z",
+                    "pivot": {
+                        "role_id": "1",
+                        "permission_id": "126"
+                    }
+                },
+                {
+                    "id": 127,
+                    "name": "thrift.create",
+                    "guard_name": "web",
+                    "created_at": "2024-05-02T08:34:46.000000Z",
+                    "updated_at": "2024-05-02T08:34:46.000000Z",
+                    "pivot": {
+                        "role_id": "1",
+                        "permission_id": "127"
+                    }
+                },
+                {
+                    "id": 128,
+                    "name": "thrift.edit",
+                    "guard_name": "web",
+                    "created_at": "2024-05-02T08:34:46.000000Z",
+                    "updated_at": "2024-05-02T08:34:46.000000Z",
+                    "pivot": {
+                        "role_id": "1",
+                        "permission_id": "128"
+                    }
+                },
+                {
+                    "id": 129,
+                    "name": "credit.index",
+                    "guard_name": "web",
+                    "created_at": "2024-05-02T08:34:46.000000Z",
+                    "updated_at": "2024-05-02T08:34:46.000000Z",
+                    "pivot": {
+                        "role_id": "1",
+                        "permission_id": "129"
+                    }
+                },
+                {
+                    "id": 130,
+                    "name": "credit.create",
+                    "guard_name": "web",
+                    "created_at": "2024-05-02T08:34:46.000000Z",
+                    "updated_at": "2024-05-02T08:34:46.000000Z",
+                    "pivot": {
+                        "role_id": "1",
+                        "permission_id": "130"
+                    }
+                },
+                {
+                    "id": 131,
+                    "name": "credit.edit",
+                    "guard_name": "web",
+                    "created_at": "2024-05-02T08:34:46.000000Z",
+                    "updated_at": "2024-05-02T08:34:46.000000Z",
+                    "pivot": {
+                        "role_id": "1",
+                        "permission_id": "131"
+                    }
+                },
+                {
+                    "id": 132,
+                    "name": "withdrawal.index",
+                    "guard_name": "web",
+                    "created_at": "2024-05-02T08:34:46.000000Z",
+                    "updated_at": "2024-05-02T08:34:46.000000Z",
+                    "pivot": {
+                        "role_id": "1",
+                        "permission_id": "132"
+                    }
+                },
+                {
+                    "id": 133,
+                    "name": "withdrawal.create",
+                    "guard_name": "web",
+                    "created_at": "2024-05-02T08:34:46.000000Z",
+                    "updated_at": "2024-05-02T08:34:46.000000Z",
+                    "pivot": {
+                        "role_id": "1",
+                        "permission_id": "133"
+                    }
+                },
+                {
+                    "id": 134,
+                    "name": "withdrawal.edit",
+                    "guard_name": "web",
+                    "created_at": "2024-05-02T08:34:46.000000Z",
+                    "updated_at": "2024-05-02T08:34:46.000000Z",
+                    "pivot": {
+                        "role_id": "1",
+                        "permission_id": "134"
+                    }
+                },
+                {
+                    "id": 135,
+                    "name": "dividend.index",
+                    "guard_name": "web",
+                    "created_at": "2024-05-02T08:34:46.000000Z",
+                    "updated_at": "2024-05-02T08:34:46.000000Z",
+                    "pivot": {
+                        "role_id": "1",
+                        "permission_id": "135"
+                    }
+                },
+                {
+                    "id": 136,
+                    "name": "dividend.create",
+                    "guard_name": "web",
+                    "created_at": "2024-05-02T08:34:46.000000Z",
+                    "updated_at": "2024-05-02T08:34:46.000000Z",
+                    "pivot": {
+                        "role_id": "1",
+                        "permission_id": "136"
+                    }
+                },
+                {
+                    "id": 137,
+                    "name": "dividend.edit",
+                    "guard_name": "web",
+                    "created_at": "2024-05-02T08:34:46.000000Z",
+                    "updated_at": "2024-05-02T08:34:46.000000Z",
+                    "pivot": {
+                        "role_id": "1",
+                        "permission_id": "137"
+                    }
+                },
+                {
+                    "id": 138,
+                    "name": "communication.index",
+                    "guard_name": "web",
+                    "created_at": "2024-05-02T08:34:46.000000Z",
+                    "updated_at": "2024-05-02T08:34:46.000000Z",
+                    "pivot": {
+                        "role_id": "1",
+                        "permission_id": "138"
+                    }
+                },
+                {
+                    "id": 139,
+                    "name": "communication.create",
+                    "guard_name": "web",
+                    "created_at": "2024-05-02T08:34:46.000000Z",
+                    "updated_at": "2024-05-02T08:34:46.000000Z",
+                    "pivot": {
+                        "role_id": "1",
+                        "permission_id": "139"
+                    }
+                },
+                {
+                    "id": 140,
+                    "name": "communication.edit",
+                    "guard_name": "web",
+                    "created_at": "2024-05-02T08:34:46.000000Z",
+                    "updated_at": "2024-05-02T08:34:46.000000Z",
+                    "pivot": {
+                        "role_id": "1",
+                        "permission_id": "140"
+                    }
+                },
+                {
+                    "id": 141,
+                    "name": "reporting.index",
+                    "guard_name": "web",
+                    "created_at": "2024-05-02T08:34:46.000000Z",
+                    "updated_at": "2024-05-02T08:34:46.000000Z",
+                    "pivot": {
+                        "role_id": "1",
+                        "permission_id": "141"
+                    }
+                },
+                {
+                    "id": 142,
+                    "name": "reporting.create",
+                    "guard_name": "web",
+                    "created_at": "2024-05-02T08:34:46.000000Z",
+                    "updated_at": "2024-05-02T08:34:46.000000Z",
+                    "pivot": {
+                        "role_id": "1",
+                        "permission_id": "142"
+                    }
+                },
+                {
+                    "id": 143,
+                    "name": "reporting.edit",
+                    "guard_name": "web",
+                    "created_at": "2024-05-02T08:34:46.000000Z",
+                    "updated_at": "2024-05-02T08:34:46.000000Z",
+                    "pivot": {
+                        "role_id": "1",
+                        "permission_id": "143"
+                    }
+                },
+                {
+                    "id": 144,
+                    "name": "investment.index",
+                    "guard_name": "web",
+                    "created_at": "2024-05-02T08:34:46.000000Z",
+                    "updated_at": "2024-05-02T08:34:46.000000Z",
+                    "pivot": {
+                        "role_id": "1",
+                        "permission_id": "144"
+                    }
+                },
+                {
+                    "id": 145,
+                    "name": "miscellaneous.index",
+                    "guard_name": "web",
+                    "created_at": "2024-05-02T08:34:46.000000Z",
+                    "updated_at": "2024-05-02T08:34:46.000000Z",
+                    "pivot": {
+                        "role_id": "1",
+                        "permission_id": "145"
+                    }
+                },
+                {
+                    "id": 146,
+                    "name": "miscellaneous.create",
+                    "guard_name": "web",
+                    "created_at": "2024-05-02T08:34:46.000000Z",
+                    "updated_at": "2024-05-02T08:34:46.000000Z",
+                    "pivot": {
+                        "role_id": "1",
+                        "permission_id": "146"
+                    }
+                },
+                {
+                    "id": 147,
+                    "name": "miscellaneous.edit",
+                    "guard_name": "web",
+                    "created_at": "2024-05-02T08:34:46.000000Z",
+                    "updated_at": "2024-05-02T08:34:46.000000Z",
+                    "pivot": {
+                        "role_id": "1",
+                        "permission_id": "147"
+                    }
+                },
+                {
+                    "id": 148,
+                    "name": "agent.index",
+                    "guard_name": "web",
+                    "created_at": "2024-05-02T08:34:46.000000Z",
+                    "updated_at": "2024-05-02T08:34:46.000000Z",
+                    "pivot": {
+                        "role_id": "1",
+                        "permission_id": "148"
+                    }
+                },
+                {
+                    "id": 149,
+                    "name": "agent.create",
+                    "guard_name": "web",
+                    "created_at": "2024-05-02T08:34:46.000000Z",
+                    "updated_at": "2024-05-02T08:34:46.000000Z",
+                    "pivot": {
+                        "role_id": "1",
+                        "permission_id": "149"
+                    }
+                },
+                {
+                    "id": 150,
+                    "name": "agent.edit",
+                    "guard_name": "web",
+                    "created_at": "2024-05-02T08:34:46.000000Z",
+                    "updated_at": "2024-05-02T08:34:46.000000Z",
+                    "pivot": {
+                        "role_id": "1",
+                        "permission_id": "150"
+                    }
+                },
+                {
+                    "id": 151,
+                    "name": "trail.index",
+                    "guard_name": "web",
+                    "created_at": "2024-05-02T08:34:46.000000Z",
+                    "updated_at": "2024-05-02T08:34:46.000000Z",
+                    "pivot": {
+                        "role_id": "1",
+                        "permission_id": "151"
+                    }
+                },
+                {
+                    "id": 152,
+                    "name": "trail.create",
+                    "guard_name": "web",
+                    "created_at": "2024-05-02T08:34:46.000000Z",
+                    "updated_at": "2024-05-02T08:34:46.000000Z",
+                    "pivot": {
+                        "role_id": "1",
+                        "permission_id": "152"
+                    }
+                },
+                {
+                    "id": 153,
+                    "name": "trail.edit",
+                    "guard_name": "web",
+                    "created_at": "2024-05-02T08:34:46.000000Z",
+                    "updated_at": "2024-05-02T08:34:46.000000Z",
+                    "pivot": {
+                        "role_id": "1",
+                        "permission_id": "153"
+                    }
                 }
             ]
         },

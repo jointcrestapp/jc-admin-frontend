@@ -1,6 +1,6 @@
 
 import { Routes } from '@angular/router';
-import { AllAgentsComponent } from './agents/all-agents/all-agents.component';
+import { AgentsComponent } from './agents/agents.component';
 import { AddAgentComponent } from './agents/add-agent/add-agent.component';
 import { EditAgentComponent } from './agents/edit-agent/edit-agent.component';
 import { AllTransactionsComponent } from './transaction/all-transactions/all-transactions.component';
@@ -8,15 +8,7 @@ import { AllTransactionsComponent } from './transaction/all-transactions/all-tra
 export const agentRoutes: Routes = [
   {
     path: '',
-    component: AllAgentsComponent
-  },
-  {
-    path: 'add-agent',
-    component: AddAgentComponent
-  },
-  {
-    path: 'edit-agent',
-    component: EditAgentComponent
+    component: AgentsComponent
   },
   {
     path: 'transaction',

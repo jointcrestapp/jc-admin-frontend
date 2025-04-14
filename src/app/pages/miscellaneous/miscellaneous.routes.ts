@@ -17,7 +17,7 @@ import { EditTrainingSeminarComponent } from './training-seminar/edit-minute/edi
 
 export const miscellaneousRoutes: Routes = [
   {
-    path: '',
+    path: 'bye-law',
     component: AllByeLawsComponent
   },
   {

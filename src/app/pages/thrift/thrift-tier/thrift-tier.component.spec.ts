@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AllAgentsComponent } from './all-agents.component';
+import { AddBatchSavingsComponent } from './thrift-tier.component';
 
-describe('AllAgentsComponent', () => {
-  let component: AllAgentsComponent;
-  let fixture: ComponentFixture<AllAgentsComponent>;
+describe('AddBatchSavingsComponent', () => {
+  let component: AddBatchSavingsComponent;
+  let fixture: ComponentFixture<AddBatchSavingsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AllAgentsComponent]
+      imports: [AddBatchSavingsComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(AllAgentsComponent);
+    fixture = TestBed.createComponent(AddBatchSavingsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

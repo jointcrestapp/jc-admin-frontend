@@ -10,10 +10,6 @@ export const dividendRoutes: Routes = [
     component: DividendHistoryComponent
   },
   {
-    path: 'dividend-history',
-    component: DividendHistoryComponent
-  },
-  {
     path: 'generate-dividend',
     component: GenerateDividendComponent
   }

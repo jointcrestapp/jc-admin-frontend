@@ -9,7 +9,7 @@ export const userTrialsRoutes: Routes = [
     component: UsersActivitiesComponent
   },
   {
-    path: 'users-activities',
+    path: 'user-activities',
     component: UsersActivitiesComponent
   },
   {

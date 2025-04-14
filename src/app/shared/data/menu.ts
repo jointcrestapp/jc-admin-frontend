@@ -127,7 +127,7 @@ export const menu: Sidebar[] = [
       children: [
         {
           parent_id: 23,
-          title: "add single loan",
+          title: "add_single_loan",
           path: "/loan/add-single-loan",
           type: "link",
           level: 2,
@@ -154,7 +154,7 @@ export const menu: Sidebar[] = [
         {
           parent_id: 23,
           title: "disbursed loans",
-          path: "/loan/disbursed loans",
+          path: "/loan/disbursed-loans",
           type: "link",
           level: 2,
           permission: ["loan.index"]
@@ -177,7 +177,7 @@ export const menu: Sidebar[] = [
         },
         {
           parent_id: 23,
-          title: "dual loan repayment",
+          title: "dual_loan_repayment",
           path: "/loan/dual-loan-repayment",
           type: "link",
           level: 2,
@@ -185,7 +185,7 @@ export const menu: Sidebar[] = [
         },
         {
           parent_id: 23,
-          title: "add batch payment",
+          title: "add_batch_payment",
           path: "/loan/add-batch-repayment",
           type: "link",
           level: 2,
@@ -212,17 +212,17 @@ export const menu: Sidebar[] = [
         },
         {
           parent_id: 24,
-          title: "add single share",
+          title: "add_single_share",
           path: "/shares/add-single-share",
           type: "link",
           badgeType: 'badge bg-theme text-dark ml-3', 
           badgeValue: 0,
           level: 2,
-          permission: ["savings.create"]
+          permission: ["shares.index", "shares.create"]
         },
         {
           parent_id: 24,
-          title: "add batch shares",
+          title: "add_batch_shares",
           path: "/shares/add-batch-shares",
           type: "link",
           level: 2,
@@ -340,7 +340,7 @@ export const menu: Sidebar[] = [
       id: 27,
       title: "withdrawal",
       active: false,
-      icon: "ri-money-dollar-line",
+      icon: "ri-cash-line",
       type: "sub",
       level: 1,
       acl_permission: ["withdrawal.index", "withdrawal.create", "withdrawal.edit"],
@@ -348,7 +348,7 @@ export const menu: Sidebar[] = [
         {
           parent_id: 27,
           title: "withdrawal",
-          path: "/withdrawals",
+          path: "/withdrawal",
           type: "link",
           level: 2,
           permission: ["withdrawal.index", "withdrawal.create"]
@@ -373,7 +373,7 @@ export const menu: Sidebar[] = [
         },
         {
           parent_id: 27,
-          title: "batch withdrawals",
+          title: "batch withdrawal",
           path: "/withdrawal/batch-withdrawal",
           type: "link",
           level: 2,
@@ -427,7 +427,7 @@ export const menu: Sidebar[] = [
       icon: "ri-customer-service-2-line",
       type: "sub",
       level: 1,
-     acl_permission: ["communication.index", "communication.create", "communication.edit"],
+      acl_permission: ["communication.index", "communication.create", "communication.edit"],
       children: [
         {
           parent_id: 31,
@@ -456,7 +456,7 @@ export const menu: Sidebar[] = [
       icon: "ri-file-chart-line",
       type: "sub",
       level: 1,
-      acl_permission: ["reporting.index"],
+      acl_permission: ["reporting.index", "reporting.create", "reporting.edit"],
       children: [
         {
           parent_id: 32,
@@ -524,7 +524,7 @@ export const menu: Sidebar[] = [
       icon: "ri-line-chart-line",
       type: "sub",
       level: 1,
-      acl_permission: ["investment.index"]
+      permission: ["investment.index"]
     },
     {
       id: 34,
@@ -615,377 +615,41 @@ export const menu: Sidebar[] = [
         }
       ],
   },
-    {
-      id: 37,
-      title: "settings",
-      path: "/setting",
-      active: false,
-      icon: "ri-settings-3-line",
-      type: "sub",
-      level: 1,
-      permission: ["setting.index"]
+  {
+    id: 37,
+    title: "settings",
+    path: "/setting",
+    active: false,
+    icon: "ri-settings-3-line",
+    type: "sub",
+    level: 1,
+    permission: ["setting.index"]
   },
-     {
-      id: 38,
-      title: "configurations",
-      active: false,
-      icon: "ri-settings-3-line",
-      type: "sub",
-      level: 1,
-       permission: ["configurations.index"],
-      children: [
-        {
-          parent_id: 38,
-          title: "categories",
-          path: "/configurations/categories",
-          type: "link",
-          level: 2,
-          permission: ["configurations.index","configurations.create"]
-        },
-        {
-          parent_id: 38,
-          title: "users role",
-          path: "/configurations/users-role",
-          type: "link",
-          level: 2,
-          permission: ["configurations.index", "configurations.create"]
-        }
-      ]
+  {
+    id: 38,
+    title: "configurations",
+    active: false,
+    icon: "ri-settings-3-line",
+    type: "sub",
+    level: 1,
+    acl_permission: ["configurations.index"],
+    children: [
+      {
+        parent_id: 38,
+        title: "categories",
+        path: "/configurations/categories",
+        type: "link",
+        level: 2,
+        permission: ["configurations.index","configurations.create"]
+      },
+      {
+        parent_id: 38,
+        title: "users role",
+        path: "/configurations/users-role",
+        type: "link",
+        level: 2,
+        permission: ["configurations.index", "configurations.create"]
+      }
+    ]
   },
-
-      /*{
-      id: 3,
-      title: "products",
-      active: false,
-      icon: "ri-store-3-line",
-      type: "sub",
-      level: 1,
-      acl_permission: ["product.index", "product.create", "attribute.index"],
-      children: [
-        {
-          parent_id: 3,
-          title: "add product",
-          path: "/product/create",
-          type: "link",
-          level: 2,
-          permission: ["product.index", "product.create"]
-        },
-        {
-          parent_id: 3,
-          title: "all products",
-          path: "/product",
-          type: "link",
-          badgeType: 'badge bg-theme text-dark ml-3', 
-          badgeValue: 0,
-          level: 2,
-          permission: ["product.index"]
-        },
-        {
-          parent_id: 3,
-          title: "attributes",
-          path: "/attribute",
-          type: "link",
-          level: 2,
-          permission: ["attribute.index"]
-        },
-        {
-          parent_id: 3,
-          title: "categories",
-          path: "/category",
-          type: "link",
-          level: 2,
-          permission: ["category.index"]
-        },
-        {
-          parent_id: 3,
-          title: "tags",
-          path: "/tag",
-          type: "link",
-          level: 2,
-          permission: ["tag.index"]
-        },
-        {
-          parent_id: 3,
-          title: "brands",
-          path: "/brand",
-          type: "link",
-          level: 2,
-          permission: ["brand.index"]
-        },
-        {
-          parent_id: 3,
-          title: "Q&A",
-          path: "/qna",
-          type: "link",
-          level: 2,
-        },
-        {
-          parent_id: 3,
-          title: "license_key",
-          path: "/license-key",
-          type: "link",
-          level: 2,
-        }
-      ],
-    },
-    {
-      id: 4,
-      title: "stores",
-      active: false,
-      icon: "ri-store-2-line",
-      type: "sub",
-      level: 1,
-      acl_permission: ["store.index", "store.create", "vendor_wallet.index", "commission_history.index", "withdraw_request.index"],
-      children: [
-        {
-          parent_id: 4,
-          title: "add store",
-          path: "/store/create",
-          type: "link",
-          level: 2,
-          permission: ["store.index", "store.create"]
-        },
-        {
-          parent_id: 4,
-          title: "all stores",
-          path: "/store",
-          type: "link",
-          badgeType: 'badge bg-theme text-dark ml-3', 
-          badgeValue: 0,
-          level: 2,
-          permission: ["store.index"]
-        },
-        {
-          parent_id: 4,
-          title: "wallet",
-          path: "/vendor-wallet",
-          type: "link",
-          level: 2,
-          permission: ["vendor_wallet.index"]
-        },
-        {
-          parent_id: 4,
-          title: "commission history",
-          path: "/commission",
-          type: "link",
-          level: 2,
-          permission: ["commission_history.index"]
-        },
-        {
-          parent_id: 4,
-          title: "payout details",
-          path: "/payment-details",
-          type: "link",
-          level: 2,
-          canAllow: ['vendor'],
-          permission: ["withdraw_request.index"]
-        },
-        {
-          parent_id: 4,
-          title: "withdrawal",
-          path: "/withdrawal",
-          type: "link",
-          badgeType: 'badge bg-danger ml-3', 
-          badgeValue: 0,
-          level: 2,
-          permission: ["withdraw_request.index"]
-        },
-      ],
-    },
-    {
-      id: 5,
-      title: "orders",
-      active: false,
-      icon: "ri-list-unordered",
-      type: "sub",
-      level: 1,
-      acl_permission: ["order.index", "order.create"],
-      children: [
-        {
-          parent_id: 5,
-          title: "all orders",
-          path: "/order",
-          type: "link",
-          level: 2,
-          permission: ["order.index"]
-        },
-        {
-          parent_id: 5,
-          title: "create order",
-          path: "/order/create",
-          type: "link",
-          level: 2,
-          permission: ["order.index", "order.create"]
-        }
-      ],
-    },
-    {
-      id: 6,
-      title: "media",
-      path: "/media",
-      active: false,
-      icon: "ri-image-line",
-      type: "sub",
-      level: 1,
-      permission: ["attachment.index"]
-    },
-    {
-      id: 7,
-      title: "blog",
-      active: false,
-      icon: "ri-article-line",
-      type: "sub",
-      level: 1,
-      acl_permission: ["blog.index"],
-      children: [
-        {
-          parent_id: 7,
-          title: "all blogs",
-          path: "/blog",
-          type: "link",
-          level: 2,
-          permission: ["blog.index"]
-        },
-        {
-          parent_id: 7,
-          title: "categories",
-          path: "/blog/category",
-          type: "link",
-          level: 2,
-          permission: ["category.index"]
-        },
-        {
-          parent_id: 7,
-          title: "tags",
-          path: "/blog/tag",
-          type: "link",
-          level: 2,
-          permission: ["tag.index"]
-        }
-      ],
-    },
-    {
-      id: 8,
-      title: "pages",
-      path: "/page",
-      active: false,
-      icon: "ri-pages-line",
-      type: "sub",
-      level: 1,
-      permission: ["page.index"]
-    },
-    {
-      id: 9,
-      title: "taxes",
-      path: "/tax",
-      active: false,
-      icon: "ri-percent-line",
-      type: "sub",
-      level: 1,
-      permission: ["tax.index"]
-    },
-    {
-      id: 10,
-      title: "shipping",
-      path: "/shipping",
-      active: false,
-      icon: "ri-truck-line",
-      type: "sub",
-      level: 1,
-      permission: ["shipping.index"]
-    },
-    {
-      id: 11,
-      title: "coupons",
-      path: "/coupon",
-      active: false,
-      icon: "ri-coupon-2-line",
-      type: "sub",
-      level: 1,
-      permission: ["coupon.index"]
-    },
-    {
-      id: 12,
-      title: "currencies",
-      path: "/currency",
-      active: false,
-      icon: "ri-currency-fill",
-      type: "sub",
-      level: 1,
-      permission: ["currency.index"]
-    },
-    {
-      id: 13,
-      title: "points",
-      path: "/point",
-      active: false,
-      icon: "ri-coins-line",
-      type: "sub",
-      level: 1,
-      permission: ["point.index"]
-    },
-    {
-      id: 14,
-      title: "wallet",
-      path: "/wallet",
-      active: false,
-      icon: "ri-wallet-line",
-      type: "sub",
-      level: 1,
-      permission: ["wallet.index"]
-    },
-    {
-      id: 15,
-      title: "refund",
-      path: "/refund",
-      active: false,
-      icon: "ri-exchange-dollar-line",
-      type: "sub",
-      badgeType: 'badge bg-danger ml-3', 
-      badgeValue: 0,
-      level: 1,
-      permission: ["refund.index"]
-    },
-    {
-      id: 16,
-      title: "reviews",
-      path: "/review",
-      active: false,
-      icon: "ri-star-line",
-      type: "sub",
-      level: 1,
-      permission: ["review.index"]
-    },
-    {
-      id: 17,
-      title: "faqs",
-      path: "/faq",
-      active: false,
-      icon: "ri-questionnaire-line",
-      type: "sub",
-      level: 1,
-      permission: ["faq.index"]
-    },
-    {
-      id: 18,
-      title: "notice",
-      path: "/notice",
-      active: false,
-      icon: "ri-article-line",
-      type: "sub",
-      level: 1,
-      permission: ["notice.index"]
-    },*/
-  
-    /*  */
-    // {
-    //   id: 22,
-    //   title: "app settings",
-    //   path: "/app-setting",
-    //   active: false,
-    //   icon: "ri-settings-3-line",
-    //   type: "sub",
-    //   level: 1,
-    //   permission: ["setting.index"]
-    // }
 ];

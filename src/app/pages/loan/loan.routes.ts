@@ -13,7 +13,7 @@ import { EditLoanComponent } from './edit-loan/edit-loan.component';
 
 export const loanRoutes: Routes = [
   {
-    path: "",
+    path: "add-single-loan",
     component: AddSingleLoanComponent
   },
   {

@@ -13,7 +13,7 @@ import { StatementComponent } from './statement/statement.component';
 
 export const reportingRoutes: Routes = [
   {
-    path: '',
+    path: 'savings',
     component: SavingsReportComponent
   },
   {

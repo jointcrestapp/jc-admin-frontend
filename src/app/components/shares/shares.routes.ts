@@ -12,11 +12,11 @@ export const sharesRoutes: Routes = [
     component: AllSharesComponent
   },
   {
-    path: "add_single_share",
+    path: "add-single-share",
     component: AddSingleShareComponent
   },
   {
-    path: "add_batch_shares",
+    path: "add-batch-shares",
     component: AddBatchSharesComponent
   },
   {

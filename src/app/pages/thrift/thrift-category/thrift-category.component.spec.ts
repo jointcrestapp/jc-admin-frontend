@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AddSingleSavingsComponent } from './add-single-savings.component';
+import { AddSingleSavingsComponent } from './thrift-category.component';
 
 describe('AddSingleSavingsComponent', () => {
   let component: AddSingleSavingsComponent;

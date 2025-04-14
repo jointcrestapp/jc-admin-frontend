@@ -11,7 +11,7 @@ import { RequestedCreditSalesComponent } from './requested-credit-sales/requeste
 
 export const creditSalesRoutes: Routes = [
   {
-    path: "",
+    path: "order-credit-sales",
     component: OrderCreditSalesComponent
   },
   {

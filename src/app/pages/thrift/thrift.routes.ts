@@ -1,26 +1,21 @@
 
 import { Routes } from '@angular/router';
 
-import { AllSavingsComponent } from './all-savings/all-savings.component';
-import { AddSingleSavingsComponent } from './add-single-savings/add-single-savings.component';
-import { EditSavingsComponent } from './edit-savings/edit-savings.component';
-import { AddBatchSavingsComponent } from './add-batch-savings/add-batch-savings.component';
+import { AllThriftComponent } from './all-thrift/all-thrift.component';
+import { ThriftTierComponent } from './thrift-tier/thrift-tier.component';
+import { ThriftCategoryComponent } from './thrift-category/thrift-category.component';
 
 export const thriftRoutes: Routes = [
   {
     path: "",
-    component: AllSavingsComponent
+    component: AllThriftComponent
   },
   {
-    path: "add-single-savings",
-    component: AddSingleSavingsComponent
+    path: "thrift-tiers",
+    component: ThriftTierComponent
   },
   {
-    path: "add-batch-savings",
-    component: AddBatchSavingsComponent
-  },
-  {
-    path: "edit-savings/:id",
-    component: EditSavingsComponent
+    path: "thrift-category",
+    component: ThriftCategoryComponent
   }
 ];
