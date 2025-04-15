@@ -4,12 +4,10 @@ import { catchError, finalize, map, tap, throwError } from "rxjs";
 import { GetUsers, CreateUser, EditUser, UpdateUser, 
           UpdateUserStatus, DeleteUser, DeleteAllUser, 
           CreateUserAddress, ImportUser, ExportUser, 
-          DeactivateUser,
           SetLoadingState,
           LoginSuccess,
           Logout} from "../action/user.action";
 import { UserService } from "../../../core/services/user.service";
-import { appConfig } from "src/app/core/config/config";
 import { NotificationService } from "../../services/notification.service";
 
 /* export class UserStateModel {
@@ -79,7 +77,7 @@ export class UserState {
   @Selector()
   static users(state: UserStateModel) {
     return state.user.map(user => {
-      return { label: user?.fname, value: user?.id }
+      return { label: user?.first_name, value: user?.id }
     });
   }
 

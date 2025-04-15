@@ -116,6 +116,7 @@ export class UserComponent implements OnInit, OnDestroy {
   }
 
   status(data: any) {
+    console.log('Data::', data);
     this.store.dispatch(new UpdateUserStatus(data.id, data.status)).pipe(
       takeUntil(this.destroy$)
     ).subscribe({
@@ -128,7 +129,7 @@ export class UserComponent implements OnInit, OnDestroy {
       },
       error: (err) => {
         this.notificationService.showError(err?.message || 'Failed to update user status');
-      }
+      },
     });
   }
 
