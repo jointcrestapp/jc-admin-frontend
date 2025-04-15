@@ -100,8 +100,8 @@ export class FormUserComponent {
           if (user) {
             this.id = user.id;
             this.form.patchValue({
-              fname: user.first_name,
-              lname: user.last_name,
+              first_name: user.first_name,
+              last_name: user.last_name,
               email: user.email,
               phone: user.phone,
               dial_code: user.dial_code,

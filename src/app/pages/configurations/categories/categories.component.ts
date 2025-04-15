@@ -20,6 +20,19 @@ import { TranslateModule } from '@ngx-translate/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { ButtonComponent } from '../../../shared/components/ui/button/button.component';
 import { HasPermissionDirective } from '../../../shared/directive/has-permission.directive';
+import { AllActivationFeeComponent } from './activation-fee/all-activation-fee/all-activation-fee.component';
+import { AllCurrenciesComponent } from './currency/all-currencies/all-currencies.component';
+import { AllDividendPercentComponent } from './dividend-percent/all-dividend-percent/all-dividend-percent.component';
+import { AllInvestmentTypesComponent } from './investment-type/all-investment-types/all-investment-types.component';
+import { AllLoanTypeComponent } from './loan-type/all-loan-type/all-loan-type.component';
+import { AllProductsComponent } from './product/proucts/all-products/all-products.component';
+import { AllProductPlansComponent } from './product/prouct-plan/all-product-plans/all-product-plans.component';
+import { AllVendorsComponent } from './product/vendors/all-vendors/all-vendors.component';
+import { AllSavingTypesComponent } from './savings-type/all-saving-types/all-saving-types.component';
+import { AllSharesAmountComponent } from './shares-amount/all-shares-amount/all-shares-amount.component';
+import { AllSharesTypeComponent } from './shares-type/all-shares-type/all-shares-type.component';
+import { AllSubscriptionFeeComponent } from './subscription-fee/all-subscription-fee/all-subscription-fee.component';
+
 
 function convertToNgbDate(date: NgbDateStruct): NgbDate {
   return new NgbDate(date?.year, date?.month, date?.day);
@@ -28,7 +41,10 @@ function convertToNgbDate(date: NgbDateStruct): NgbDate {
 @Component({
     selector: 'app-categories',
     imports: [CommonModule, PageWrapperComponent, ImageUploadComponent, FormsModule, ReactiveFormsModule,
-        FormFieldsComponent, TranslateModule, NgbModule, Select2Module, ButtonComponent, HasPermissionDirective],
+        FormFieldsComponent, TranslateModule, NgbModule, Select2Module, ButtonComponent, HasPermissionDirective,
+        AllActivationFeeComponent, AllCurrenciesComponent, AllDividendPercentComponent, AllInvestmentTypesComponent,
+        AllLoanTypeComponent, AllProductsComponent, AllProductPlansComponent, 
+      ],
     templateUrl: './categories.component.html',
     styleUrl: './categories.component.scss'
 })
