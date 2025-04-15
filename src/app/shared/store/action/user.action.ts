@@ -1,24 +1,46 @@
 import { Params } from "../../interface/core.interface";
 import { User, UserAddress } from "../../interface/user.interface";
 
+
+export class LoginSuccess {
+  static readonly type = '[Auth] Login Success';
+  constructor(public payload: { token: string; user: any }) {}
+}
+
+export class Logout {
+  static readonly type = '[Auth] Logout';
+}
+
+
+export class SetLoadingState {
+  static readonly type = '[Loading] Set Loading State';
+  constructor(public isLoading: boolean) {}
+}
+
 export class GetUsers {
   static readonly type = "[User] Get";
   constructor(public payload?: Params) {}
 }
 
-export class CreateUser {
-  static readonly type = "[User] Create";
-  constructor(public payload: User) {}
+export class DeactivateUser {
+  static readonly type = '[User] Deactivate';
+  constructor(public id: any) {}
 }
 
+
+export class CreateUser {
+  static readonly type = "[User] Create";
+  constructor(public payload: any) {}
+}
+//mine
 export class EditUser {
-  static readonly type = "[User] Edit";
+  static readonly type = '[User] Edit';
   constructor(public id: number) {}
 }
 
 export class UpdateUser {
   static readonly type = "[User] Update";
-  constructor(public payload: User, public id: number) {}
+  constructor(public payload: any, public id: number) {}
 }
 
 export class UpdateUserStatus {
@@ -44,6 +66,7 @@ export class ImportUser {
 export class ExportUser {
   static readonly type = "[User] Export";
 }
+
 
 export class CreateUserAddress {
   static readonly type = "[User] Address Create";

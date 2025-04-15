@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { PageWrapperComponent } from '../../../shared/components/page-wrapper/page-wrapper.component';
+import { PageWrapperComponent } from '../../../../shared/components/page-wrapper/page-wrapper.component';
 import { FormRoleComponent } from '../form-role/form-role.component';
 
 @Component({

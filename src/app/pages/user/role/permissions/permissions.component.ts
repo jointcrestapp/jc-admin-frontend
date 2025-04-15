@@ -1,9 +1,9 @@
 import { Component, EventEmitter, inject, Input, Output, SimpleChanges } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
-import { RoleState } from '../../../shared/store/state/role.state';
+import { RoleState } from '../../../../shared/store/state/role.state';
 import { Observable } from 'rxjs';
-import { Module } from '../../../shared/interface/role.interface';
-import { GetRoleModules } from '../../../shared/store/action/role.action';
+import { Module } from '../../../../shared/interface/role.interface';
+import { GetRoleModules } from '../../../../shared/store/action/role.action';
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 

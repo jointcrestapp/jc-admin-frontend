@@ -1,15 +1,15 @@
 import { Component, inject } from '@angular/core';
 import { Params, Router, RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-import { HasPermissionDirective } from '../../shared/directive/has-permission.directive';
-import { PageWrapperComponent } from '../../shared/components/page-wrapper/page-wrapper.component';
-import { TableComponent } from '../../shared/components/ui/table/table.component';
+import { HasPermissionDirective } from '../../../shared/directive/has-permission.directive';
+import { PageWrapperComponent } from '../../../shared/components/page-wrapper/page-wrapper.component';
+import { TableComponent } from '../../../shared/components/ui/table/table.component';
 import { Select, Store } from '@ngxs/store';
-import { RoleState } from '../../shared/store/state/role.state';
+import { RoleState } from '../../../shared/store/state/role.state';
 import { Observable } from 'rxjs';
-import { Role, RoleModel } from '../../shared/interface/role.interface';
-import { TableClickedAction, TableConfig } from '../../shared/interface/table.interface';
-import { DeleteAllRole, DeleteRole, GetRoles } from '../../shared/store/action/role.action';
+import { Role, RoleModel } from '../../../shared/interface/role.interface';
+import { TableClickedAction, TableConfig } from '../../../shared/interface/table.interface';
+import { DeleteAllRole, DeleteRole, GetRoles } from '../../../shared/store/action/role.action';
 
 @Component({
     selector: 'app-role',

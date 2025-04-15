@@ -17,12 +17,12 @@ export const menu: Sidebar[] = [
       icon: "ri-contacts-line",
       type: "sub",
       level: 1,
-      acl_permission: ["user.index", "user.create", "role.index"],
+      acl_permission: ["user.index", "user.create", "user.edit"],
       children: [
         {
           parent_id: 2,
           title: "add member",
-          path: "/user/create",
+          path: "/registration/create",
           type: "link",
           level: 2,
           permission: ["user.index", "user.create"],
@@ -30,7 +30,7 @@ export const menu: Sidebar[] = [
         {
           parent_id: 2,
           title: "all members",
-          path: "/user",
+          path: "/registration",
           type: "link",
           level: 2,
           permission: ["user.index"],
@@ -38,7 +38,7 @@ export const menu: Sidebar[] = [
         {
           parent_id: 2,
           title: "pending members",
-          path: "/user/pending-members",
+          path: "/registration/pending-members",
           type: "link",
           level: 2,
           permission: ["user.index"],
@@ -46,7 +46,7 @@ export const menu: Sidebar[] = [
         {
           parent_id: 2,
           title: "account closure",
-          path: "/user/account-closure-request",
+          path: "/registration/account-closure-request",
           type: "link",
           level: 2,
           permission: ["user.index"],
@@ -54,18 +54,10 @@ export const menu: Sidebar[] = [
         {
           parent_id: 2,
           title: "exited members",
-          path: "/user/exited-members",
+          path: "/registration/exited-members",
           type: "link",
           level: 2,
           permission: ["user.index"],
-        },
-        {
-          parent_id: 2,
-          title: "role",
-          path: "/role",
-          type: "link",
-          level: 2,
-          permission: ["role.index"],
         }
       ],
     },
@@ -627,6 +619,41 @@ export const menu: Sidebar[] = [
   },
   {
     id: 38,
+    title: "user manager",
+    active: false,
+    icon: "ri-user-star-line",
+    type: "sub",
+    level: 1,
+    acl_permission: ["user.index","user.create","user.edit","role.index"],
+    children: [
+      {
+        parent_id: 38,
+        title: "all users",
+        path: "/user/all-users",
+        type: "link",
+        level: 2,
+        permission: ["user.index","user.create"]
+      },
+      {
+          parent_id: 38,
+          title: "role",
+          path: "/user/role",
+          type: "link",
+          level: 2,
+          permission: ["role.index"],
+      },
+      {
+          parent_id: 38,
+          title: "permissions",
+          path: "/user/permissions",
+          type: "link",
+          level: 2,
+          permission: ["role.index"],
+        }
+    ]
+  },
+  {
+    id: 39,
     title: "configurations",
     active: false,
     icon: "ri-settings-3-line",
@@ -635,20 +662,12 @@ export const menu: Sidebar[] = [
     acl_permission: ["configurations.index"],
     children: [
       {
-        parent_id: 38,
+        parent_id: 39,
         title: "categories",
         path: "/configurations/categories",
         type: "link",
         level: 2,
         permission: ["configurations.index","configurations.create"]
-      },
-      {
-        parent_id: 38,
-        title: "users role",
-        path: "/configurations/users-role",
-        type: "link",
-        level: 2,
-        permission: ["configurations.index", "configurations.create"]
       }
     ]
   },

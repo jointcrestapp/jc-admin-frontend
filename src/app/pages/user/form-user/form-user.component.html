@@ -1,20 +1,52 @@
+@if(this.isLoading$ | async){
+    <app-loader></app-loader>
+}
+
 <form class="theme-form theme-form-2 mega-form" [formGroup]="form" (ngSubmit)="submit()">
-  <app-form-fields [label]="'name'" [for]="'name'" [required]="true">
-    <input class="form-control" type="text" placeholder="{{'enter_full_name' | translate}}" name="name" formControlName="name">
-    @if(form.controls['name'].touched && form.controls['name'].errors?.['required']){
-      <div class="invalid-feedback">
-        {{ 'name_is_required' | translate }}
+      <app-form-fields [label]="'First name'" [for]="'first_name'" [required]="true">
+      <input 
+        class="form-control" 
+        type="text" 
+        placeholder="{{'enter_fname' | translate}}" 
+        name="first_name" 
+        formControlName="first_name"
+      >
+      <div *ngIf="form.controls['first_name'].touched">
+        <div *ngIf="form.controls['first_name'].errors?.['required']" class="invalid-feedback">
+          {{ 'first_name_is_required' | translate }}
+        </div>
+        <div *ngIf="form.controls['first_name'].errors?.['pattern']" class="invalid-feedback">
+          {{ 'first_name_invalid' | translate }}
+        </div>
       </div>
-    }
-  </app-form-fields>
+    </app-form-fields>
+
+    <app-form-fields [label]="'Last name'" [for]="'last_name'" [required]="true">
+      <input 
+        class="form-control" 
+        type="text" 
+        placeholder="{{'enter_lname' | translate}}" 
+        name="last_name" 
+        formControlName="last_name"
+
+      >
+      <div *ngIf="form.controls['last_name'].touched">
+        <div *ngIf="form.controls['last_name'].errors?.['required']" class="invalid-feedback">
+          {{ 'last_name_is_required' | translate }}
+        </div>
+        <div *ngIf="form.controls['last_name'].errors?.['pattern']" class="invalid-feedback">
+          {{ 'last_name_invalid' | translate }}
+        </div>
+      </div>
+    </app-form-fields>
   <app-form-fields [label]="'email'" [for]="'email'" [required]="true">
-    <input class="form-control" type="email" placeholder="{{ 'enter_email' | translate }}" name="email" formControlName="email">
+    <input class="form-control" type="email" placeholder="{{ 'enter_email' | translate }}" name="email" [readonly]="type === 'edit'" formControlName="email">
     @if(form.controls['email'].touched && form.controls['email'].errors?.['required']){
       <div class="invalid-feedback">
         {{ 'email_is_required' | translate }}
       </div>
     }
-    @if(form.controls['email'].touched && form.controls['email'].errors?.['email']){
+    @if(form.controls['email'].touched && (form.controls['email'].errors?.['pattern'] || form.controls['email'].errors?.['email'])){
       <div class="invalid-feedback">
         {{ 'enter_valid_email' | translate }}
       </div>
@@ -22,7 +54,7 @@
   </app-form-fields>
   <app-form-fields [label]="'phone'" [for]="'phone'" [required]="true">
     @if(isBrowser) {
-      <select2 class="custom-select intl-tel-input" [templates]="template" [data]="codes" formControlName="country_code" noResultMessage="{{'no_data_found' | translate }}">
+      <select2 class="custom-select intl-tel-input" [templates]="template" [data]="codes" formControlName="dial_code" noResultMessage="{{'no_data_found' | translate }}">
         <ng-template #template let-data="data">
           <div class="country">
             <div class="flag-box">
@@ -72,6 +104,7 @@
       }
     </app-form-fields>
   }
+ <!--
   <app-form-fields [label]="'role'" [for]="'role'" [required]="true">
     @if(isBrowser) {
       <select2 class="custom-select" [data]="(role$ | async)?.length ? (role$ | async) : []" [placeholder]="'select_role' | translate" formControlName="role_id" noResultMessage="{{'no_data_found' | translate }}">
@@ -83,6 +116,7 @@
       </div>
     }
   </app-form-fields>
+-->
   <app-form-fields [label]="'status'" [for]="'status'" [required]="false">
     <div class="form-check form-switch ps-0">
       <label class="switch">

@@ -4,10 +4,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { Store } from '@ngxs/store';
 import { Subject, mergeMap, of, switchMap, takeUntil } from 'rxjs';
-import { ButtonComponent } from '../../../shared/components/ui/button/button.component';
-import { FormFieldsComponent } from '../../../shared/components/ui/form-fields/form-fields.component';
-import { CreateRole, EditRole, UpdateRole } from '../../../shared/store/action/role.action';
-import { RoleState } from '../../../shared/store/state/role.state';
+import { ButtonComponent } from '../../../../shared/components/ui/button/button.component';
+import { FormFieldsComponent } from '../../../../shared/components/ui/form-fields/form-fields.component';
+import { CreateRole, EditRole, UpdateRole } from '../../../../shared/store/action/role.action';
+import { RoleState } from '../../../../shared/store/state/role.state';
 import { PermissionsComponent } from '../permissions/permissions.component';
 
 @Component({

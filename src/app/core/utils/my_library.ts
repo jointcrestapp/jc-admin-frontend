@@ -1,26 +1,8 @@
 import { appConfig } from "../config/config";
-let tzlookup = require("tz-lookup");
+import { formatDate } from "@angular/common";
+const yourhandle = require('countrycitystatejson');
 
-let supportedAfricanCurrencies:any =[ 
-    {
-        "symbol": "₦",
-        "code": "NGN"
-    },
-    {
-        "symbol": "GH₵",
-        "code": "GHS"
-    },
-    {
-        "symbol": "R",
-        "code": "ZAR"
-    },
-    {
-        "symbol": "Ksh",
-        "code": "KES"
-    }
-]
 export const GLOBALF = {
-    
     findInvalidControls(form_controls:any) {
         const invalid = [];
         const controls = form_controls;
@@ -31,6 +13,22 @@ export const GLOBALF = {
         }
         console.log('INVALID FIELD::',invalid);
     },
+    getCountries(){
+        let countries = yourhandle.getCountries();
+        console.log('countries:',countries);
+        return countries;
+    },
+    getStates(countryShort:any){
+       
+        let states = yourhandle.getStatesByShort(countryShort);
+        console.log('states:',states);
+        return states;
+    },
+    getCities(countryShortName:any,state:any){
+        let cities = yourhandle.getCities(countryShortName, state)
+        console.log('Cities:',cities);
+        return cities;
+    },
     getLocalUserData() {
         let getJSON = localStorage.getItem(appConfig.storage.USER_DATA);
         if (getJSON){
@@ -38,18 +36,17 @@ export const GLOBALF = {
             return received.data;
         }
     },
-    getEventSearchSuggestions(query:string,limit:number) {
-        let getJSON = localStorage.getItem(appConfig.storage.EVENTS_DATA);
+    SetLocalUserData(user:any){
+        localStorage.setItem(appConfig.storage.USER_DATA,JSON.stringify(user));
+    },
+    getCartItems() {
+        let getJSON = localStorage.getItem('cartItems');
         if (getJSON){
-            let received = [];
-            received = JSON.parse(getJSON);
-            received.filter((a:any) =>{
-
-            })
-
+            let received = JSON.parse(getJSON)
             return received;
         }
-    },
+    }
+    ,
     randomToken() {
         let result = '';
         let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -65,17 +62,14 @@ export const GLOBALF = {
         return "UTC"+_offset; //e.g. +1 this is based on the location selected from the google location drop down.
 
     },
-    //Time zone selected from the location field
-    selectedTimezone(lat:any, long:any){
-        let selected_timezone = tzlookup(lat, long); //e.g. "America/New_York"
-        return selected_timezone;
+ 
+    //timeZoneAbrreviation of any location
+    anyTimeZoneAbrreviation(long_tz:any){
+        const zone:any = tz.zone(long_tz);     // return Zone object 
+        return zone.abbr(new Date().getTime()) 
     },
-    selectedTimezoneAbbrev(longTimezone:string){
-        const date = new Date().toLocaleTimeString('en-US', { timeZone: longTimezone, timeZoneName: 'short' });
-        const shortTimezone = date.split(' ')[2];
-        return shortTimezone;
-    },
-    
+
+
     //timeZoneAbrreviation of current location
     timeZoneAbrreviation(){
         var zone = new Date().toLocaleTimeString(undefined,{timeZoneName:'short'}).split(' ')[2]
@@ -90,19 +84,25 @@ export const GLOBALF = {
     },
     //timeZoneLocale of current location
     timeZoneLocale(){
+        let d = new Date(); // or whatever date you have
+      //  let tzName = d.toLocaleString('en', {timeZoneName:'short'}).//split(' ').pop();
+        //let tzName = d.toTimeString()
+      //  return tzName;
         const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
         return timezone; //e.g. Africa/Lagos
     },
+   
+    
     ValidateEmail(input:string) {
-        let validRegex = /^[A-Za-z0-9._+\-\']+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}$/;
-      
-        if (input.match(validRegex)) {
-          return true;
-      
-        } else {   
-          return false;
-      
-        }   
+       let validRegex = /^[A-Za-z0-9._+\-\']+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}$/;
+ 
+         if (input.match(validRegex)) {
+           return true;
+       
+         } else {   
+           return false;
+       
+         }   
     },
     generateRefCode() {
         var text = "";
@@ -112,25 +112,28 @@ export const GLOBALF = {
           //let radar =  'radar';
           return text;
     },
+    generateEntryCode() {
+        var text = "";
+        var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789";  
+        for (var i = 0; i < 4; i++)
+          text += possible.charAt(Math.floor(Math.random() * possible.length));
+          return text;
+    },
     randomDigits(){
         return Math.floor(100000 + Math.random() * 900000);
     },
-    autoReferralCode(){
-        let characters = 'abcdefghijklmnopqrstuvwxyz0123456789'.toUpperCase();
-        let result = ""
-        let charactersLength = characters.length;
-
-        for ( var i = 0; i < 5 ; i++ ) 
-            result += characters.charAt(Math.floor(Math.random() * charactersLength));
-            return result;
-        
-    },
+   
     generateOrderNumber() {
         let order_no = "";
         let possible = "0123456789";  
         for (let i = 0; i < 8; i++)
         order_no += possible.charAt(Math.floor(Math.random() * possible.length));
           return order_no;
+    },
+    todayDate(){
+        //yyyy-mm-dd format
+        let formatedDate = new Date().toISOString().slice(0, 10);
+        return formatedDate;
     },
     currentTime(){
         let d = new Date();
@@ -161,291 +164,192 @@ export const GLOBALF = {
     isNumberOnly(data:any){
         let isNumber = /^\d+$/.test(data);
         return isNumber;
+    },
+/*
+    getLocationWithoutCoordinates(){
+        var requestUrl = "http://ip-api.com/json";
+        $.ajax({
+            url: requestUrl,
+            type: 'GET',
+            success: function(json:any)
+            {
+                console.log('check::',JSON.parse(json));
+                return JSON.parse(json);
+            },
+            error: function(err:any)
+            {
+                console.log("Request failed, error= " + err);
+            }
+        });
+    },
+*/
+    getCookie(name: string) {
+        let ca: Array<string> = document.cookie.split(';');
+        let caLen: number = ca.length;
+        let cookieName = `${name}=`;
+        let c: string;
 
+        for (let i: number = 0; i < caLen; i += 1) {
+            c = ca[i].replace(/^\s+/g, '');
+            if (c.indexOf(cookieName) == 0) {
+                return c.substring(cookieName.length, c.length);
+            }
+        }
+        return '';
     },
-    //get the first two word in the comma separated string
-    getFirstWordInString(str:any){
-        let pos = str.indexOf( ',' );
-        return str.substring( 0, pos );
+    deleteCookie(name:string) {
+        this.setCookie(name, '', -1);
     },
-    filterLikeStrings(statement:any,filter_texts:any) {
-          let re = new RegExp(filter_texts, 'gi');
-          let res = statement.match(re);
-          return res;
+
+    setCookie(name: string, value: string, expireDays: number, path: string = '') {
+        let d:Date = new Date();
+        d.setTime(d.getTime() + expireDays * 24 * 60 * 60 * 1000);
+        let expires:string = `expires=${d.toUTCString()}`;
+        let cpath:string = path ? `; path=${path}` : '';
+        document.cookie = `${name}=${value}; ${expires}${cpath}`;
     },
-    capitalizeFirstLetter(str:any){
-          //split the above string into an array of strings 
-          //whenever a blank space is encountered
-  
-          const arr = str.split(" ");
-  
-          //loop through each element of the array and capitalize the first letter.
-          for (var i = 0; i < arr.length; i++) {
-              arr[i] = arr[i].charAt(0).toUpperCase() + arr[i].slice(1);
-  
-          }
-          //Join all the elements of the array back into a string 
-          //using a blankspace as a separator 
-          const str2 = arr.join(" ");
-          return str2;
+
+    selectWord(words:any) {
+        var n = words.split(" ");
+        return n[n.length - 1];
+    
+    },
+    tokenExpired() {
+        const token = parseInt(localStorage.getItem(appConfig.storage.TOKEN));
+       // const expiry = (JSON.parse(atob(token.split('.')[1]))).expiresIn;
+        return ((Math.floor((new Date).getTime() / 1000)) >= token) ? console.log('Valid Token') : this.router.navigate(['/login']);
+    },
+    containsNumber(str:string) {
+        // Use a regular expression to search for digits (\d) in the string
+        const regex = /\d/;
+        return regex.test(str);
+    },
+    formatDate(inputDate:any){
+        // Parse the input date string into a Date object
+        const parsedDate = new Date(inputDate);
+        // Format the Date object as "YYYY-MM-DD"
+        const formattedDate = `${parsedDate.getFullYear()}-${(parsedDate.getMonth() + 1).toString().padStart(2, '0')}-${parsedDate.getDate().toString().padStart(2, '0')}`;
+        return formattedDate;
+    },
+    calculateAge(dateOfBirth:any){
+        const today = new Date();
+        const birthDate = new Date(dateOfBirth);
+        let age = today.getFullYear() - birthDate.getFullYear();
+        const monthDiff = today.getMonth() - birthDate.getMonth();
+        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+            age--;
+        }
+        return age;
+    },
+    formattedTodayDate() {
+        let date = new Date();
+        let day:any = date.getDate();
+        let month:any = date.getMonth() + 1; // Months are zero-based
+        let year = date.getFullYear();
+    
+        // Pad day and month with leading zeros if they are single digits
+        day = day < 10 ? '0' + day : day;
+        month = month < 10 ? '0' + month : month;
+    
+        // Format the date as ddmmyyyy
+        return day + month + year;
+    },
+    isTheAgeValid(inputDate: any) {
+        // Parse the input date string into a Date object
+        const parsedDate = new Date(inputDate);
+        if (isNaN(parsedDate.getTime())) {
+            return false; // Invalid date input
+        }
+    
+        // Calculate age
+        const today = new Date();
+        let age = today.getFullYear() - parsedDate.getFullYear();
+        const monthDiff = today.getMonth() - parsedDate.getMonth();
+        const dayDiff = today.getDate() - parsedDate.getDate();
+    
+        // Adjust age if the birthday hasn't occurred this year
+        if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+            age--;
+        }
+        console.log('Age::',age);
+        // Return false if age is less than 18
+        if (age < 18) {
+            return false;
+        }
+    /*
+        // Format the Date object as "YYYY-MM-DD"
+        const formattedDate = `${parsedDate.getFullYear()}-${(parsedDate.getMonth() + 1)
+            .toString()
+            .padStart(2, '0')}-${parsedDate.getDate().toString().padStart(2, '0')}`;
+    */
+        return true;  
+    },
+    sortArrayByDate(groupedChats:any){
+        const sortedDates = Object.keys(groupedChats).sort((a, b) => {
+            // Convert dates to strings in YYYY-MM-DD format
+            const dateA = new Date(a).toISOString().substr(0, 10);
+            const dateB = new Date(b).toISOString().substr(0, 10);
+          
+            // Compare the date strings
+            if (dateA > dateB) {
+              return -1; // dateA comes before dateB
+            } else if (dateA < dateB) {
+              return 1; // dateA comes after dateB
+            }
+            return 0; // dates are equal
+          });
+          return sortedDates;
+    },
+    timeAgo(dateString:any) {
+        const date:any = new Date(dateString);
+        const now:any = new Date();
+        const seconds = Math.floor((now - date) / 1000);
+    
+        const intervals = {
+            year: 31536000,
+            month: 2592000,
+            week: 604800,
+            day: 86400,
+            hour: 3600,
+            minute: 60,
+            second: 1
+        };
+    
+        for (let key in intervals) {
+            const interval = Math.floor(seconds / intervals[key]);
+            if (interval > 0) {
+                return `${interval} ${key}${interval !== 1 ? 's' : ''} ago`;
+            }
+        }
+        return "just now";
+    }  ,
+    getFormattedDate(dateString: string): string {
+        const date = new Date(dateString);
+        const now = new Date();
+        const diffMs = now.getTime() - date.getTime();
+        const diffMinutes = Math.floor(diffMs / (1000 * 60));
+        const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+        const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+    
+        if (diffDays === 0) {
+            return 'Today';
+        }
+        else if (diffMinutes < 1) {
+          return 'Just now';
+        } else if (diffMinutes < 60) {
+          return `${diffMinutes} min${diffMinutes > 1 ? 's' : ''} ago`;
+        } else if (diffHours < 24) {
+          return `${diffHours} hour${diffHours > 1 ? 's' : ''} ago`;
+        } else if (diffDays === 1) {
+          return 'Yesterday';
+        } 
+        else if (diffDays < 7) {
+          return `${diffDays} day${diffDays > 1 ? 's' : ''} ago`;
+        } else {
+          return formatDate(date, 'EEE, MMM d, yyyy', 'en-US'); // Regular date format
+        }
     },
     firstLetterUpperCase(value: string): string {
-    return value.charAt(0).toUpperCase() + value.slice(1);
-    },
-
-    todayDate(){
-        //yyyy-mm-dd format
-        let formatedDate = new Date().toISOString().slice(0, 10);
-        return formatedDate;
-      },
-      todayDate2(){
-          let currentDate = new Date().toJSON().slice(0, 10);
-          return currentDate; //e.g. "2022-06-17"
-      },
-      formatDate(customDate:any){
-          let formattedDate = customDate.toJSON().slice(0, 10);
-         // console.log('formattedDate::',formattedDate);
-          return formattedDate; //e.g. "2022-06-17"
-      },
-      nextWeek(){
-          let now = new Date();
-          let nextWeek = new Date(new Date(now).setDate(now.getDate() + 7)).toJSON().slice(0, 10);
-          return nextWeek;
-      },
-      nextTwoWeeks(){
-          let now = new Date();
-          let nextTwoWeeks = new Date(new Date(now).setDate(now.getDate() + 14)).toJSON().slice(0, 10);
-          return nextTwoWeeks;
-      },
-      nextThreeWeeks(){
-          let now = new Date();
-          let nextThreeWeeks = new Date(new Date(now).setDate(now.getDate() + 21)).toJSON().slice(0, 10);
-          return nextThreeWeeks;
-      },
-      oneWeekAgo(){
-          let now = new Date();
-          let oneWeekAgo = new Date(new Date(now).setDate(now.getDate() - 7)).toJSON().slice(0, 10);
-          return oneWeekAgo;
-      },
-      twoWeeksAgo(){
-          let now = new Date();
-          let twoWeeksAgo = new Date(new Date(now).setDate(now.getDate() - 14)).toJSON().slice(0, 10);
-          return twoWeeksAgo;
-      },
-      threeWeeksAgo(){
-          let now = new Date();
-          let threeWeeksAgo = new Date(new Date(now).setDate(now.getDate() - 21)).toJSON().slice(0, 10);
-          return threeWeeksAgo;
-      },
-      nextMonth(){
-          let now = new Date();
-          let nextMonth = new Date(new Date(now).setMonth(now.getMonth() + 1)).toJSON().slice(0, 10);
-          return nextMonth;
-      },
-      nextTwoMonths(){
-          let now = new Date();
-          let nextMonth = new Date(new Date(now).setMonth(now.getMonth() + 2)).toJSON().slice(0, 10);
-          return nextMonth;
-      },
-      nextThreeMonths(){
-          let now = new Date();
-          let nextMonth = new Date(new Date(now).setMonth(now.getMonth() + 3)).toJSON().slice(0, 10);
-          return nextMonth;
-      },
-      oneMonthAgo(){
-          let now = new Date();
-          let prevMonth = new Date(new Date(now).setMonth(now.getMonth() - 1)).toJSON().slice(0, 10);
-          return prevMonth;
-      },
-      twoMonthsAgo(){
-          let now = new Date();
-          let prevMonth = new Date(new Date(now).setMonth(now.getMonth() - 2)).toJSON().slice(0, 10);
-          return prevMonth;
-      },
-      threeMonthsAgo(){
-          let now = new Date();
-          let prevMonth = new Date(new Date(now).setMonth(now.getMonth() - 3)).toJSON().slice(0, 10);
-          return prevMonth;
-      },
-      setCookie(name:any, value:any, expirationDays:any) {
-        const date = new Date();
-        date.setTime(date.getTime() + (expirationDays * 24 * 60 * 60 * 1000));
-        const expires = "expires=" + date.toUTCString();
-        return  document.cookie = name + "=" + value + "; " + expires + "; path=/";
-      },
-      getCookie(name:any) {
-        const cookieName = name + "=";
-        const decodedCookie = decodeURIComponent(document.cookie);
-        const cookieArray = decodedCookie.split(';');
-        for (let i = 0; i < cookieArray.length; i++) {
-          let cookie = cookieArray[i];
-          while (cookie.charAt(0) === ' ') {
-            cookie = cookie.substring(1);
-          }
-          if (cookie.indexOf(cookieName) === 0) {
-            return cookie.substring(cookieName.length, cookie.length);
-          }
-        }
-        return null;
-      },
-      isLocalStorageSupported() {
-        try {
-          const testKey = "__test__";
-          localStorage.setItem(testKey, testKey);
-          localStorage.removeItem(testKey);
-          return true;
-        } catch (e) {
-          return false;
-        }
-      },
-      areCookiesSupported() {
-        try {
-          const testCookieName = "__test__";
-          document.cookie = testCookieName + "=1";
-          const cookieValue = document.cookie.indexOf(testCookieName) !== -1;
-          document.cookie = testCookieName + "=; expires=Thu, 01 Jan 1970 00:00:00 GMT";
-          return cookieValue;
-        } catch (e) {
-          return false;
-        }
-      },
-      // Function to convert a specific time to the time in any country
-      convertCustomTimeToCountryTime(timeString:any, sourceTimeZone:any, targetTimeZone:any) {
-        //timeString = '3:00 PM'; // Replace this with the time you want to convert
-        //sourceTimeZone = 'America/New_York'; // Replace with the source timezone of the given time
-        //targetTimeZone = 'Asia/Tokyo'; // Replace with the target timezone you want
-        const sourceDateTimeString = `2000-01-01 ${timeString}`; // Assuming a date for conversion, you can change this if needed
-        const sourceDateTime = new Date(sourceDateTimeString);
-        const options = {
-           
-            hour12: true,
-            timeZone: targetTimeZone,
-          };
-        // Convert the source time to the target timezone
-        const targetDateTimeString = sourceDateTime.toLocaleString('en-US',options);
-        
-        // Extract the time portion only
-        const targetTime = targetDateTimeString.split(', ')[1];
-        
-        return targetTime;
-      },
-      // Function to convert current time with a source timezone to another time and target timezone
-      convertCurrentTimeToTimeZone(sourceTimeZone:any, targetTimeZone:any) {
-            //sourceTimeZone = 'America/New_York'; // Replace with the source timezone you want
-            //targetTimeZone = 'Asia/Tokyo'; // Replace with the target timezone you want
-            // Get the current date and time in the source timezone
-            const currentTime = new Date();
-            const sourceTime = currentTime.toLocaleString('en-US', { timeZone: sourceTimeZone });
-            
-            // Extract components of the source time
-            const { day, month, year, hour, minute, second } = Object.fromEntries(
-            new Intl.DateTimeFormat('en-US', {
-                timeZone: sourceTimeZone,
-                year: 'numeric',
-                month: '2-digit',
-                day: '2-digit',
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit',
-            }).formatToParts(currentTime)
-            .map(({ type, value }) => [type, parseInt(value, 10)])
-            );
-            
-            // Create a new date object with the source timezone components
-            const sourceDateTime = new Date(year, month - 1, day, hour, minute, second);
-            
-            // Convert the source time to the target timezone
-            const targetDateTime = new Date(sourceDateTime.toLocaleString('en-US', { timeZone: targetTimeZone }));
-    
-            // Return the converted time in the target timezone
-            return targetDateTime.toLocaleString('en-US', { timeZone: targetTimeZone });
-  },
-  selectWord(N:any){
-    var v=N.split(" ");
-    return v[v.length-1];
-  },
-
-  isTimeLessThanCurrentTime(timeString:any) {
-    // Create a Date object for the given time
-    const givenTime = new Date(`2000-01-01 ${timeString}`);
-    // Get the current time
-    const currentTime = new Date();
-    // Compare the given time with the current time
-    return givenTime < currentTime;
-  },
-
-  getToken(){
-    return localStorage.getItem(appConfig.storage.TOKEN);
-  },
-
-  saveOTPToken(t:any){
-    return localStorage.setItem(appConfig.storage.OTP_TOKEN,t);
-  },
-  getOTPToken(){
-    return localStorage.getItem(appConfig.storage.OTP_TOKEN);
-  },
-
-  isTokenExpired() {
-    const token:any = this.getToken();
-    try {
-        const payload = JSON.parse(atob(token.split('.')[1])); // Decode the payload
-        const exp = payload.exp; // Expiry timestamp in seconds
-        
-        if (!exp) {
-            throw new Error("Token does not have an expiration field.");
-        }
-        
-        const currentTime = Math.floor(Date.now() / 1000); // Current time in seconds
-        return currentTime > exp; // Returns true if expired, false otherwise
-    } catch (error) {
-        console.error("Invalid token:", error);
-        return true; // Consider invalid tokens as expired
+        return value.charAt(0).toUpperCase() + value.slice(1);
     }
-  },
-  isOTPTokenExpired() {
-    const token:any = this.getOTPToken();
-    try {
-        const payload = JSON.parse(atob(token.split('.')[1])); // Decode the payload
-        const exp = payload.exp; // Expiry timestamp in seconds
-        
-        if (!exp) {
-            throw new Error("Token does not have an expiration field.");
-        }
-        
-        const currentTime = Math.floor(Date.now() / 1000); // Current time in seconds
-        return currentTime > exp; // Returns true if expired, false otherwise
-    } catch (error) {
-        console.error("Invalid token:", error);
-        return true; // Consider invalid tokens as expired
-    }
-  },
-  getLocation(){
-    navigator.geolocation?navigator.geolocation.getCurrentPosition(this.showPosition):
-    alert("Geolocation is not supported by this browser.")
-  },
-  
-formatNameWithDash(name:any){
-    const formattedName = name?.replace(/\s+/g, "-"); 
-    return formattedName;
-},
-stripHtmlTags(html: string): string {
-    const tempDiv = document.createElement('div');
-    tempDiv.innerHTML = html;
-    return tempDiv.textContent || tempDiv.innerText || '';
-  },
-  formatToShortDate(dateString: string): string {
-    const date = new Date(dateString); 
-    return date.toLocaleDateString('en-US', { 
-      weekday: 'short', 
-      month: 'short', 
-      day: '2-digit', 
-      year: 'numeric' 
-    });
-  }
-  
-  // Example Usage
-  //'Mon Feb 24 2025 01:00:00 GMT+0100');
-  // Output: "Mon, Feb 24, 2025"
-  
 }
-

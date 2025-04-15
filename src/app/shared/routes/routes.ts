@@ -14,8 +14,8 @@ export const content: Routes = [
     loadChildren: () => import('../../pages/user/user.routes').then(r => r.userRoutes)
   },
   {
-    path: 'role',
-    loadChildren: () => import('../../pages/role/role.routes').then(r => r.roleRoutes)
+    path: 'registration',
+    loadChildren: () => import('../../pages/registration/registration.routes').then(r => r.registrationRoutes)
   },
   {
     path: 'product',

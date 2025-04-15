@@ -57,6 +57,7 @@ import { UserState } from './shared/store/state/user.state';
 import { VendorWalletState } from './shared/store/state/vendor-wallet.state';
 import { WalletState } from './shared/store/state/wallet.state';
 import { WithdrawalState } from './shared/store/state/withdrawal.state';
+import { DecryptInterceptor } from './core/interceptors/ decrypt.interceptor';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -76,6 +77,11 @@ export const appConfig: ApplicationConfig = {
       provide: HTTP_INTERCEPTORS,
       useClass: GlobalErrorHandlerInterceptor,
       multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: DecryptInterceptor,
+      multi: true // Ensure the interceptor is added to the chain
     },
     {
       provide: HTTP_INTERCEPTORS,

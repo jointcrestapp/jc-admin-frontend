@@ -69,6 +69,16 @@
                   "maximumError": "5mb"
                 }
               ],
+              "optimization": true,
+              "extractLicenses": true,
+              "sourceMap": false,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.development.ts",
+                  "with": "src/environments/environment.ts"
+                }
+              ],
+              "outputPath": "dist/tarzan-hotels-admin",
               "outputHashing": "all"
             },
             "development": {
