@@ -5,6 +5,7 @@ import { AllSavingsComponent } from './all-savings/all-savings.component';
 import { AddSingleSavingsComponent } from './add-single-savings/add-single-savings.component';
 import { EditSavingsComponent } from './edit-savings/edit-savings.component';
 import { AddBatchSavingsComponent } from './add-batch-savings/add-batch-savings.component';
+import { DetailsComponent } from './details/details.component'
 
 export const savingsRoutes: Routes = [
   {
@@ -22,5 +23,9 @@ export const savingsRoutes: Routes = [
   {
     path: "edit-savings/:id",
     component: EditSavingsComponent
+  },
+  {
+    path: "details/:id",
+    component: DetailsComponent
   }
 ];

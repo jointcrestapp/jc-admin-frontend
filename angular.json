@@ -28,7 +28,8 @@
               }
             },
             "allowedCommonJsDependencies": [
-              "apexcharts"
+              "apexcharts",
+              "xlsx"
             ],
             "outputPath": "dist/jointcrest-admin",
             "index": "src/index.html",

@@ -1,88 +1,382 @@
-import { Component, inject, ViewChild } from '@angular/core';
-import { Select, Store } from '@ngxs/store';
-import { WithdrawalState } from '../../shared/store/state/withdrawal.state';
-import { Observable } from 'rxjs';
-import { Withdrawal, WithdrawalModel } from '../../shared/interface/withdrawal.interface';
-import { VendorWalletState } from '../../shared/store/state/vendor-wallet.state';
-import { Wallet } from '../../shared/interface/wallet.interface';
-import { SettingState } from '../../shared/store/state/setting.state';
-import { Values } from '../../shared/interface/setting.interface';
-import { AccountState } from '../../shared/store/state/account.state';
-import { PayoutModalComponent } from '../../shared/components/ui/modal/payout-modal/payout-modal.component';
-import { WithdrawRequestModalComponent } from './withdraw-request-modal/withdraw-request-modal.component';
-import { TableClickedAction, TableConfig } from '../../shared/interface/table.interface';
-import { GetVendorTransaction } from '../../shared/store/action/vendor-wallet.action';
-import { Params } from '@angular/router';
-import { GetWithdrawRequest, UpdateWithdrawStatus } from '../../shared/store/action/withdrawal.action';
-import { CommonModule } from '@angular/common';
-import { TranslateModule } from '@ngx-translate/core';
-import { CurrencySymbolPipe } from '../../shared/pipe/currency-symbol.pipe';
-import { PageWrapperComponent } from '../../shared/components/page-wrapper/page-wrapper.component';
-import { TableComponent } from '../../shared/components/ui/table/table.component';
-import { TransactionsData } from '../../shared/interface/vendor-wallet.interface';
+import {
+  Component,
+  inject,
+  Inject,
+  PLATFORM_ID,
+  Renderer2,
+  ViewChild,
+} from "@angular/core";
+import { Store } from "@ngxs/store";
+import { Observable, Subject, takeUntil } from "rxjs";
+import { Product } from "../../shared/interface/product.interface";
+import {
+  Select2Data,
+  Select2Module,
+  Select2Option,
+  Select2UpdateEvent,
+} from "ng-select2-component";
+import { ImportCsvModalComponent } from "../../shared/components/ui/modal/import-csv-modal/import-csv-modal.component";
+import { DigitalDownloadModalComponent } from "../../shared/components/ui/modal/digital-download-modal/digital-download-modal.component";
+import { Params, Router, RouterModule } from "@angular/router";
+import {
+  TableClickedAction,
+  TableConfig,
+} from "../../shared/interface/table.interface";
+import { CommonModule, DOCUMENT, isPlatformBrowser } from "@angular/common";
+import {
+  ApproveProductStatus,
+  DeleteAllProduct,
+  Download,
+  ExportProduct,
+  ReplicateProduct,
+  UpdateProductStatus,
+} from "../../shared/store/action/product.action";
+import { TranslateModule } from "@ngx-translate/core";
+import { PageWrapperComponent } from "../../shared/components/page-wrapper/page-wrapper.component";
+import { TableComponent } from "../../shared/components/ui/table/table.component";
+import { CurrencySymbolPipe } from "../../shared/pipe/currency-symbol.pipe";
+import { GetWithdrawRequest } from "src/app/shared/store/action/withdrawal.action";
+import { CountryState } from "src/app/shared/store/state/country.state";
+import { appConfig } from "src/app/core/config/config";
+import { NotificationService } from "src/app/shared/services/notification.service";
+import { WithdrawalState } from "src/app/shared/store/state/withdrawal.state";
 
 @Component({
-    selector: 'app-withdrawal',
-    imports: [CommonModule, TranslateModule, CurrencySymbolPipe,
-        PageWrapperComponent, TableComponent, PayoutModalComponent,
-        WithdrawRequestModalComponent
-    ],
-    templateUrl: './withdrawal.component.html',
-    styleUrl: './withdrawal.component.scss'
+  selector: "app-withdrawal",
+  imports: [
+    CommonModule,
+    TranslateModule,
+    RouterModule,
+    Select2Module,
+    PageWrapperComponent,
+    TableComponent,
+    ImportCsvModalComponent,
+    DigitalDownloadModalComponent,
+    CurrencySymbolPipe,
+  ],
+  templateUrl: "./withdrawal.component.html",
+  styleUrl: "./withdrawal.component.scss",
 })
 export class WithdrawalComponent {
+  private destroy$ = new Subject<void>();
+  private countryMap: Map<number, string> = new Map();
 
-  withdrawal$: Observable<WithdrawalModel> = inject(Store).select(WithdrawalState.withdrawal);
-  wallet$: Observable<{ consumer_id: number | null; balance: number; transactions: { data: TransactionsData[]; total: number; }}> = inject(Store).select(VendorWalletState.vendorWallet);
-  setting$: Observable<Values> = inject(Store).select(SettingState.setting) as Observable<Values>;
-  roleName$: Observable<string> = inject(Store).select(AccountState.getRoleName) as Observable<string>;
+  withrawal$: Observable<any> = inject(Store).select(
+    WithdrawalState.withdrawal
+  ) as Observable<any>;
+  countries$: Observable<any> = inject(Store).select(
+    CountryState.countries
+  ) as Observable<any>;
+  statistics$: Observable<any | null> = inject(Store).select(
+    WithdrawalState.statistics
+  ) as Observable<any>;
+  isLoading$: Observable<any> = inject(Store).select(
+    WithdrawalState.isLoading
+  ) as Observable<any>;
 
-  @ViewChild("payoutModal") PayoutModal: PayoutModalComponent;
-  @ViewChild("requestModal") RequestModal: WithdrawRequestModalComponent;
+  @ViewChild("csvModal") CSVModal: ImportCsvModalComponent;
+  @ViewChild("downloadModal") DownloadModal: DigitalDownloadModalComponent;
+  public years: Select2Data;
+
+  public savingsType: Select2Data = [
+    {
+      value: "savings",
+      label: "Savings",
+    },
+    {
+      value: "withdrawal",
+      label: "Withdrawal",
+    },
+  ];
+
+  public months: Select2Option[] = [
+    {
+      value: 1,
+      label: "January",
+    },
+    {
+      value: 2,
+      label: "Feburary",
+    },
+    {
+      value: 3,
+      label: "March",
+    },
+    {
+      value: 4,
+      label: "April",
+    },
+    {
+      value: 5,
+      label: "May",
+    },
+    {
+      value: 6,
+      label: "June",
+    },
+    {
+      value: 7,
+      label: "July",
+    },
+    {
+      value: 8,
+      label: "August",
+    },
+    {
+      value: 9,
+      label: "September",
+    },
+    {
+      value: 10,
+      label: "October",
+    },
+    {
+      value: 11,
+      label: "November",
+    },
+    {
+      value: 12,
+      label: "December",
+    },
+  ];
+
+  public filter: Params = {
+    search: "",
+    field: "",
+    country: "",
+    month: "",
+    year: "",
+    sort: "", // current Sorting Order
+    page: 1, // current page number
+    paginate: 15, // Display per page,
+  };
+
+  public advanceFilter: any[] = [];
+  public url: string;
+  public open: boolean = true;
+  public isBrowser: boolean;
 
   public tableConfig: TableConfig = {
     columns: [
-      { title: "name", dataField: "vendor_name", sortable: true, sort_direction: 'desc' },
-      { title: "amount", dataField: "amount", type: 'price' },
-      { title: "status", dataField: "withdrawal_status" },
-      { title: "created_at", dataField: "created_at", type: "date", sortable: true, sort_direction: 'desc' }
+      { title: "date", dataField: "date", type: "date" },
+      { title: "Member ID", dataField: "member_id" },
+      {
+        title: "Full Name",
+        dataField: "full_name",
+        sortable: true,
+        sort_direction: "desc",
+      },
+      {
+        title: "amount",
+        dataField: "amount",
+        type: "price",
+        sortable: true,
+        sort_direction: "desc",
+      },
+      { title: "From Account", dataField: "withdraw_from" },
+      { title: "Narration", dataField: "narration" },
+      {
+        title: "status",
+        dataField: "status",
+        sortable: true,
+        sort_direction: "desc",
+      },
     ],
     rowActions: [
-      { label: "View", actionToPerform: "view", icon: "ri-eye-line" },
+      { label: "View", actionToPerform: "view", icon: "ri-printer-line" },
+      {
+        label: "Edit",
+        actionToPerform: "edit",
+        icon: "ri-pencil-line",
+        permission: "thrift.edit",
+      },
+      {
+        label: "Delete",
+        actionToPerform: "delete",
+        icon: "ri-delete-bin-line",
+        permission: "thrift.edit",
+      },
     ],
-    data: [] as Withdrawal[],
-    total: 0
+    data: [] as Product[],
+    total: 0,
   };
 
-  constructor(private store: Store) {
-    if(this.store.selectSnapshot(state => state.account.roleName === 'vendor')){
-      this.store.dispatch(new GetVendorTransaction())
-    }
+  constructor(
+    private store: Store,
+    private renderer: Renderer2,
+    @Inject(DOCUMENT) private document: Document,
+    @Inject(PLATFORM_ID) private platformId: object,
+    private notificationService: NotificationService,
+    private router: Router
+  ) {
+    this.isBrowser = isPlatformBrowser(platformId);
   }
 
   ngOnInit() {
-    this.withdrawal$.subscribe(withdrawal => {
-      let withdrawals = withdrawal?.data?.filter((element: Withdrawal) => {
-        element.vendor_name = element?.user?.name;
-        element.withdrawal_status = element.status ? `<div class="status-${element.status}"><span>${element.status.replace(/_/g, " ")}</span></div>` : '-';
-        return element;
-      });
-      this.tableConfig.data = withdrawal ? withdrawals : [];
-      this.tableConfig.total = withdrawal ? withdrawal?.total : 0;
+    this.years = this.generateYearOptions();
+    this.getWithdrawals();
+    this.countries$.pipe(takeUntil(this.destroy$)).subscribe((countries) => {
+      if (countries && countries.length > 0) {
+        this.countryMap = new Map(
+          countries.map((country: any) => [country.value, country.label])
+        );
+        this.updateWithdrawalWithStatusLabels();
+      }
     });
   }
 
-  onActionClicked(action: TableClickedAction) {
-    if(action.actionToPerform == 'view')
-      this.PayoutModal.openModal(action.data);
+  private getStatusLabel(statusValue: number): string {
+    const status = appConfig.WITHDRAWAL_STATUS.find(
+      (m) => m.value === statusValue
+    );
+    return status ? status.label : "";
+  }
+
+  private updateWithdrawalWithStatusLabels() {
+    this.withrawal$.pipe(takeUntil(this.destroy$)).subscribe((thrift) => {
+      if (!thrift) return;
+
+      const thrifts = thrift.data?.map((item: any) => ({
+        ...item,
+        withdraw_from: item.withdraw_from == 1 ? "Wallet" : "Savings",
+        status: this.getStatusLabel(item.status),
+      }));
+
+      this.tableConfig.data = thrifts || [];
+      this.tableConfig.total = thrift.total || 0;
+    });
+  }
+
+  getWithdrawals() {
+    this.store.dispatch(new GetWithdrawRequest({}));
+  }
+
+  generateYearOptions(
+    startYear: number = new Date().getFullYear(),
+    numberOfYears: number = 50
+  ): any[] {
+    return Array.from({ length: numberOfYears }, (_, i) => {
+      const year = startYear + i;
+      return {
+        value: year,
+        label: year.toString(),
+      };
+    });
   }
 
   onTableChange(data?: Params) {
-    this.store.dispatch(new GetWithdrawRequest(data));
+    this.filter = { ...this.filter, ...data };
+    this.store.dispatch(new GetWithdrawRequest(this.filter));
   }
 
-  approved(event: any) {
-    this.store.dispatch(new UpdateWithdrawStatus(event.data.id, event.status));
+  applyFilter(data: Select2UpdateEvent) {
+    this.filter["tier_type"] = data && data.value ? data.value : null;
+    if (!this.filter["tier_type"]) {
+      delete this.filter["tier_type"];
+    }
+    this.onTableChange(this.filter);
   }
 
+  onActionClicked(action: TableClickedAction) {
+    if (action.actionToPerform == "edit") this.edit(action.data);
+    else if (action.actionToPerform == "is_approved") this.approve(action.data);
+    else if (action.actionToPerform == "status") this.status(action.data);
+    else if (action.actionToPerform == "delete") this.delete(action.data);
+    else if (action.actionToPerform == "deleteAll") this.deleteAll(action.data);
+    else if (action.actionToPerform == "duplicate") this.duplicate(action.data);
+    else if (action.actionToPerform == "download") this.download(action.data);
+    else if (action.actionToPerform == "view") this.view(action.data);
+  }
+
+  edit(data: Product) {
+    this.router.navigateByUrl(`/withdrawal/edit-withdrawal/${data.id}`);
+  }
+
+  view(data: Product) {
+    this.router.navigateByUrl(`/withdrawal/details/${data.id}`);
+  }
+
+  approve(data: Product) {
+    this.store.dispatch(new ApproveProductStatus(data.id, data.is_approved));
+  }
+
+  status(data: Product) {
+    this.store.dispatch(new UpdateProductStatus(data.id, data.status));
+  }
+
+  delete(data: Product) {
+    // this.store.dispatch(new DeleteThrifts(data.id)).pipe(
+    //   takeUntil(this.destroy$),
+    // ).subscribe(
+    //   {
+    //     next: (res: any) => {
+    //       const response = res?.thrifts?.response;
+    //       if (response.status === appConfig.statusCode.ok) {
+    //         this.notificationService.showSuccess(response.message);
+    //         this.getThrifts();
+    //       }
+    //     },
+    //     error: (err) => {
+    //       this.notificationService.showError(err?.message || 'Failed to delete user!');
+    //     }
+    //   }
+    // )
+  }
+
+  deleteAll(ids: number[]) {
+    this.store.dispatch(new DeleteAllProduct(ids));
+  }
+
+  duplicate(ids: number[]) {
+    this.store.dispatch(new ReplicateProduct(ids));
+  }
+
+  download(data: Product) {
+    if (data?.variations?.length) {
+      this.DownloadModal.openModal(data);
+    } else {
+      this.store.dispatch(
+        new Download({ product_id: data.id, variation_id: null })
+      );
+    }
+  }
+
+  export() {
+    this.store.dispatch(new ExportProduct(this.filter));
+  }
+
+  openFilter() {
+    this.open = !this.open;
+  }
+
+  selectItem(data: number[]) {
+    this.renderer.addClass(this.document.body, "loader-none");
+    if (Array.isArray(data) && data.length) {
+      this.filter["category_ids"] = data.join();
+    } else {
+      this.filter["category_ids"] = [];
+    }
+    this.onTableChange(this.filter);
+  }
+
+  filters(data: any, key: string) {
+    console.log("Filters ::::", {
+      data,
+      key,
+    });
+    this.renderer.addClass(this.document.body, "loader-none");
+    console.log(data && data.value);
+    if (data && data.value) {
+      this.filter[key] = data.value;
+    } else {
+      this.filter[key] = [];
+    }
+    this.onTableChange(this.filter);
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+    this.renderer.removeClass(this.document.body, "loader-none");
+  }
 }

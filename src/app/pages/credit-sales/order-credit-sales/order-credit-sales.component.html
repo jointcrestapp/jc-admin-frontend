@@ -1,1 +1,11 @@
-<p>order-credit-sales works!</p>
+<app-page-wrapper [gridClass]="'col-sm-12'" [title]="'order credit sales'">
+  <app-table
+    [tableConfig]="tableConfig"
+    [hasCheckbox]="true"
+    (tableChanged)="onTableChange($event)"
+    (rowClicked)="edit($event)"
+    (action)="onActionClicked($event)"
+  >
+  </app-table>
+</app-page-wrapper>
+<app-import-csv-modal [module]="'credit'" #csvModal></app-import-csv-modal>

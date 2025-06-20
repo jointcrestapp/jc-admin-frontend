@@ -1,1 +1,13 @@
-<p>all-subscription-fee works!</p>
+<app-page-wrapper [gridClass]="'col-sm-12'" [title]="'subscription_fee'">
+  <app-table
+    [tableConfig]="tableConfig"
+    (tableChanged)="onTableChange($event)"
+    (action)="onActionClicked($event)"
+  >
+  </app-table>
+</app-page-wrapper>
+
+<app-import-csv-modal [module]="'configurations'" #csvModal>
+</app-import-csv-modal>
+
+<app-digital-download-modal #downloadModal> </app-digital-download-modal>

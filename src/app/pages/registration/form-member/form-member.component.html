@@ -1,0 +1,539 @@
+@if(this.isLoading$ | async){
+  <app-loader></app-loader>
+}
+
+<form class="theme-form theme-form-2 mega-form" [formGroup]="form" (ngSubmit)="submit()">
+  <div class="vertical-tabs">
+    <div class="row">
+      <div class="col-xl-3 col-lg-4">
+        <ul ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-pills" orientation="vertical">
+          <li ngbNavItem="general" id="general" [class.is-invalid]="tabError.includes('general')">
+            <a ngbNavLink><i class="ri-settings-line"></i>{{ 'general' | translate }}</a>
+            <ng-template ngbNavContent>
+              <div class="tab" tab="general">
+                <app-form-fields [label]="'First name'" [for]="'first_name'" [required]="true">
+                  <input 
+                    class="form-control" 
+                    type="text" 
+                    placeholder="{{'enter_fname' | translate}}" 
+                    name="first_name" 
+                    formControlName="first_name"
+                  >
+                  <div *ngIf="form.controls['first_name'].touched">
+                    <div *ngIf="form.controls['first_name'].errors?.['required']" class="invalid-feedback">
+                      {{ 'first_name_is_required' | translate }}
+                    </div>
+                    <div *ngIf="form.controls['first_name'].errors?.['pattern']" class="invalid-feedback">
+                      {{ 'first_name_invalid' | translate }}
+                    </div>
+                  </div>
+                </app-form-fields>
+
+                <app-form-fields [label]="'Last name'" [for]="'last_name'" [required]="true">
+                  <input 
+                    class="form-control" 
+                    type="text" 
+                    placeholder="{{'enter_lname' | translate}}" 
+                    name="last_name" 
+                    formControlName="last_name"
+
+                  >
+                  <div *ngIf="form.controls['last_name'].touched">
+                    <div *ngIf="form.controls['last_name'].errors?.['required']" class="invalid-feedback">
+                      {{ 'last_name_is_required' | translate }}
+                    </div>
+                    <div *ngIf="form.controls['last_name'].errors?.['pattern']" class="invalid-feedback">
+                      {{ 'last_name_invalid' | translate }}
+                    </div>
+                  </div>
+                </app-form-fields>
+                <app-form-fields [label]="'email'" [for]="'email'" [required]="true">
+                  <input class="form-control" type="email" placeholder="{{ 'enter_email' | translate }}" name="email" [readonly]="type === 'edit'" formControlName="email">
+                  @if(form.controls['email'].touched && form.controls['email'].errors?.['required']){
+                    <div class="invalid-feedback">
+                      {{ 'email_is_required' | translate }}
+                    </div>
+                  }
+                  @if(form.controls['email'].touched && (form.controls['email'].errors?.['pattern'] || form.controls['email'].errors?.['email'])){
+                    <div class="invalid-feedback">
+                      {{ 'enter_valid_email' | translate }}
+                    </div>
+                  }
+                </app-form-fields>
+                <app-form-fields [label]="'phone'" [for]="'phone'" [required]="true">
+                  @if(isBrowser) {
+                    <select2 class="custom-select intl-tel-input" [templates]="template" [data]="codes" formControlName="dial_code" noResultMessage="{{'no_data_found' | translate }}">
+                      <ng-template #template let-data="data">
+                        <div class="country">
+                          <div class="flag-box">
+                            <div class="iti-flag {{data?.class}}"></div>
+                          </div>
+                          <span class="dial-code">{{data.code}}</span>
+                        </div>
+                      </ng-template>
+                    </select2>
+                  }
+                  <input type="number" class="form-control intl-input-padding" formControlName="phone" placeholder="{{ 'enter_phone' | translate }}" name="phone">
+                  @if(form.controls['phone'].touched && form.controls['phone'].errors?.['required']){
+                    <div class="invalid-feedback" autocomplete="false">
+                      {{ 'phone_number_is_required' | translate }}
+                    </div>
+                  }
+
+                  @if(form.controls['phone'].touched && form.controls['phone'].errors?.['pattern']){
+                    <div class="invalid-feedback">
+                      {{ 'phone_number_is_invalid' | translate }}
+                    </div>
+                  }
+                </app-form-fields>
+
+                @if(type != 'edit'){
+                  <app-form-fields [label]="'password'" [for]="'password'" [required]="true">
+                    <input class="form-control" type="password" placeholder="{{ 'enter_password' | translate}}" name="password" formControlName="password">
+                    @if(form.controls['password'].touched && form.controls['password'].errors?.['required']){
+                      <div class="invalid-feedback" autocomplete="false">
+                        {{ 'password_is_required' | translate }}
+                      </div>
+                    }
+                  </app-form-fields>
+
+                  <app-form-fields [label]="'confirm_password'" [for]="'password_confirmation'" [required]="true">
+                    <input class="form-control" type="password" placeholder="{{ 'enter_confirm_password' | translate }}" name="password_confirmation" formControlName="password_confirmation">
+                    @if(form.controls['password_confirmation'].touched && form.controls['password_confirmation'].errors?.['required']){
+                      <div class="invalid-feedback" autocomplete="false">
+                        {{ 'confirm_password_is_required' | translate }}
+                      </div>
+                    }@else {
+                      @if(passwordMatchError){
+                        <div class="invalid-feedback">
+                          {{ 'confirm_password_does_not_matched' | translate }}
+                        </div>
+                      }
+                    }
+                  </app-form-fields>
+                }
+                <app-form-fields [labelClass]="'form-label-title col-sm-3 mb-0'" [gridClass]="'col-sm-9'" [label]="'country'" [for]="'country'" [required]="true">
+                  @if(isBrowser) {
+                  <select2 class="custom-select"
+                    [placeholder]="'select_country' | translate"
+                    [data]="(countries$ | async)?.length ? (countries$ | async) : []"
+                    formControlName="country"
+                    noResultMessage="{{ 'no_data_found' | translate }}"
+                    id="country"
+                    resettable
+                  >
+                  </select2>
+                }
+                  @if(form.controls['country'].touched && form.controls['country'].errors?.['required']){
+                    <div class="invalid-feedback">
+                      {{ 'country_is_required' | translate }}
+                    </div>
+                  }
+                </app-form-fields>
+                <app-form-fields [labelClass]="'form-label-title col-sm-3 mb-0'" [gridClass]="'col-sm-9'" [label]="'state'" [for]="'state'" [required]="true">
+                  @if(isBrowser) {
+                  <select2 class="custom-select"
+                    [placeholder]="'select_state' | translate"
+                    [data]="(states$ | async)?.length ? (states$ | async) : []"
+                    formControlName="state"
+                    noResultMessage="{{ 'no_data_found' | translate }}"
+                    id="state"
+                    resettable
+                  >
+                  </select2>
+                }
+                  @if(form.controls['state'].touched && form.controls['state'].errors?.['required']){
+                    <div class="invalid-feedback">
+                      {{ 'state_is_required' | translate }}
+                    </div>
+                  }
+                </app-form-fields>
+                <app-form-fields [labelClass]="'form-label-title col-sm-3 mb-0'" [gridClass]="'col-sm-9'" [label]="'city'" [for]="'city'" [required]="true">
+                  @if(isBrowser) {
+                  <select2 class="custom-select"
+                    [placeholder]="'select_city' | translate"
+                    [data]="(states$ | async)?.length ? (states$ | async) : []"
+                    formControlName="city"
+                    noResultMessage="{{ 'no_data_found' | translate }}"
+                    id="city"
+                    resettable
+                  >
+                  </select2>
+                }
+                  @if(form.controls['city'].touched && form.controls['city'].errors?.['required']){
+                    <div class="invalid-feedback">
+                      {{ 'city_is_required' | translate }}
+                    </div>
+                  }
+                </app-form-fields>
+
+                <app-form-fields [label]="'Date of Birth'" [for]="'date_of_birth'" [required]="true">
+                  <div class="dp-hidden position-absolute custom-dp-dropdown">
+                    <div class="input-group">
+                      <input name="dob" class="form-control" ngbDatepicker #datepicker="ngbDatepicker" [autoClose]="'outside'" (dateSelect)="onDateSelection($event)" [displayMonths]="1" [dayTemplate]="t" outsideDays="hidden" [startDate]="dateOfBirth!" [footerTemplate]="footerTemplate" id="dob" tabindex="-1" [minDate]="minDate" [maxDate]="maxDate" readonly />
+                      <ng-template #t let-date let-focused="focused">
+                        <span 
+                          class="custom-day" 
+                          [class.focused]="focused" 
+                          [class.selected]="isSelected(date)"
+                        >
+                          {{ date.day }}
+                        </span>
+                      </ng-template>
+                    </div>
+                  </div>
+
+                  <div class="search-input">
+                    <div class="input-group custom-dt-picker">
+                      <input 
+                        #dobInput 
+                        class="form-control" 
+                        placeholder="{{'yyyy-mm-dd' | translate}}" 
+                        name="dob"  
+                        id="dob" 
+                        formControlName="dob" 
+                        readonly 
+                      />
+                      <button class="btn btn-light-bg-secondary " (click)="datepicker.toggle()" type="button">
+                        <i class="ri-calendar-line"></i>
+                      </button>
+                    </div>
+                  </div>
+
+                  <ng-template #footerTemplate>
+                    <hr class="my-0" />
+                    <button class="btn btn-primary btn-sm m-2 float-start" (click)="clearDob(); datepicker.close()">{{"clear" | translate}}</button>
+                    <button class="btn btn-secondary btn-sm m-2 float-end" (click)="datepicker.close()">{{'close' | translate}}</button>
+                  </ng-template>
+
+                  <div *ngIf="form.controls['dob'].touched">
+                    <div *ngIf="form.controls['dob'].errors?.['required']" class="invalid-feedback">
+                      {{ 'dob_is_required' | translate }}
+                    </div>
+                    <div *ngIf="form.controls['dob'].errors?.['pattern']" class="invalid-feedback">
+                      {{ 'dob_is_invalid' | translate }}
+                    </div>
+                  </div>
+                </app-form-fields>
+                <app-form-fields [labelClass]="'form-label-title col-sm-3 mb-0'" [gridClass]="'col-sm-9'" [label]="'gender'" [for]="'gender'" [required]="true">
+                  @if(isBrowser) {
+                  <select2 class="custom-select"
+                    [placeholder]="'select_gender' | translate"
+                    [data]="gender"
+                    formControlName="gender"
+                    noResultMessage="{{ 'no_data_found' | translate }}"
+                    id="gender"
+                    resettable>
+                  </select2>
+                }
+                  @if(form.controls['gender'].touched && form.controls['gender'].errors?.['required']){
+                    <div class="invalid-feedback">
+                      {{ 'gender_is_required' | translate }}
+                    </div>
+                  }
+                </app-form-fields>
+                <app-form-fields [labelClass]="'form-label-title col-sm-3 mb-0'" [gridClass]="'col-sm-9'" [label]="'Marital Status'" [for]="'marital_status'" [required]="true">
+                  @if(isBrowser) {
+                  <select2 class="custom-select"
+                    [placeholder]="'select_marital_status' | translate"
+                    [data]="marital_status"
+                    formControlName="marital_status"
+                    noResultMessage="{{ 'no_data_found' | translate }}"
+                    id="marital_status"
+                    resettable>
+                  </select2>
+                }
+                  @if(form.controls['marital_status'].touched && form.controls['marital_status'].errors?.['required']){
+                    <div class="invalid-feedback">
+                      {{ 'marital_status_is_required' | translate }}
+                    </div>
+                  }
+                </app-form-fields>
+                <app-form-fields [labelClass]="'form-label-title col-sm-3 mb-0'" [gridClass]="'col-sm-9'" [label]="'address'" [for]="'address'" [required]="true">
+                  @if(isBrowser) {
+                    <textarea class="form-control" id="address_line1" placeholder="{{ 'enter_address' | translate }}" rows="3" formControlName="address_line1"></textarea>
+                    <p class="help-text">{{ '*Maximum length should be 300 characters.' }}</p>
+                  }
+                  @if(form.controls['address_line1'].touched && form.controls['address_line1'].errors?.['required']){
+                    <div class="invalid-feedback">
+                      {{ 'address_is_required' | translate }}
+                    </div>
+                  }
+                </app-form-fields>
+                <app-form-fields [labelClass]="'form-label-title col-sm-3 mb-0'" [gridClass]="'col-sm-9'" [label]="'Means of Identification'" [for]="'means_of_identification'" [required]="true">
+                  @if(isBrowser) {
+                  <select2 class="custom-select"
+                    [placeholder]="'select_means_of_identification' | translate"
+                    [data]="means_of_identification"
+                    formControlName="means_of_identification"
+                    noResultMessage="{{ 'no_data_found' | translate }}"
+                    id="means_of_identification"
+                    resettable>
+                  </select2>
+                }
+                  @if(form.controls['means_of_identification'].touched && form.controls['means_of_identification'].errors?.['required']){
+                    <div class="invalid-feedback">
+                      {{ 'means_of_identification_is_required' | translate }}
+                    </div>
+                  }
+                </app-form-fields>
+                <app-form-fields [labelClass]="'form-label-title col-sm-3 mb-0'" [gridClass]="'col-sm-9'" [label]="'role'" [for]="'role'" [required]="true">
+                  @if(isBrowser) {
+                  <select2 class="custom-select"
+                    [placeholder]="'select_role' | translate"
+                    [data]="(role$ | async)?.length ? (role$ | async) : []"
+                    formControlName="account_type"
+                    noResultMessage="{{ 'no_data_found' | translate }}"
+                    id="account_type"
+                    resettable>
+                  </select2>
+                }
+                  @if(form.controls['account_type'].touched && form.controls['account_type'].errors?.['required']){
+                    <div class="invalid-feedback">
+                      {{ 'role_is_required' | translate }}
+                    </div>
+                  }
+                </app-form-fields>
+                
+                <app-form-fields [label]="'status'" [for]="'status'" [required]="false">
+                  <div class="form-check form-switch ps-0">
+                    <label class="switch">
+                      <input type="checkbox" id="status" formControlName="status">
+                      <span class="switch-state"></span>
+                    </label>
+                  </div>
+                </app-form-fields>
+              </div>
+            </ng-template>
+          </li>
+          <li ngbNavItem="cooperative_details" id="cooperative_details" [class.is-invalid]="tabError.includes('cooperative_details')">
+            <a ngbNavLink><i class="ri-community-line"></i>{{ 'cooperative_details' | translate }}</a>
+            <ng-template ngbNavContent>
+              <div formGroupName="cooperativeDetails" class="tab" tab="cooperative_details">
+                <app-form-fields [label]="'Reg. Date'" [for]="'registration_date'" [required]="true">
+                  <div class="dp-hidden position-absolute custom-dp-dropdown">
+                    <div class="input-group">
+                      <input name="registration_date" [disabled]="reg_date_state" class="form-control" ngbDatepicker #datepicker="ngbDatepicker" [autoClose]="'outside'" (dateSelect)="onDateSelection($event)" [displayMonths]="1" [dayTemplate]="t" outsideDays="hidden" [startDate]="dateOfBirth!" [footerTemplate]="footerTemplate" id="dob" tabindex="-1" readonly />
+                      <ng-template #t let-date let-focused="focused">
+                        <span 
+                          class="custom-day" 
+                          [class.focused]="focused" 
+                          [class.selected]="isSelected(date)"
+                        >
+                          {{ date.day }}
+                        </span>
+                      </ng-template>
+                    </div>
+                  </div>
+
+                  <div class="search-input">
+                    <div class="input-group custom-dt-picker">
+                      <input 
+                        #registrationDateInput 
+                        class="form-control" 
+                        placeholder="{{'yyyy-mm-dd' | translate}}" 
+                        name="registration_date"  
+                        id="registration_date" 
+                        formControlName="registration_date" 
+                        readonly 
+                      />
+                      <button class="btn btn-light-bg-secondary " (click)="datepicker.toggle()" type="button">
+                        <i class="ri-calendar-line"></i>
+                      </button>
+                    </div>
+                  </div>
+
+                  <ng-template #footerTemplate>
+                    <hr class="my-0" />
+                    <button class="btn btn-primary btn-sm m-2 float-start" (click)="clearDob(); datepicker.close()">{{"clear" | translate}}</button>
+                    <button class="btn btn-secondary btn-sm m-2 float-end" (click)="datepicker.close()">{{'close' | translate}}</button>
+                  </ng-template>
+
+                  <div *ngIf="form.get('cooperativeDetails.registration_date')?.touched">
+                    <div *ngIf="form.get('cooperativeDetails.registration_date')?.errors?.['required']" class="invalid-feedback">
+                      {{ 'registration_date_is_required' | translate }}
+                    </div>
+                  </div>
+                </app-form-fields>
+                <app-form-fields [label]="'Reg. Fee'" [for]="'registration_fee'" [required]="true">
+                  <input 
+                    class="form-control" 
+                    type="text" 
+                    placeholder="{{'enter_registration_fee' | translate}}" 
+                    name="registration_fee" 
+                    formControlName="registration_fee"
+
+                  >
+                  <div *ngIf="form.get('cooperativeDetails.registration_fee')?.touched">
+                    <div *ngIf="form.get('cooperativeDetails.registration_fee')?.errors?.['required']" class="invalid-feedback">
+                      {{ 'registration_fee_is_required' | translate }}
+                    </div>
+                  </div>
+                </app-form-fields>
+                <app-form-fields [label]="'Savings Amount'" [for]="'savings_amount'">
+                  <input 
+                    class="form-control" 
+                    type="text" 
+                    placeholder="{{'enter_savings_amount' | translate}}" 
+                    name="savings_amount" 
+                    formControlName="savings_amount"
+                  >
+                  <div *ngIf="form.get('cooperativeDetails.savings_amount')?.touched">
+                    <div *ngIf="form.get('cooperativeDetails.savings_amount')?.errors?.['required']" class="invalid-feedback">
+                      {{ 'savings_amount_is_required' | translate }}
+                    </div>
+                  </div>
+                </app-form-fields>
+              </div>
+            </ng-template>
+          </li>
+          <li ngbNavItem="bank_details" id="bank_details" [class.is-invalid]="tabError.includes('bank_details')">
+            <a ngbNavLink><i class="ri-file-list-line"></i>{{ 'bank_details' | translate }}</a>
+            <ng-template ngbNavContent>
+              <div formGroupName="bankDetails" class="tab" tab="bank_details">
+                <app-form-fields [labelClass]="'form-label-title col-sm-3 mb-0'" [gridClass]="'col-sm-9'" [label]="'bank Name'" [for]="'bankName'" [required]="true">
+                  @if(isBrowser) {
+                    <select2 class="custom-select"
+                      [placeholder]="'select_bank' | translate"
+                      [data]="(banks$ | async)?.length ? (banks$ | async) : []"
+                      formControlName="bankName"
+                      noResultMessage="{{ 'no_data_found' | translate }}"
+                      id="bankName"
+                      resettable>
+                    </select2>
+                  }
+                  @if(form.get('bankDetails.bankName')?.touched && form.get('bankDetails.bankName')?.errors?.['required']){
+                    <div class="invalid-feedback">
+                      {{ 'bank_is_required' | translate }}
+                    </div>
+                  }
+                </app-form-fields>
+                <app-form-fields [label]="'Bank Code'" [for]="'bankCode'" [required]="true">
+                  <input 
+                    class="form-control" 
+                    type="text" 
+                    placeholder="{{'enter_bank_code' | translate}}" 
+                    name="bankCode" 
+                    formControlName="bankCode"
+                  >
+                </app-form-fields>
+                <app-form-fields [label]="'Account Number'" [for]="'accountNumber'" [required]="true">
+                  <input 
+                    class="form-control" 
+                    type="text" 
+                    placeholder="{{'enter_account_number' | translate}}" 
+                    name="accountNumber" 
+                    formControlName="accountNumber"
+
+                  >
+                  <div *ngIf="form.get('bankDetails.accountNumber')?.touched">
+                    <div *ngIf="form.get('bankDetails.accountNumber')?.errors?.['required']" class="invalid-feedback">
+                      {{ 'account_number_is_required' | translate }}
+                    </div>
+                  </div>
+                </app-form-fields>
+                <app-form-fields [label]="'Account Name'" [for]="'accountName'" [required]="true">
+                  <input 
+                    class="form-control" 
+                    type="text" 
+                    placeholder="{{'enter_account_name' | translate}}" 
+                    name="accountName" 
+                    formControlName="accountName"
+
+                  >
+                  <div *ngIf="form.get('bankDetails.accountName')?.touched">
+                    <div *ngIf="form.get('bankDetails.accountName')?.errors?.['required']" class="invalid-feedback">
+                      {{ 'account_name_is_required' | translate }}
+                    </div>
+                  </div>
+                </app-form-fields>
+              </div>
+            </ng-template>
+          </li>
+
+          <li ngbNavItem="nok" id="nok" [class.is-invalid]="tabError.includes('nok')">
+            <a ngbNavLink><i class="ri-user-line"></i>{{ 'nok' | translate }}</a>
+            <ng-template ngbNavContent>
+              <div class="tab" tab="nok">
+                <div class="d-flex justify-content-end align-items-center mb-3">
+                  <button type="button" class="btn btn-sm btn-primary" (click)="addNextOfKin()">
+                    <i class="ri-add-line"></i> {{ 'add_nok' | translate }}
+                  </button>
+                </div>
+                
+                <div formArrayName="nextOfKins">
+                  <div *ngFor="let nok of nextOfKins.controls; let i = index" [formGroupName]="i" class="nok-item mb-4 p-3 border rounded">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                      <h6>{{ 'nok' | translate }} #{{ i + 1 }}</h6>
+                      <button type="button" class="btn btn-sm btn-danger" (click)="removeNextOfKin(i)" *ngIf="nextOfKins.length > 0">
+                        <i class="ri-delete-bin-line"></i> {{ 'remove' | translate }}
+                      </button>
+                    </div>
+                    
+                    <div class="row">
+                      <app-form-fields [label]="'first name'" [for]="'firstName-{{i}}'" [required]="true">
+                        <input 
+                          class="form-control" 
+                          type="text" 
+                          placeholder="{{'enter_fname' | translate}}" 
+                          formControlName="first_name"
+                        >
+                        @if(nok.get('first_name')?.touched && nok.get('first_name')?.errors?.['required']){
+                          <div class="invalid-feedback">
+                            {{ 'first_name_is_required' | translate }}
+                          </div>
+                        }
+                      </app-form-fields>
+                      
+                      <app-form-fields [label]="'last name'" [for]="'lastName-{{i}}'" [required]="true">
+                        <input 
+                          class="form-control" 
+                          type="text" 
+                          placeholder="{{'enter_lname' | translate}}" 
+                          formControlName="last_name"
+                        >
+                        @if(nok.get('last_name')?.touched && nok.get('last_name')?.errors?.['required']){
+                          <div class="invalid-feedback">
+                            {{ 'last_name_is_required' | translate }}
+                          </div>
+                        }
+                      </app-form-fields>
+                      <app-form-fields [label]="'email'" [for]="'email-{{i}}'" [required]="false">
+                        <input 
+                          class="form-control" 
+                          type="email" 
+                          placeholder="{{'enter_email' | translate}}" 
+                          formControlName="email"
+                        >
+                        @if(nok.get('email')?.touched && nok.get('email')?.errors?.['email']){
+                          <div class="invalid-feedback">
+                            {{ 'enter_valid_email' | translate }}
+                          </div>
+                        }
+                      </app-form-fields>
+                      
+                    </div>
+                  </div>
+                </div>
+                
+                @if(nextOfKins.length === 0){
+                  <div class="alert alert-info">
+                    {{ 'no_nok_added' | translate }}
+                  </div>
+                }
+              </div>
+            </ng-template>
+          </li>
+        </ul>
+      </div>
+      <div class="col-xl-7 col-lg-8">
+        <div [ngbNavOutlet]="nav"></div>
+      </div>
+    </div>
+    <div class="ms-auto justify-content-end d-flex gap mt-sm-4 mt-2">
+      <app-button *ngIf="form.valid" [id]="'user_btn'">
+        {{ ( type === 'create' ? 'save' : 'save_and_continue') | translate }}
+      </app-button>
+    </div>
+  </div>
+</form>

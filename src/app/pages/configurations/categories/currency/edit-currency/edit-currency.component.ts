@@ -1,11 +1,11 @@
-import { Component } from '@angular/core';
+import { Component } from "@angular/core";
+import { PageWrapperComponent } from "../../../../../shared/components/page-wrapper/page-wrapper.component";
+import { FormCurrencyComponent } from "../currency-form/form-currency.component";
 
 @Component({
-  selector: 'app-edit-currency',
-  imports: [],
-  templateUrl: './edit-currency.component.html',
-  styleUrl: './edit-currency.component.scss'
+  selector: "app-edit-currency",
+  imports: [PageWrapperComponent, FormCurrencyComponent],
+  templateUrl: "./edit-currency.component.html",
+  styleUrl: "./edit-currency.component.scss",
 })
-export class EditCurrencyComponent {
-
-}
+export class EditCurrencyComponent {}

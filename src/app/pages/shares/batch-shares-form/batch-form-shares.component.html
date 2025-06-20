@@ -1,0 +1,123 @@
+<!-- File Upload Instructions Section -->
+<div class="upload-instructions">
+  <h4 class="instructions-title">{{ 'batch_upload_instructions' | translate }}</h4>
+  <ol class="instructions-list">
+    <li>{{ 'instruction_1' | translate }}</li>
+    <li>{{ 'instruction_2' | translate }}</li>
+    <li>{{ 'instruction_3' | translate }}</li>
+    <li>{{ 'instruction_4' | translate }}</li>
+    <li>{{ 'instruction_5' | translate }}</li>
+    <li>{{ 'instruction_6' | translate }}</li>
+  </ol>
+  
+  <div class="template-actions">
+    <button class="btn btn-outline-primary" (click)="generateTemplate()">
+      <i class="ri-file-excel-2-line"></i> {{ 'generate_template' | translate }}
+    </button>
+    <button class="btn btn-outline-secondary" (click)="downloadTemplate()" [disabled]="!templateGenerated">
+      <i class="ri-download-line"></i> {{ 'download_template' | translate }}
+    </button>
+  </div>
+</div>
+
+<!-- Main Form Section -->
+<form class="theme-form theme-form-2 mega-form" [formGroup]="form" (ngSubmit)="submit()">
+  <!-- Savings Type Field -->
+  <app-form-fields [labelClass]="'form-label-title col-sm-3 mb-0'" [gridClass]="'col-sm-9'" [label]="'shares type'" [for]="'shares_type'" [required]="true">
+    @if(isBrowser) {
+    <select2 class="custom-select"
+      [placeholder]="'select_shares_type' | translate"
+      [data]="sharesType?.length ? sharesType : []"
+      formControlName="shares_type"
+      noResultMessage="{{ 'no_data_found' | translate }}"
+      id="shares_type">
+    </select2>
+    }
+    @if(form.controls['shares_type'].touched && form.controls['shares_type'].errors?.['required']){
+      <div class="invalid-feedback">
+        {{ 'shares_type_is_required' | translate }}
+      </div>
+    }
+  </app-form-fields>
+
+  <!-- Deduction Source Field -->
+  <app-form-fields [labelClass]="'form-label-title col-sm-3 mb-0'" [gridClass]="'col-sm-9'" [label]="'deduction source'" [for]="'deduction_source'" [required]="true">
+    @if(isBrowser) {
+    <select2 class="custom-select"
+      [placeholder]="'select_deduction_source' | translate"
+      [data]="deductionSources?.length ? deductionSources : []"
+      formControlName="transferred_from"
+      noResultMessage="{{ 'no_data_found' | translate }}"
+      id="transferred_from"
+      resettable>
+    </select2>
+    }
+    @if(form.controls['transferred_from'].touched && form.controls['transferred_from'].errors?.['required']){
+      <div class="invalid-feedback">
+        {{ 'deduction_source_is_required' | translate }}
+      </div>
+    }
+  </app-form-fields>
+
+  <!-- Month Field -->
+  <app-form-fields [labelClass]="'form-label-title col-sm-3 mb-0'" [gridClass]="'col-sm-9'" [label]="'month'" [for]="'month'" [required]="true">
+    @if(isBrowser) {
+    <select2 class="custom-select"
+      [placeholder]="'month' | translate"
+      [data]="months?.length ? months : []"
+      formControlName="month"
+      noResultMessage="{{ 'no_data_found' | translate }}"
+      id="month"
+      resettable>
+    </select2>
+    }
+    @if(form.controls['month'].touched && form.controls['month'].errors?.['required']){
+      <div class="invalid-feedback">
+        {{ 'month_is_required' | translate }}
+      </div>
+    }
+  </app-form-fields>
+
+  <!-- Year Field -->
+  <app-form-fields [labelClass]="'form-label-title col-sm-3 mb-0'" [gridClass]="'col-sm-9'" [label]="'year'" [for]="'year'" [required]="true">
+    @if(isBrowser) {
+    <select2 class="custom-select"
+      [placeholder]="'year' | translate"
+      [data]="years?.length ? years : []"
+      formControlName="year"
+      noResultMessage="{{ 'no_data_found' | translate }}"
+      id="year"
+      resettable>
+    </select2>
+    }
+    @if(form.controls['year'].touched && form.controls['year'].errors?.['required']){
+      <div class="invalid-feedback">
+        {{ 'year_is_required' | translate }}
+      </div>
+    }
+  </app-form-fields>
+
+  <!-- File Upload Field -->
+  <app-form-fields [labelClass]="'form-label-title col-sm-3 mb-0'" [gridClass]="'col-sm-9'" [label]="'Upload Excel File (Max: 900KB)'" [for]="'file'" [required]="true">
+    <input class="form-control" id="file" type="file" accept=".xlsx,.xls,.csv" (change)="onFileChange($event)" placeholder="{{ 'upload_file' | translate }}" formControlName="file">
+    @if(form.controls['file'].touched && form.controls['file'].errors?.['required']){
+      <div class="invalid-feedback">
+        {{ 'file_is_required' | translate }}
+      </div>
+    }
+    @if(form.controls['file'].errors?.['fileSize']){
+      <div class="invalid-feedback">
+        {{ 'file_size_exceeded' | translate }}
+      </div>
+    }
+  </app-form-fields>
+
+  <!-- Narration Field -->
+  <app-form-fields [labelClass]="'form-label-title col-sm-3 mb-0'" [gridClass]="'col-sm-9'" [label]="'narration'" [for]="'narration'">
+    <textarea class="form-control" id="narration" placeholder="{{ 'enter_short_narration' | translate }}" rows="3" formControlName="narration"></textarea>
+    <p class="help-text">{{ '*Maximum length should be 300 characters.' | translate }}</p>
+  </app-form-fields>
+
+  <!-- Submit Button -->
+  <app-button [id]="'user_btn'">{{ (type == 'create' ? 'upload_batch_shares' : 'update_shares') | translate }}</app-button>
+</form>

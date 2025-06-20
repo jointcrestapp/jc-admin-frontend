@@ -1,0 +1,51 @@
+<form
+  class="theme-form theme-form-2 mega-form"
+  [formGroup]="form"
+  (ngSubmit)="submit()"
+>
+  <app-form-fields
+    [labelClass]="'form-label-title col-sm-3 mb-0'"
+    [gridClass]="'col-sm-9'"
+    [label]="'name'"
+    [for]="'name'"
+    [required]="true"
+  >
+    @if(isBrowser) {
+    <input
+      class="form-control"
+      id="name"
+      type="text"
+      placeholder="{{ 'enter_name' | translate }}"
+      formControlName="name"
+    />
+    } @if(form.controls['name']?.touched &&
+    form.controls['name'].errors?.['required']){
+    <div class="invalid-feedback">{{ "name_is_required" | translate }}</div>
+    }
+  </app-form-fields>
+  <app-form-fields
+    [labelClass]="'form-label-title col-sm-3 mb-0'"
+    [gridClass]="'col-sm-9'"
+    [label]="'description'"
+    [for]="'description'"
+  >
+    @if(isBrowser) {
+    <textarea
+      class="form-control"
+      id="description"
+      placeholder="{{ 'enter_description' | translate }}"
+      rows="3"
+      formControlName="description"
+    ></textarea>
+    <p class="help-text">{{ "*Maximum length should be 300 characters." }}</p>
+    } @if(form.controls['description']?.touched &&
+    form.controls['description'].errors?.['required']){
+    <div class="invalid-feedback">
+      {{ "description_is_required" | translate }}
+    </div>
+    }
+  </app-form-fields>
+  <app-button [id]="'user_btn'">{{
+    (type == "create" ? "add_user_role" : "edit_user_role") | translate
+  }}</app-button>
+</form>

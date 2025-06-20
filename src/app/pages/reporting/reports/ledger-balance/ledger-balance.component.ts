@@ -1,11 +1,154 @@
-import { Component } from '@angular/core';
+import {
+  Component,
+  inject,
+  Inject,
+  PLATFORM_ID,
+  Renderer2,
+  ViewChild,
+} from "@angular/core";
+import { Store } from "@ngxs/store";
+import { SettingState } from "../../../../shared/store/state/setting.state";
+import { Observable, Subject, switchMap, take, takeUntil } from "rxjs";
+import { Product } from "../../../../shared/interface/product.interface";
+import { Values } from "../../../../shared/interface/setting.interface";
+import {
+  Select2Data,
+  Select2Module,
+  Select2UpdateEvent,
+} from "ng-select2-component";
+import { ImportCsvModalComponent } from "../../../../shared/components/ui/modal/import-csv-modal/import-csv-modal.component";
+import { DigitalDownloadModalComponent } from "../../../../shared/components/ui/modal/digital-download-modal/digital-download-modal.component";
+import { Params, Router, RouterModule } from "@angular/router";
+import { TableConfig } from "../../../../shared/interface/table.interface";
+import { CommonModule, DOCUMENT, isPlatformBrowser } from "@angular/common";
+
+import { TranslateModule } from "@ngx-translate/core";
+import { PageWrapperComponent } from "../../../../shared/components/page-wrapper/page-wrapper.component";
+import { TableComponent } from "../../../../shared/components/ui/table/table.component";
+import { HasPermissionDirective } from "../../../../shared/directive/has-permission.directive";
+import { ReportState } from "src/app/shared/store/state/reports.state";
+import {
+  SetLoadingState,
+  GetLedgerBalance,
+} from "src/app/shared/store/action/report.action";
+import { NotificationService } from "src/app/shared/services/notification.service";
 
 @Component({
-  selector: 'app-ledger-balance',
-  imports: [],
-  templateUrl: './ledger-balance.component.html',
-  styleUrl: './ledger-balance.component.scss'
+  selector: "app-ledger-balance",
+  imports: [
+    CommonModule,
+    TranslateModule,
+    RouterModule,
+    HasPermissionDirective,
+    Select2Module,
+    PageWrapperComponent,
+    TableComponent,
+    ImportCsvModalComponent,
+    DigitalDownloadModalComponent,
+  ],
+  templateUrl: "./ledger-balance.component.html",
+  styleUrl: "./ledger-balance.component.scss",
 })
 export class LedgerBalanceComponent {
+  private destroy$ = new Subject<void>();
 
+  ledger_balance$: Observable<any> = inject(Store).select(
+    ReportState.ledger_balance
+  ) as Observable<any>;
+
+  isLoading$: Observable<any> = inject(Store).select(
+    ReportState.isLoading
+  ) as Observable<any>;
+  setting$: Observable<Values> = inject(Store).select(
+    SettingState.setting
+  ) as Observable<Values>;
+
+  @ViewChild("csvModal") CSVModal: ImportCsvModalComponent;
+  @ViewChild("downloadModal") DownloadModal: DigitalDownloadModalComponent;
+
+  public filter: Params = {
+    search: "",
+    field: "",
+    country: "",
+    month: "",
+    year: "",
+    sort: "", // current Sorting Order
+    page: 1, // current page number
+    paginate: 15, // Display per page,
+  };
+
+  public advanceFilter: any[] = [];
+  public url: string;
+  public open: boolean = true;
+  public isBrowser: boolean;
+
+  public tableConfig: TableConfig = {
+    columns: [
+      { title: "Member ID", dataField: "member_id" },
+      { title: "Phone", dataField: "phone" },
+      { title: "Full Name", dataField: "full_name" },
+      {
+        title: "Savings",
+        dataField: "savings_bal",
+        type: "price",
+      },
+      {
+        title: "Loan",
+        dataField: "loan_bal",
+        type: "price",
+      },
+      { title: "Credit Sales", dataField: "credit_sales_bal", type: "price" },
+    ],
+    rowActions: [],
+    data: [] as Product[],
+    total: 0,
+  };
+
+  constructor(
+    private store: Store,
+    private renderer: Renderer2,
+    @Inject(DOCUMENT) private document: Document,
+    @Inject(PLATFORM_ID) private platformId: object,
+    private notificationService: NotificationService,
+    private router: Router
+  ) {
+    this.isBrowser = isPlatformBrowser(platformId);
+    this.setting$.subscribe((setting) => {
+      if (setting && setting.general) {
+        this.url = setting.general.site_url;
+      }
+    });
+  }
+
+  ngOnInit() {
+    this.getLoanReport();
+    this.ledger_balance$.pipe(takeUntil(this.destroy$)).subscribe((lr) => {
+      let ledger_balance = lr?.data?.filter((element: any) => {
+        return element;
+      });
+      this.tableConfig.data = lr ? lr?.data : [];
+      this.tableConfig.total = lr ? lr?.total : 0;
+    });
+  }
+
+  getLoanReport() {
+    this.store.dispatch(new GetLedgerBalance({}));
+  }
+
+  onTableChange(data?: Params) {
+    this.filter = { ...this.filter, ...data };
+    this.store.dispatch(new GetLedgerBalance(this.filter));
+  }
+
+  applyFilter(data: Select2UpdateEvent) {
+    this.filter["loan_type"] = data && data.value ? data.value : null;
+    if (!this.filter["loan_type"]) {
+      delete this.filter["loan_type"];
+    }
+    this.onTableChange(this.filter);
+  }
+
+  // export() {
+  //   this.store.dispatch(new ExportProduct(this.filter));
+  // }
 }

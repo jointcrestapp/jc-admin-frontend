@@ -10,38 +10,45 @@ import { finalize, Observable, Subject, takeUntil } from 'rxjs';
 import { Product, ProductModel } from '../../../shared/interface/product.interface';
 import { Values } from '../../../shared/interface/setting.interface';
 import { CategoryModel } from '../../../shared/interface/category.interface';
-import { Select2Data, Select2Module, Select2UpdateEvent } from 'ng-select2-component';
+import { Select2Data, Select2Module, Select2Option, Select2UpdateEvent } from 'ng-select2-component';
 import { AccountUser } from '../../../shared/interface/account.interface';
 import { ImportCsvModalComponent } from '../../../shared/components/ui/modal/import-csv-modal/import-csv-modal.component';
 import { DigitalDownloadModalComponent } from '../../../shared/components/ui/modal/digital-download-modal/digital-download-modal.component';
 import { Params, Router, RouterModule } from '@angular/router';
 import { TableClickedAction, TableConfig } from '../../../shared/interface/table.interface';
 import { CommonModule, DOCUMENT, isPlatformBrowser } from '@angular/common';
-import { GetCategories } from '../../../shared/store/action/category.action';
-import { GetBrands } from '../../../shared/store/action/brand.action';
-import { GetStores } from '../../../shared/store/action/store.action';
 import { ApproveProductStatus, DeleteAllProduct, DeleteProduct, Download, ExportProduct, GetProducts, ReplicateProduct, UpdateProductStatus } from '../../../shared/store/action/product.action';
 import { TranslateModule } from '@ngx-translate/core';
 import { PageWrapperComponent } from '../../../shared/components/page-wrapper/page-wrapper.component';
 import { TableComponent } from '../../../shared/components/ui/table/table.component';
-import { AdvanceDropdownComponent } from '../../../shared/components/ui/advance-dropdown/advance-dropdown.component';
 import { HasPermissionDirective } from '../../../shared/directive/has-permission.directive';
 import { CurrencySymbolPipe } from '../../../shared/pipe/currency-symbol.pipe';
-import { SavingsService } from 'src/app/core/services/savings.service';
+import { ThriftsState } from 'src/app/shared/store/state/thrift.state';
+import { GetThrifts, DeleteThrifts, GetThriftsTiers } from 'src/app/shared/store/action/thrift.action';
+import { CountryState } from 'src/app/shared/store/state/country.state';
 import { appConfig } from 'src/app/core/config/config';
+import { NotificationService } from 'src/app/shared/services/notification.service';
 
 @Component({
     selector: 'app-all-thrift',
     imports: [CommonModule, TranslateModule, RouterModule, HasPermissionDirective,
-        Select2Module, PageWrapperComponent, TableComponent,
-        AdvanceDropdownComponent, ImportCsvModalComponent, DigitalDownloadModalComponent,
-        CurrencySymbolPipe
+      Select2Module, PageWrapperComponent, TableComponent,
+      ImportCsvModalComponent, DigitalDownloadModalComponent,
+      CurrencySymbolPipe
     ],
     templateUrl: './all-thrift.component.html',
     styleUrl: './all-thrift.component.scss'
 })
 export class AllThriftComponent {
+  private destroy$ = new Subject<void>();
+  private countryMap: Map<number, string> = new Map();
   product$: Observable<ProductModel> = inject(Store).select(ProductState.product);
+  thrifts$: Observable<any> = inject(Store).select(ThriftsState.thrifts) as Observable<any>
+  countries$: Observable<any> = inject(Store).select(CountryState.countries) as Observable<any>;
+  statistics$: Observable<any | null> = inject(Store).select(ThriftsState.statistics) as Observable<any>;
+  isLoading$: Observable<any> = inject(Store).select(ThriftsState.isLoading) as Observable<any>;
+  tiers$: Observable<any> = inject(Store).select(ThriftsState.tiers);
+  categories$: Observable<any> = inject(Store).select(ThriftsState.categories) as Observable<any>;
   setting$: Observable<Values> = inject(Store).select(SettingState.setting) as Observable<Values>;
   category$: Observable<CategoryModel> = inject(Store).select(CategoryState.category) as Observable<CategoryModel>;
   brand$: Observable<Select2Data> = inject(Store).select(BrandState.brands);
@@ -50,6 +57,69 @@ export class AllThriftComponent {
 
   @ViewChild("csvModal") CSVModal: ImportCsvModalComponent;
   @ViewChild("downloadModal") DownloadModal: DigitalDownloadModalComponent;
+  public years: Select2Data;
+
+  public savingsType: Select2Data = [
+    {
+      value: 'savings',
+      label: "Savings"
+    },
+    {
+      value: 'withdrawal',
+      label: "Withdrawal"
+    }
+  ]
+
+  public months: Select2Option [] = [
+    {
+      value: 1,
+      label: "January"
+    },
+    {
+      value: 2,
+      label: "Feburary"
+    },
+    {
+      value: 3,
+      label: "March"
+    },
+    {
+      value: 4,
+      label: "April"
+    },
+    {
+      value: 5,
+      label: "May"
+    },
+    {
+      value: 6,
+      label: "June"
+    },
+    {
+      value: 7,
+      label: "July"
+    },
+    {
+      value: 8,
+      label: "August"
+    },
+    {
+      value: 9,
+      label: "September"
+    },
+    {
+      value: 10,
+      label: "October"
+    },
+    {
+      value: 11,
+      label: "November"
+    },
+    {
+      value: 12,
+      label: "December"
+    }
+  ]
 
   public mainProductType: Select2Data = [{
     value: 'physical',
@@ -65,19 +135,13 @@ export class AllThriftComponent {
   public filter: Params = {
     'search': '',
     'field': '',
-    'category_ids': '',
-    'brand_ids': '',
-    'store_ids': '',
+    'country': '',
+    'month': '',
+    'year': '',
     'sort': '', // current Sorting Order
     'page': 1, // current page number
     'paginate': 15, // Display per page,
   };
-
-  public statistics = {
-    'total_savings': 40000000,
-    'today_savings': 40000,
-    'filtered_savings': 300000
-  }
 
   public advanceFilter: any[] = []
   public url: string;
@@ -86,19 +150,21 @@ export class AllThriftComponent {
 
   public tableConfig: TableConfig = {
     columns: [
-      { title: "image", dataField: "product_thumbnail", class: 'tbl-image', type: 'image', placeholder: 'assets/images/product.png' },
-      { title: "name", dataField: "name", sortable: true, sort_direction: 'desc' },
-      { title: "sku", dataField: "sku", sortable: true, sort_direction: 'desc' },
-      { title: "price", dataField: "sale_price", type: 'price', sortable: true, sort_direction: 'desc' },
-      { title: "stock", dataField: "stock" },
-      { title: "store", dataField: "store_name" },
-      { title: "approved", dataField: "is_approved", type: "switch", canAllow: ['admin'] },
-      { title: "status", dataField: "status", type: "switch" },
+      { title: "Date Joined", dataField: "date", type: 'date' },
+      { title: "Member ID", dataField: "member_id" },
+      { title: "Full Name", dataField: "full_name", sortable: true, sort_direction: 'desc' },
+      { title: "amount", dataField: "amount", type: 'price', sortable: true, sort_direction: 'desc' },
+      { title: "Thrift Tier", dataField: "tier_type" },
+      { title: "Thrift Category", dataField: "tier_category" },
+      { title: "Duration", dataField: "duration", sortable: true, sort_direction: 'desc' },
+      { title: "month", dataField: "month", sortable: true, sort_direction: 'desc' },
+      { title: "year", dataField: "year", sortable: true, sort_direction: 'desc' },
+      { title: "country", dataField: "user_country" },
     ],
     rowActions: [
-      { label: "Edit", actionToPerform: "edit", icon: "ri-pencil-line", permission: "product.edit" },
-      { label: "Delete", actionToPerform: "delete", icon: "ri-delete-bin-line", permission: "product.destroy" },
-      { label: "View", actionToPerform: "view", icon: "ri-eye-line" },
+      { label: "View", actionToPerform: "view", icon: "ri-printer-line" },
+      { label: "Edit", actionToPerform: "edit", icon: "ri-pencil-line", permission: "thrift.edit" },
+      { label: "Delete", actionToPerform: "delete", icon: "ri-delete-bin-line", permission: "thrift.edit" },
     ],
     data: [] as Product[],
     total: 0
@@ -108,6 +174,7 @@ export class AllThriftComponent {
     private renderer: Renderer2,
     @Inject(DOCUMENT) private document: Document,
     @Inject(PLATFORM_ID) private platformId: object,
+    private notificationService: NotificationService,
     private router: Router) {
     this.isBrowser = isPlatformBrowser(platformId);
     this.setting$.subscribe(setting => {
@@ -116,31 +183,74 @@ export class AllThriftComponent {
       }
     });
   }
-
+  
   ngOnInit() {
-    this.store.dispatch(new GetCategories({ status: 1 }))
-    this.store.dispatch(new GetBrands({ status: 1 }))
-    this.store.dispatch(new GetStores({ status: 1 }))
-    this.product$.subscribe(product => {
-      let products = product?.data?.filter((element: Product) => {
-        element.stock = element.stock_status ? `<div class="status-${element.stock_status}"><span>${element.stock_status.replace(/_/g, " ")}</span></div>` : '-';
-        element.store_name = element?.store ? element?.store?.store_name : '-';
-        return element;
+    this.getThrifts();
+    this.getThriftsTiers();
+    this.years = this.generateYearOptions();
+    // this.store.dispatch(new GetThriftsCategories({}))
+    this.countries$.pipe(takeUntil(this.destroy$)).subscribe(countries => {
+      if (countries && countries.length > 0) {
+        this.countryMap = new Map(countries.map((country: any) => [country.value, country.label]));
+        // console.log("Country Map:", this.countryMap); // Verify the map is correct
+        this.updateThriftsWithCountryLabels();
+      }
+    });
+  }
+  
+  private getMonthLabel(monthValue: number): string {
+    const month = this.months.find(m => m.value === monthValue);
+    return month ? month.label : '';
+  }
+  
+  private updateThriftsWithCountryLabels() {
+    this.thrifts$.pipe(takeUntil(this.destroy$)).subscribe(thrift => {
+      if (!thrift) return;
+      
+      const thrifts = thrift.data?.map((item: any) => {
+        // Replace country ID with label if available
+        if (item.user_country && this.countryMap.has(item.user_country)) {
+          return {
+            ...item,
+            month: this.getMonthLabel(item.month),
+            user_country: this.countryMap.get(item.user_country)
+          };
+        }
+        return item;
       });
-      this.tableConfig.data = product ? products : [];
-      this.tableConfig.total = product ? product?.total : 0;
+      
+      this.tableConfig.data = thrifts || [];
+      this.tableConfig.total = thrift.total || 0;
+    });
+  }
+  
+  getThrifts(){
+    this.store.dispatch(new GetThrifts({}));
+  }
+  
+  getThriftsTiers(){
+    this.store.dispatch(new GetThriftsTiers({}))
+  }
+
+  generateYearOptions(startYear: number = new Date().getFullYear(), numberOfYears: number = 50): any[] {
+    return Array.from({ length: numberOfYears }, (_, i) => {
+      const year = startYear + i;
+      return {
+        value: year,
+        label: year.toString(),
+      };
     });
   }
 
   onTableChange(data?: Params) {
     this.filter = { ...this.filter, ...data }
-    this.store.dispatch(new GetProducts(this.filter));
+    this.store.dispatch(new GetThrifts(this.filter));
   }
 
   applyFilter(data: Select2UpdateEvent) {
-    this.filter['product_type'] = data && data.value ? data.value : null;
-    if (!this.filter['product_type']) {
-      delete this.filter['product_type'];
+    this.filter['tier_type'] = data && data.value ? data.value : null;
+    if (!this.filter['tier_type']) {
+      delete this.filter['tier_type'];
     }
     this.onTableChange(this.filter);
   }
@@ -165,7 +275,11 @@ export class AllThriftComponent {
   }
 
   edit(data: Product) {
-    this.router.navigateByUrl(`/product/edit/${data.id}`);
+    this.router.navigateByUrl(`/thrift/edit-thrift/${data.id}`);
+  }
+
+  view(data: Product) {
+    this.router.navigateByUrl(`/thrift/details/${data.id}`);
   }
 
   approve(data: Product) {
@@ -177,7 +291,22 @@ export class AllThriftComponent {
   }
 
   delete(data: Product) {
-    this.store.dispatch(new DeleteProduct(data.id));
+    this.store.dispatch(new DeleteThrifts(data.id)).pipe(
+      takeUntil(this.destroy$),
+    ).subscribe(
+      {
+        next: (res: any) => {
+          const response = res?.thrifts?.response;
+          if (response.status === appConfig.statusCode.ok) {
+            this.notificationService.showSuccess(response.message);
+            this.getThrifts();
+          }    
+        },
+        error: (err) => {
+          this.notificationService.showError(err?.message || 'Failed to delete user!');
+        }
+      }
+    )
   }
 
   deleteAll(ids: number[]) {
@@ -193,12 +322,6 @@ export class AllThriftComponent {
       this.DownloadModal.openModal(data);
     } else {
       this.store.dispatch(new Download({ product_id: data.id, variation_id: null }));
-    }
-  }
-
-  view(data: Product) {
-    if(isPlatformBrowser(this.platformId)) {
-      window.open(this.url + '/product/' + data.slug, "_blank");
     }
   }
 
@@ -221,9 +344,14 @@ export class AllThriftComponent {
   }
 
   filters(data: any, key: string) {
+    console.log("Filters ::::", {
+      data,
+      key
+    })
     this.renderer.addClass(this.document.body, 'loader-none');
+    console.log(data && data.value);
     if (data && data.value) {
-      this.filter[key] = data.value.join();
+      this.filter[key] = data.value;
     } else {
       this.filter[key] = [];
     }

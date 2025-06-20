@@ -1,6 +1,11 @@
 import { Params } from "../../interface/core.interface";
 import { Role } from "../../interface/role.interface";
 
+export class SetLoadingState {
+  static readonly type = '[Loading] Set Loading State';
+  constructor(public isLoading: boolean) {}
+}
+
 export class GetRoles {
   static readonly type = "[Role] Get";
   constructor(public payload?: Params) {}

@@ -6,12 +6,12 @@ export class GetUserTransaction {
   constructor(public payload?: Params) {}
 }
 
-export class CreditWallet {
-  static readonly type = "[Wallet] Credit";
-  constructor(public payload: Wallet) {}
+export class SetLoadingState {
+  static readonly type = "[Wallet] Set Loading State";
+  constructor(public isLoading: boolean) {}
 }
 
-export class DebitWallet {
-  static readonly type = "[Wallet] Debit";
-  constructor(public payload: Wallet) {}
+export class EditTransaction {
+  static readonly type = "[Wallet] Edit";
+  constructor(public id: number) {}
 }

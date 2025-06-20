@@ -1,24 +1,19 @@
-
-import { Routes } from '@angular/router';
-import { AllInvestmentsComponent } from './all-investments/all-investments.component';
-import { AddInvestmentComponent } from './add-investment/add-investment.component';
-import { EditInvestmentComponent } from './edit-investment/edit-investment.component';
-
-
-
-
+import { Routes } from "@angular/router";
+import { AllInvestmentsComponent } from "./all-investments/all-investments.component";
+import { AddInvestmentComponent } from "./add-investment/add-investment.component";
+import { EditInvestmentComponent } from "./edit-investment/edit-investment.component";
 
 export const investmentRoutes: Routes = [
   {
-    path: '',
-    component: AllInvestmentsComponent
+    path: "",
+    component: AllInvestmentsComponent,
   },
   {
-    path: 'add-investment',
-    component: AddInvestmentComponent
+    path: "add-investment",
+    component: AddInvestmentComponent,
   },
   {
-    path: 'edit-investment:/id',
-    component: EditInvestmentComponent
-  }
+    path: "edit-investments:/id",
+    component: EditInvestmentComponent,
+  },
 ];

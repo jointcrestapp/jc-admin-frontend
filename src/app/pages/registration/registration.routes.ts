@@ -17,10 +17,6 @@ export const registrationRoutes: Routes = [
     component: AllMembersComponent
   },
   {
-    path: 'edit-member:/id',
-    component: EditMemberComponent
-  },
-  {
     path: 'create',
     component: AddMemberComponent
   },
@@ -35,5 +31,9 @@ export const registrationRoutes: Routes = [
   {
     path: 'account-closure-request',
     component: AccountClosureRequestComponent
-  }
+  },
+  {
+    path: 'edit-member/:id',
+    component: EditMemberComponent
+  },
 ];

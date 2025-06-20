@@ -21,6 +21,15 @@ export class BaseApiService {
   post<T>(url: string, body: any, headers?: HttpHeaders) {
     return this.http.post<T>(url, this.encryptIfNeeded(body), { headers }).pipe(apiOperators());
   }
+
+  put<T>(url: string, body: any, headers?: HttpHeaders) {
+    return this.http.put<T>(url, this.encryptIfNeeded(body), { headers }).pipe(apiOperators());
+  }
+
+  patch<T>(url: string, headers?: HttpHeaders) {
+    return this.http.patch<T>(url, { headers }).pipe(apiOperators());
+  }
+
   delete<T>(url: string, headers?: HttpHeaders) {
     return this.http.delete<T>(url, { headers }).pipe(apiOperators());
   }

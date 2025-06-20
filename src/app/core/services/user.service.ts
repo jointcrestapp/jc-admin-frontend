@@ -14,7 +14,7 @@ export class  UserService extends BaseApiService {
   }
 
   getUsers(filter: any) : Observable<any>{
-    return this.post(`${environment.apiURL}/get_users`, filter);
+    return this.get(`${environment.apiURL}/get_users`, filter);
   }
   
   getNotifications(data: any): Observable<any> {
@@ -29,18 +29,19 @@ export class  UserService extends BaseApiService {
     return this.get(`${environment.apiURL}/user/${id}`);
   }
 
-  updateUser(data: any) : Observable<any> {
-    return this.post(`${environment.apiURL}/update_user`, data);
+  updateUser(data: any,id:number) : Observable<any> {
+    return this.put(`${environment.apiURL}/update_user/${id}`, data);
   }
-  updateUserStatus(data: any) : Observable<any> {
-    return this.post(`${environment.apiURL}/update_user_status`, data);
+  
+  updateUserStatus(data: any,id:number) : Observable<any> {
+    return this.patch(`${environment.apiURL}/update_user_status/${id}`, data);
   }
-  deleteUser(data: any) : Observable<any> {
-    return this.post(`${environment.apiURL}/delete_user`,data);
+  deleteUser(id:number) : Observable<any> {
+    return this.delete(`${environment.apiURL}/delete_user/${id}`);
   }
 
   deleteMultipleUsers(data: any) : Observable<any> {
-    return this.post(`${environment.apiURL}/delete_multiple_users`,data);
+    return this.post(`${environment.apiURL}/delete_multiple_users`, data)
   }
 
   getSubscription(data: any): Observable<any> {

@@ -3,12 +3,14 @@ import { FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFo
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { Store } from '@ngxs/store';
-import { Subject, mergeMap, of, switchMap, takeUntil } from 'rxjs';
+import { Observable, Subject, finalize, mergeMap, of, switchMap, takeUntil } from 'rxjs';
 import { ButtonComponent } from '../../../../shared/components/ui/button/button.component';
 import { FormFieldsComponent } from '../../../../shared/components/ui/form-fields/form-fields.component';
-import { CreateRole, EditRole, UpdateRole } from '../../../../shared/store/action/role.action';
+import { CreateRole, EditRole, UpdateRole, SetLoadingState  } from '../../../../shared/store/action/role.action';
 import { RoleState } from '../../../../shared/store/state/role.state';
 import { PermissionsComponent } from '../permissions/permissions.component';
+import { NotificationService } from 'src/app/shared/services/notification.service';
+import { appConfig } from 'src/app/core/config/config';
 
 @Component({
     selector: 'app-form-role',
@@ -20,15 +22,17 @@ import { PermissionsComponent } from '../permissions/permissions.component';
 })
 export class FormRoleComponent {
 
-  @Input() type: String;
+  @Input() type: string;
 
   public form: FormGroup;
   public permissions: number[] = [];
   public id: number;
 
+  isLoading$: Observable<boolean> = this.store.select(RoleState.isLoading);
   private destroy$ = new Subject<void>();
 
   constructor(private store: Store,
+    private notificationService: NotificationService,
     private route: ActivatedRoute,
     private router: Router,
     private formBuilder: FormBuilder) {
@@ -43,26 +47,27 @@ export class FormRoleComponent {
   }
 
   ngOnInit() {
-    this.route.params
-      .pipe(
+    if(this.type === 'edit'){
+      this.route.params.pipe(
         switchMap(params => {
-            if(!params['id']) return of();
-            return this.store
-                      .dispatch(new EditRole(params['id']))
-                      .pipe(mergeMap(() => this.store.select(RoleState.selectedRole)))
+          if(!params['id']) return of();
+          return this.store
+            .dispatch(new EditRole(params['id']))
+            .pipe(mergeMap(() => this.store.select(RoleState.selectedRole)))
           }
         ),
         takeUntil(this.destroy$)
-      )
-      .subscribe(role => {
+      ).subscribe(role => {
+        let selectedRolePermissions = JSON.parse(role?.permissions)
         this.id = role?.id!;
-        let permissions  = role?.permissions!.map(permission => permission?.id);
-        this.permissions = permissions!;
+        let permissions  = selectedRolePermissions.map((permission: any) => permission);
+        this.permissions = permissions;
         this.form.patchValue({
           name: role?.name,
           permissions: permissions
         });
       });
+    }
   }
 
   setPermissions(permissions: number[]) {
@@ -73,16 +78,50 @@ export class FormRoleComponent {
 
   submit() {
     this.form.markAllAsTouched();
-    let action = new CreateRole(this.form.value);
+    const payload = { ...this.form.value };
+    let action = new CreateRole(payload);
+
+    this.store.dispatch(new SetLoadingState(true));
 
     if(this.type == 'edit' && this.id) {
       action = new UpdateRole(this.form.value, this.id)
+      this.store.dispatch(action).pipe(
+        finalize(() => (this.store.dispatch(new SetLoadingState(false)))),
+        takeUntil(this.destroy$)
+      ).subscribe({
+        next: (res: any) => {
+          const response = res?.role?.response;
+          if (response?.status === appConfig.statusCode.ok) {
+            this.notificationService.showSuccess(response?.message || 'Role updated successfully!');
+            this.router.navigateByUrl('/user/role');
+          } else {
+            this.notificationService.showError(response?.message || 'Role update failed.');
+          }
+        },
+        error: (err) => {
+          this.notificationService.showError(err?.message || 'An unexpected error occurred');
+        }
+      });
     }
 
-    if(this.form.valid) {
-      this.store.dispatch(action).subscribe({
-        complete: () => {
-          this.router.navigateByUrl('/role');
+    if(this.form.valid && this.type === 'create') {
+      this.store.dispatch(action).pipe(
+        finalize(() => this.store.dispatch(new SetLoadingState(false))),
+        takeUntil(this.destroy$)
+      )
+      .subscribe({
+        next: (res: any) =>{
+          const response = res?.role?.response;
+
+          if (response?.status === appConfig.statusCode.created) {
+            this.notificationService.showSuccess(response?.message || 'Role created successfully!');
+            this.router.navigateByUrl('user/role');
+          } else {
+            this.notificationService.showError(response?.message || 'Role creation failed.');
+          }
+        },
+        error: (err) => {
+          this.notificationService.showError(err?.message || 'An unexpected error occurred');
         }
       });
     }

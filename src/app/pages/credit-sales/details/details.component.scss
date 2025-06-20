@@ -1,0 +1,259 @@
+// payment-slip.component.scss
+.payment-slip-container {
+  background: white;
+  padding: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+
+  .slip-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #eee;
+
+    .logo-section {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+
+      .logo {
+        height: 50px;
+      }
+
+      h2 {
+        margin: 0;
+        color: #2c3e50;
+        font-weight: 600;
+      }
+    }
+
+    .reference-number {
+      font-size: 0.9rem;
+      color: #666;
+    }
+  }
+
+  .card {
+    background: white;
+    border-radius: 6px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  }
+
+  .highlight-card {
+    background: #f8f9fa;
+    border-left: 4px solid #3498db;
+  }
+
+  .address-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+
+    h3 {
+      margin-top: 0.5rem;
+      margin-bottom: 0.5rem;
+      color: #2c3e50;
+    }
+
+    h4 {
+      margin-bottom: 0.5rem;
+      color: #7f8c8d;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    p {
+      margin: 0.25rem 0;
+      line-height: 1.5;
+    }
+  }
+
+  .message-section {
+    background: #f8f9fa;
+    font-style: italic;
+    color: #555;
+    line-height: 1.6;
+  }
+
+  .payment-info {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+
+    .info-item {
+      display: flex;
+      flex-direction: column;
+
+      .info-label {
+        font-size: 0.8rem;
+        color: #7f8c8d;
+        margin-bottom: 0.25rem;
+      }
+
+      .info-value {
+        font-weight: 500;
+        color: #2c3e50;
+      }
+
+      .badge {
+        display: inline-block;
+        padding: 0.25rem 0.5rem;
+        border-radius: 4px;
+        font-size: 0.8rem;
+        font-weight: 600;
+
+        &.status-completed {
+          background: #d4edda;
+          color: #155724;
+        }
+        &.status-pending {
+          background: #fff3cd;
+          color: #856404;
+        }
+        &.status-requested {
+          background: #fff3cd;
+          color: #856404;
+        }
+        &.status-failed {
+          background: #f8d7da;
+          color: #721c24;
+        }
+      }
+    }
+  }
+
+  .savings-details {
+    h4 {
+      margin-top: 0;
+      margin-bottom: 1rem;
+      color: #2c3e50;
+      font-weight: 600;
+    }
+
+    .details-table {
+      width: 100%;
+      border-collapse: collapse;
+
+      tr {
+        border-bottom: 1px solid #eee;
+
+        &:last-child {
+          border-bottom: none;
+        }
+
+        td {
+          padding: 0.75rem 0.5rem;
+          vertical-align: top;
+
+          &:first-child {
+            font-weight: 500;
+            color: #555;
+            width: 40%;
+          }
+        }
+      }
+
+      .total-row {
+        td {
+          padding-top: 1rem;
+          font-weight: 600;
+          color: #2c3e50;
+          font-size: 1.1rem;
+        }
+      }
+    }
+  }
+
+  .slip-footer {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .disclaimer {
+      font-size: 0.8rem;
+      color: #95a5a6;
+      max-width: 60%;
+    }
+
+    .slip-actions {
+      display: flex;
+      gap: 1rem;
+
+      .btn {
+        padding: 0.5rem 1rem;
+        border-radius: 4px;
+        font-weight: 500;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: all 0.2s;
+
+        i {
+          font-size: 0.9rem;
+        }
+
+        &-print {
+          background: #3498db;
+          color: white;
+          border: 1px solid #3498db;
+
+          &:hover {
+            background: #2980b9;
+          }
+        }
+
+        &-close {
+          background: white;
+          color: #7f8c8d;
+          border: 1px solid #ddd;
+
+          &:hover {
+            background: #f8f9fa;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  .payment-slip-container,
+  .payment-slip-container * {
+    visibility: visible;
+  }
+  .payment-slip-container {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    box-shadow: none;
+    padding: 0;
+
+    .slip-actions {
+      display: none !important;
+    }
+
+    .card {
+      box-shadow: none;
+      border: 1px solid #eee;
+      page-break-inside: avoid;
+    }
+  }
+}

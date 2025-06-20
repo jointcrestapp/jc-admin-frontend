@@ -5,7 +5,7 @@
             "id": 1,
             "name": "admin",
             "guard_name": "web",
-            "system_reserve": "1",
+            "system_reserve": "0",
             "created_at": "2024-05-02T08:34:46.000000Z",
             "updated_at": "2024-05-02T08:34:46.000000Z",
             "permissions": [
@@ -1753,7 +1753,7 @@
             "id": 2,
             "name": "consumer",
             "guard_name": "web",
-            "system_reserve": "1",
+            "system_reserve": "0",
             "created_at": "2024-05-02T08:34:46.000000Z",
             "updated_at": "2024-05-02T08:34:46.000000Z",
             "permissions": [
@@ -1895,7 +1895,7 @@
             "id": 3,
             "name": "vendor",
             "guard_name": "web",
-            "system_reserve": "1",
+            "system_reserve": "0",
             "created_at": "2024-05-02T08:34:46.000000Z",
             "updated_at": "2024-05-02T08:34:46.000000Z",
             "permissions": [

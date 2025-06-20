@@ -1,1 +1,25 @@
-<p>all-users-roles works!</p>
+<app-page-wrapper [gridClass]="'col-sm-12'" [title]="'user roles'">
+  <div
+    class="d-flex flex-wrap gap-3"
+    button
+    *hasPermission="'configurations.create'"
+  >
+    <a
+      [routerLink]="['/configurations/users-role/add-user-role']"
+      class="align-items-center btn btn-theme d-flex rounded"
+    >
+      {{ "add_user_role" | translate }}
+    </a>
+  </div>
+  <app-table
+    [tableConfig]="tableConfig"
+    (tableChanged)="onTableChange($event)"
+    (action)="onActionClicked($event)"
+  >
+  </app-table>
+</app-page-wrapper>
+
+<app-import-csv-modal [module]="'configurations'" #csvModal>
+</app-import-csv-modal>
+
+<app-digital-download-modal #downloadModal> </app-digital-download-modal>

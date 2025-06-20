@@ -1,1 +1,25 @@
-<p>all-shares-amount works!</p>
+<app-page-wrapper [gridClass]="'col-sm-12'" [title]="'share_amount'">
+  <!-- <div
+    class="d-flex flex-wrap gap-3"
+    button
+    *hasPermission="'configurations.create'"
+  >
+    <a
+      [routerLink]="['/configurations/share-amount/add-share-amount']"
+      class="align-items-center btn btn-theme d-flex rounded"
+    >
+      {{ "add_share_amount" | translate }}
+    </a>
+  </div> -->
+  <app-table
+    [tableConfig]="tableConfig"
+    (tableChanged)="onTableChange($event)"
+    (action)="onActionClicked($event)"
+  >
+  </app-table>
+</app-page-wrapper>
+
+<app-import-csv-modal [module]="'configurations'" #csvModal>
+</app-import-csv-modal>
+
+<app-digital-download-modal #downloadModal> </app-digital-download-modal>
