@@ -62,12 +62,14 @@ export const appConfig = {
     roles: {
         "SUPER_ADMIN": 1, //Super Administrator
         "ADMIN": 2, //Administrator
-        "CASUAL_USER": 0, // Use services and Refer people
+        "MEMBER": 3,
+        "AGENT":4
     },
     role_type: {
         "SUPER_ADMIN": { id: '1', meta: "super_admin", name: "Super Admin"},
         "ADMIN": { id: '2', meta: "admin", name: "Admin"},
-        "CASUAL_USER": { id: '3', meta: "casual_user", name: "Casual User"}
+        "MEMBER": { id: '3', meta: "member", name: "Member" },
+        "AGENT": { id: '4', meta: "agent", name: "Agent"}
     },
     
     upload_dir: {
