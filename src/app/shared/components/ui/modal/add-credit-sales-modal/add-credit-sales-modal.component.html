@@ -1,0 +1,94 @@
+<ng-template #addCreditSalesModal>
+  <div class="modal-body">
+    <i class="ri-question-line icon-box wo-bg"></i>
+    <h5 class="modal-title">{{ "order_credit_sales" | translate }}</h5>
+    <p>{{ message | translate }}</p>
+    <form class="theme-form theme-form-2 mega-form" [formGroup]="form">
+      <app-form-fields
+        [labelClass]="'form-label-title col-sm-3 mb-0'"
+        [gridClass]="'col-sm-9'"
+        [label]="'search member'"
+        [for]="'search_member'"
+        [required]="true"
+      >
+        <div class="search-container">
+          <div class="search-input-wrapper">
+            <input
+              class="form-control search-input"
+              [(ngModel)]="text"
+              [ngModelOptions]="{ standalone: true }"
+              (keyup)="searchTerm(text)"
+              (click)="openDropDown(text)"
+              type="text"
+              autocomplete="off"
+              placeholder="{{
+                'search_by_name_email_phone_member_id' | translate
+              }} ..."
+            />
+            <i class="ri-search-line search-icon"></i>
+          </div>
+
+          <div class="search-results-dropdown" [class.open]="searchResult">
+            <div class="results-container">
+              <ul class="results-list">
+                @for(item of items; track item.id){
+                <li class="result-item" (click)="selectMember(item)">
+                  <a class="result-link">
+                    <span class="item-title">{{ item.title | translate }}</span>
+                  </a>
+                </li>
+                }
+              </ul>
+
+              @if(searchResultEmpty){
+              <div class="no-results-message">
+                {{ "opps!!_There_are_no_result_found" | translate }}
+              </div>
+              }
+            </div>
+          </div>
+        </div>
+      </app-form-fields>
+      <app-form-fields
+        [labelClass]="'form-label-title col-sm-3 mb-0'"
+        [gridClass]="'col-sm-9'"
+        [label]="'Quantity'"
+        [for]="'qty'"
+        [required]="true"
+      >
+        <select2
+          class="custom-select"
+          [placeholder]="'select_qty' | translate"
+          [data]="quantities.length ? quantities : []"
+          formControlName="qty"
+          noResultMessage="{{ 'no_data_found' | translate }}"
+          id="qty"
+        >
+        </select2>
+        @if(form.controls['qty']?.touched &&
+        form.controls['qty']?.errors?.['required']){
+        <div class="invalid-feedback">
+          {{ "quantity_is_required" | translate }}
+        </div>
+        }
+      </app-form-fields>
+      <div class="button-box">
+        <app-button
+          [class]="'btn-md fw-bold btn btn-outline'"
+          [spinner]="false"
+          [id]="'confirm_no_btn'"
+          (click)="closeModal()"
+        >
+          {{ "abort" | translate }}
+        </app-button>
+        <app-button
+          [class]="'btn-theme btn-md fw-bold btn'"
+          [id]="'confirm_yes_btn'"
+          (click)="confirm()"
+        >
+          {{ "add_credit_sales" | translate }}
+        </app-button>
+      </div>
+    </form>
+  </div>
+</ng-template>

@@ -44,7 +44,7 @@ export class UserComponent implements OnInit, OnDestroy {
       { title: "Email", dataField: "email" },
       { title: "Role", dataField: "role_name" },
       { title: "created_at", dataField: "createdAt", type: "date", sortable: true, sort_direction: 'desc' },
-      { title: "Status", dataField: "status", type: "switch" },
+      { title: "Status", dataField: "is_activated", type: "switch" },
     ],
     rowActions: [
       { label: "Edit", actionToPerform: "edit", icon: "ri-pencil-line", permission: "user.edit" },
@@ -57,22 +57,10 @@ export class UserComponent implements OnInit, OnDestroy {
   };
   
   constructor(
-    private notificationService: NotificationService,
-    private userService: UserService,
-    public router: Router) { }
-/* 
-  ngAfterViewInit() {
-    // Listen for the emitted event
-    this.confirmAction.action.subscribe((event) => {
-      this.onActionReceived(event);  // Handle the event in the parent component
-    });
-  }
-  onActionReceived(event: any) { 
-    if (event.actionToPerform == 'status') { 
-       this.deactivateUser(event.data.id)
-    }
-  }
- */
+  private notificationService: NotificationService,
+  private userService: UserService,
+  public router: Router) { }
+
   ngOnInit() {
     this.getUsers();
      this.user$.pipe(takeUntil(this.destroy$)).subscribe((data) => {
@@ -91,14 +79,15 @@ export class UserComponent implements OnInit, OnDestroy {
   
 
   onTableChange(data?: Params) {
-    this.getUsers(); // handle filter/pagination later
+    console.log("Params :::",data);
+    // this.getUsers(); // handle filter/pagination later
+    this.store.dispatch(new GetUsers(data));
   }
 
   onActionClicked(action: TableClickedAction) {
-    
     if (action.actionToPerform == 'edit')
       this.edit(action.data)
-    else if (action.actionToPerform == 'status')
+    else if (action.actionToPerform == 'is_activated')
       this.status(action.data)
     else if (action.actionToPerform == 'detail')
       this.view(action.data)
@@ -116,15 +105,15 @@ export class UserComponent implements OnInit, OnDestroy {
   }
 
   status(data: any) {
-    console.log('Data::', data);
-    this.store.dispatch(new UpdateUserStatus(data.id, data.status)).pipe(
+    this.store.dispatch(new UpdateUserStatus(data.id, data.is_activated)).pipe(
       takeUntil(this.destroy$)
     ).subscribe({
       next: (res: any) => {
+        console.log("Status update ::::::",res);
         const response = res?.user?.response; 
         if (response.status === appConfig.statusCode.ok) {
-            this.notificationService.showSuccess(response.message);
-            this.getUsers();  // Refresh the list after status update
+          this.notificationService.showSuccess(response.message);
+          this.getUsers();  // Refresh the list after status update
         }    
       },
       error: (err) => {
@@ -140,8 +129,8 @@ export class UserComponent implements OnInit, OnDestroy {
       next: (res: any) => {
         const response = res?.user?.response; 
         if (response.status === appConfig.statusCode.ok) {
-            this.notificationService.showSuccess(response.message);
-            this.getUsers();  // Refresh the list after status update
+          this.notificationService.showSuccess(response.message);
+          this.getUsers();  // Refresh the list after status update
         }    
       },
       error: (err) => {
@@ -151,7 +140,20 @@ export class UserComponent implements OnInit, OnDestroy {
   }
 
   deleteAll(ids: number[]) {
-    this.store.dispatch(new DeleteAllUser(ids));
+    this.store.dispatch(new DeleteAllUser(ids)).pipe(
+      takeUntil(this.destroy$)
+    ).subscribe({
+      next: (res: any) => {
+        const response = res?.user?.response; 
+        if (response.status === appConfig.statusCode.ok) {
+          this.notificationService.showSuccess(response.message);
+          // this.getUsers();  
+        }    
+      },
+      error: (err) => {
+        this.notificationService.showError(err?.message || 'Failed to delete user!');
+      }
+    });
   }
 
   export() {

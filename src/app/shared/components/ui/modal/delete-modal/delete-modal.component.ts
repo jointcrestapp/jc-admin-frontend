@@ -32,7 +32,7 @@ export class DeleteModalComponent {
       centered: true,
       windowClass: 'theme-modal text-center'
     }).result.then((result) => {
-      `Result ${result}`
+      console.log(`Result ${result}`)
     }, (reason) => {
       this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
     });

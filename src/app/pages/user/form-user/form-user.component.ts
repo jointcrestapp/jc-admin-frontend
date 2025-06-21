@@ -18,13 +18,14 @@ import { UserService } from 'src/app/core/services/user.service';
 import { LoaderComponent } from "../../../shared/components/loader/loader.component";
 import { appConfig } from 'src/app/core/config/config';
 import { NotificationService } from 'src/app/shared/services/notification.service';
+import { GLOBALF } from 'src/app/core/utils/my_library';
 
 @Component({
-    selector: 'app-form-user',
-    imports: [TranslateModule, FormsModule, ReactiveFormsModule,
-    Select2Module, CommonModule, ButtonComponent, FormFieldsComponent, LoaderComponent],
-    templateUrl: './form-user.component.html',
-    styleUrl: './form-user.component.scss'
+  selector: 'app-form-user',
+  imports: [TranslateModule, FormsModule, ReactiveFormsModule,
+  Select2Module, CommonModule, ButtonComponent, FormFieldsComponent, LoaderComponent],
+  templateUrl: './form-user.component.html',
+  styleUrl: './form-user.component.scss'
 })
 export class FormUserComponent {
 
@@ -66,8 +67,8 @@ export class FormUserComponent {
       phone: new FormControl('', [Validators.required, Validators.pattern(appConfig.pattern.SIMPLE_PHONE_NO)]),
       dial_code: new FormControl('234', [Validators.required]),
       role: new FormControl(0, [Validators.required]),
-      password: new FormControl('', [Validators.required]),
-      password_confirmation: new FormControl('', [Validators.required]),
+      password: new FormControl(''),
+      password_confirmation: new FormControl(''),
       status: new FormControl(1)
     },{
       validator : CustomValidators.MatchValidator('password', 'password_confirmation')
@@ -82,6 +83,23 @@ export class FormUserComponent {
   }
 
   ngOnInit() {
+    if (this.type === 'edit') {
+      // Clear validators if editing
+      this.form.get('password')?.clearValidators();
+      this.form.get('password_confirmation')?.clearValidators();
+      this.form.clearValidators(); // clear form-level validators like MatchValidator
+    } else {
+      // Set validators if creating
+      this.form.get('password')?.setValidators([Validators.required]);
+      this.form.get('password_confirmation')?.setValidators([Validators.required]);
+      this.form.setValidators(CustomValidators.MatchValidator('password', 'password_confirmation'));
+    }
+  
+    // Update form validity after setting validators
+    this.form.get('password')?.updateValueAndValidity();
+    this.form.get('password_confirmation')?.updateValueAndValidity();
+    this.form.updateValueAndValidity();
+
     // Check if there's any state
     if (this.type === 'edit') {
       this.route.params
@@ -111,13 +129,13 @@ export class FormUserComponent {
         });
     }
     // Listen for changes on 'fname' and capitalize the first letter
-    this.form.controls['fname'].valueChanges.subscribe(value => {
-      this.capitalizeFirstLetter('fname', value);
+    this.form.controls['first_name'].valueChanges.subscribe(value => {
+      this.capitalizeFirstLetter('first_name', value);
     });
 
     // Listen for changes on 'lname' and capitalize the first letter
-    this.form.controls['lname'].valueChanges.subscribe(value => {
-      this.capitalizeFirstLetter('lname', value);
+    this.form.controls['last_name'].valueChanges.subscribe(value => {
+      this.capitalizeFirstLetter('last_name', value);
     });
   }
    // Function to capitalize the first letter
@@ -133,63 +151,53 @@ export class FormUserComponent {
 
   submit() {
     this.form.markAllAsTouched();
-    const payload = { ...this.form.value };
-   
+    if (!this.form.valid) {
+      return;
+    }
+
+    let payload = { ...this.form.value };
+    payload.member_id = GLOBALF.genrateMemberId();
+    payload.account_type = appConfig.roles.ADMIN;
+    payload.is_activated = payload.status ? 1 : 0;
+    
     delete payload.password_confirmation;
-    let action = new CreateUser(payload);
     // Dispatch the loading action to set loading state to true in the store
     this.store.dispatch(new SetLoadingState(true));
     
-    if (this.type == 'edit' && this.id) {
+    let action:any;
     
+    if (this.type == 'edit' && this.id) {
       this.form.removeControl('password');
       this.form.removeControl('password_confirmation');
+      payload.status = payload.status ? 1 : 0;
 
       action = new UpdateUser(payload, this.id);
-      this.store
-        .dispatch(action)
-        .pipe(finalize(() => (this.store.dispatch(new SetLoadingState(false)))),
-        takeUntil(this.destroy$))
-        .subscribe({
-          next: (res: any) => {
-            const response = res?.user?.response;
-            if (response?.status === appConfig.statusCode.ok) {
-              this.notificationService.showSuccess(response?.message || 'User updated successfully!');
-              this.router.navigateByUrl('/user');
-            } else {
-              this.notificationService.showError(response?.message || 'User update failed.');
-            }
-          },
-          error: (err) => {
-            this.notificationService.showError(err?.message || 'An unexpected error occurred');
-          }
-      });
     }
 
-    if(this.form.valid && this.type === 'create') {
+    if(this.type === 'create') {
       //connect to the backend   
-      this.store.dispatch(action)
-        .pipe(
-          finalize(() => this.store.dispatch(new SetLoadingState(false))),
-          takeUntil(this.destroy$)
-        )
-        .subscribe({
-          next: (res: any) => {
-            const response = res?.user?.response; 
-            
-            if (response?.status === appConfig.statusCode.created) {
-              this.notificationService.showSuccess(response?.message || 'User created successfully!');
-              this.router.navigateByUrl('/user');
-            } else {
-              this.notificationService.showError(response?.message || 'User creation failed.');
-            }
-          },
-          error: (err) => {
-            this.notificationService.showError(err?.message || 'An unexpected error occurred');
-          }
-        });
+      action = new CreateUser(payload);
     }
-  }
+    this.store
+    .dispatch(action)
+    .pipe(
+      finalize(() => (this.store.dispatch(new SetLoadingState(false)))),
+      takeUntil(this.destroy$)
+    ).subscribe({
+    next: (res: any) => {
+      const response = res?.user?.response;
+      if (response?.status === appConfig.statusCode.created) {
+        this.notificationService.showSuccess(response?.message);
+        this.router.navigateByUrl('/user/all-users');
+      } else {
+        this.notificationService.showError(response?.message);
+      }
+    },
+    error: (err) => {
+      this.notificationService.showError(err?.message || 'An unexpected error occurred');
+    }
+  });
+  }
 
   ngOnDestroy() {
     this.destroy$.next();

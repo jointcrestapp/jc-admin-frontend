@@ -1,1 +1,66 @@
-<p>dividend-history works!</p>
+<app-page-wrapper [gridClass]="'col-sm-12'" [title]="'dividends'">
+  <div class="d-flex flex-wrap gap-3" button *hasPermission="'savings.create'">
+    <a
+      href="javascript:void(0)"
+      class="align-items-center btn btn-theme d-flex rounded"
+    >
+      <i class="ri-download-2-line"></i> {{ "export" | translate }}
+    </a>
+  </div>
+  <app-table
+    [tableConfig]="tableConfig"
+    (tableChanged)="onTableChange($event)"
+    (rowClicked)="edit($event)"
+    (action)="onActionClicked($event)"
+  >
+    @if(open){
+    <div advanceFilter class="show-box mb-4 d-block product-category-option">
+      <div class="row g-sm-4 g-3">
+        <div class="col-xl-4 col-lg-6 col-md-3 col-sm-6">
+          @if(isBrowser) {
+          <select2
+            class="custom-select"
+            [data]="(countries$ | async)?.length ? (countries$ | async) : []"
+            [placeholder]="'select_country' | translate"
+            (update)="filters($event, 'country')"
+            noResultMessage="{{ 'no_data_found' | translate }}"
+            resettable
+          >
+          </select2>
+          }
+        </div>
+        <div class="col-xl-4 col-lg-6 col-md-3 col-sm-6">
+          @if(isBrowser) {
+          <select2
+            class="custom-select"
+            [data]="months.length ? months : []"
+            [placeholder]="'month' | translate"
+            (update)="filters($event, 'month')"
+            noResultMessage="{{ 'no_data_found' | translate }}"
+            resettable
+          >
+          </select2>
+          }
+        </div>
+        <div class="col-xl-4 col-lg-6 col-md-3 col-sm-6">
+          @if(isBrowser) {
+          <select2
+            class="custom-select"
+            [data]="years.length ? years : []"
+            [placeholder]="'year' | translate"
+            (update)="filters($event, 'year')"
+            noResultMessage="{{ 'no_data_found' | translate }}"
+            resettable
+          >
+          </select2>
+          }
+        </div>
+      </div>
+    </div>
+    }
+  </app-table>
+</app-page-wrapper>
+
+<app-import-csv-modal [module]="'product'" #csvModal> </app-import-csv-modal>
+
+<app-digital-download-modal #downloadModal> </app-digital-download-modal>

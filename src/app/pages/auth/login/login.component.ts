@@ -9,12 +9,11 @@ import { Login } from '../../../shared/store/action/auth.action';
 import { TranslateModule } from '@ngx-translate/core';
 import { AlertComponent } from '../../../shared/components/ui/alert/alert.component';
 import { ButtonComponent } from '../../../shared/components/ui/button/button.component';
-import { AsyncPipe } from '@angular/common';
 
 @Component({
     selector: 'app-login',
     imports: [TranslateModule, FormsModule, ReactiveFormsModule,
-      RouterModule, AlertComponent, ButtonComponent, AsyncPipe
+      RouterModule, AlertComponent, ButtonComponent
     ],
     templateUrl: './login.component.html',
     styleUrl: './login.component.scss'

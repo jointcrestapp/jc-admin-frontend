@@ -1,0 +1,106 @@
+<form
+  class="theme-form theme-form-2 mega-form"
+  [formGroup]="form"
+  (ngSubmit)="submit()"
+>
+  <app-form-fields
+    [labelClass]="'form-label-title col-sm-3 mb-0'"
+    [gridClass]="'col-sm-9'"
+    [label]="'name'"
+    [for]="'name'"
+    [required]="true"
+  >
+    @if(isBrowser) {
+    <select2
+      class="custom-select"
+      [placeholder]="'select_name' | translate"
+      [data]="metas.length ? metas : []"
+      formControlName="meta"
+      noResultMessage="{{ 'no_data_found' | translate }}"
+      id="name"
+      resettable
+    >
+    </select2>
+    } @if(form.controls['meta'].touched &&
+    form.controls['meta'].errors?.['required']){
+    <div class="invalid-feedback">{{ "name_is_required" | translate }}</div>
+    }
+  </app-form-fields>
+  <app-form-fields
+    [labelClass]="'form-label-title col-sm-3 mb-0'"
+    [gridClass]="'col-sm-9'"
+    [label]="'tier'"
+    [for]="'tier'"
+    [required]="true"
+  >
+    @if(isBrowser) {
+    <select2
+      class="custom-select"
+      [placeholder]="'select_tier' | translate"
+      [data]="(tiers$ | async)?.length ? (tiers$ | async) : []"
+      formControlName="tiers_id"
+      noResultMessage="{{ 'no_data_found' | translate }}"
+      id="tier"
+      resettable
+    >
+    </select2>
+    } @if(form.controls['tiers_id'].touched &&
+    form.controls['tiers_id'].errors?.['required']){
+    <div class="invalid-feedback">
+      {{ "tier_is_required" | translate }}
+    </div>
+    }
+  </app-form-fields>
+  <app-form-fields
+    [labelClass]="'form-label-title col-sm-3 mb-0'"
+    [gridClass]="'col-sm-9'"
+    [label]="'members allowed'"
+    [for]="'members_allowed'"
+    [required]="true"
+  >
+    @if(isBrowser) {
+    <select2
+      class="custom-select"
+      [placeholder]="'members_allowed' | translate"
+      [data]="members_allowed.length ? members_allowed : []"
+      formControlName="members_allowed"
+      noResultMessage="{{ 'no_data_found' | translate }}"
+      id="members_allowed"
+      resettable
+    >
+    </select2>
+    } @if(form.controls['members_allowed'].touched &&
+    form.controls['members_allowed'].errors?.['required']){
+    <div class="invalid-feedback">
+      {{ "members_allowed_is_required" | translate }}
+    </div>
+    }
+  </app-form-fields>
+  <app-form-fields
+    [labelClass]="'form-label-title col-sm-3 mb-0'"
+    [gridClass]="'col-sm-9'"
+    [label]="'duration'"
+    [for]="'duration'"
+    [required]="true"
+  >
+    @if(isBrowser) {
+    <select2
+      class="custom-select"
+      [placeholder]="'duration' | translate"
+      [data]="durations.length ? durations : []"
+      formControlName="duration"
+      noResultMessage="{{ 'no_data_found' | translate }}"
+      id="duration"
+      resettable
+    >
+    </select2>
+    } @if(form.controls['duration'].touched &&
+    form.controls['duration'].errors?.['required']){
+    <div class="invalid-feedback">{{ "duration_is_required" | translate }}</div>
+    }
+  </app-form-fields>
+  <app-button [id]="'user_btn'">{{
+    (type == "create" ? "add_thrift_category" : "update_thrift_category")
+      | translate
+  }}</app-button>
+</form>

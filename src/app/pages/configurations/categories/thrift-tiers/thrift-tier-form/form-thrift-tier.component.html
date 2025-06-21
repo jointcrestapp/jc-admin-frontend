@@ -1,0 +1,141 @@
+<form
+  class="theme-form theme-form-2 mega-form"
+  [formGroup]="form"
+  (ngSubmit)="submit()"
+>
+  <app-form-fields
+    [labelClass]="'form-label-title col-sm-3 mb-0'"
+    [gridClass]="'col-sm-9'"
+    [label]="'name'"
+    [for]="'name'"
+    [required]="true"
+  >
+    @if(isBrowser) {
+    <input
+      class="form-control"
+      id="name"
+      type="text"
+      placeholder="{{ 'enter_name' | translate }}"
+      formControlName="meta"
+    />
+    } @if(form.controls['meta'].touched &&
+    form.controls['meta'].errors?.['required']){
+    <div class="invalid-feedback">{{ "name_is_required" | translate }}</div>
+    }
+  </app-form-fields>
+  <app-form-fields
+    [labelClass]="'form-label-title col-sm-3 mb-0'"
+    [gridClass]="'col-sm-9'"
+    [label]="'currency'"
+    [for]="'currency'"
+    [required]="true"
+  >
+    @if(isBrowser) {
+    <select2
+      class="custom-select"
+      [placeholder]="'select_currency' | translate"
+      [data]="currencies.length ? currencies : []"
+      formControlName="currency"
+      noResultMessage="{{ 'no_data_found' | translate }}"
+      id="currency"
+      resettable
+    >
+    </select2>
+    } @if(form.controls['currency'].touched &&
+    form.controls['currency'].errors?.['required']){
+    <div class="invalid-feedback">
+      {{ "currency_is_required" | translate }}
+    </div>
+    }
+  </app-form-fields>
+  <app-form-fields
+    [labelClass]="'form-label-title col-sm-3 mb-0'"
+    [gridClass]="'col-sm-9'"
+    [label]="'amount'"
+    [for]="'amount'"
+    [required]="true"
+  >
+    @if(isBrowser) {
+    <input
+      class="form-control"
+      id="amount"
+      type="text"
+      placeholder="{{ 'enter_amount' | translate }}"
+      formControlName="amount"
+    />
+    } @if(form.controls['amount'].touched &&
+    form.controls['amount'].errors?.['required']){
+    <div class="invalid-feedback">{{ "amount_is_required" | translate }}</div>
+    }
+  </app-form-fields>
+  <app-form-fields
+    [labelClass]="'form-label-title col-sm-3 mb-0'"
+    [gridClass]="'col-sm-9'"
+    [label]="'description'"
+    [for]="'desc'"
+  >
+    @if(isBrowser) {
+    <textarea
+      class="form-control"
+      id="desc"
+      placeholder="{{ 'enter_description' | translate }}"
+      rows="3"
+      formControlName="desc"
+    ></textarea>
+    <p class="help-text">{{ "*Maximum length should be 300 characters." }}</p>
+    } @if(form.controls['desc'].touched &&
+    form.controls['desc'].errors?.['required']){
+    <div class="invalid-feedback">
+      {{ "description_is_required" | translate }}
+    </div>
+    }
+  </app-form-fields>
+  <app-form-fields
+    [labelClass]="'form-label-title col-sm-3 mb-0'"
+    [gridClass]="'col-sm-9'"
+    [label]="'duration'"
+    [for]="'duration'"
+    [required]="true"
+  >
+    @if(isBrowser) {
+    <select2
+      class="custom-select"
+      [placeholder]="'duration' | translate"
+      [data]="durations.length ? durations : []"
+      formControlName="duration"
+      noResultMessage="{{ 'no_data_found' | translate }}"
+      id="duration"
+      resettable
+    >
+    </select2>
+    } @if(form.controls['duration'].touched &&
+    form.controls['duration'].errors?.['required']){
+    <div class="invalid-feedback">{{ "duration_is_required" | translate }}</div>
+    }
+  </app-form-fields>
+  <app-form-fields
+    [labelClass]="'form-label-title col-sm-3 mb-0'"
+    [gridClass]="'col-sm-9'"
+    [label]="'fund required (%)'"
+    [for]="'percentage_required'"
+    [required]="true"
+  >
+    @if(isBrowser) {
+    <input
+      class="form-control"
+      id="percentage_required"
+      type="text"
+      placeholder="{{ 'enter_fund_required' | translate }}"
+      formControlName="percentage_required"
+    />
+    } @if(form.controls['percentage_required'].touched &&
+    form.controls['percentage_required'].errors?.['required']){
+    <div class="invalid-feedback">
+      {{ "percentage_is_required" | translate }}
+    </div>
+    }
+  </app-form-fields>
+  <app-button [id]="'user_btn'">{{
+    (type == "create" ? "add_thrift_tier" : "update_thrift_tier") | translate
+  }}</app-button>
+</form>

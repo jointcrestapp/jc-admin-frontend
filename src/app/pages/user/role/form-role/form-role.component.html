@@ -19,5 +19,5 @@
     <app-permissions [selectedPermission]="permissions" (setPermissions)="setPermissions($event)">
     </app-permissions>
   </div>
-  <app-button [id]="'role_btn'">{{ 'save' | translate }}</app-button>
+  <app-button [id]="'role_btn'">{{ (type == 'create' ? 'save' : 'update') | translate }}</app-button>
 </form>

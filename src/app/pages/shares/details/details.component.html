@@ -1,0 +1,113 @@
+<!-- payment-slip.component.html -->
+<div class="payment-slip-container" #slipContent>
+  <!-- Header Section -->
+  <div class="slip-header">
+    <div class="logo-section">
+      <img src="assets/images/logo.png" alt="JointCrest Logo" class="logo" />
+      <h2>Shares Payment Slip</h2>
+    </div>
+    <div class="reference-number">
+      Transaction #: <strong>{{ sharesDetails?.transaction_id }}</strong>
+    </div>
+  </div>
+
+  <!-- Address and Message Section -->
+  <div class="address-section">
+    <div class="sender-address card">
+      <h4>From:</h4>
+      <h3>JointCrest</h3>
+      <p>123 Financial Street, Banking City</p>
+      <p>BC 12345, United States</p>
+      <p>Phone: +1 (234) 567-8900</p>
+      <p>Email: support&#64;jointcrest.com</p>
+    </div>
+
+    <div class="receiver-address card">
+      <h4>To:</h4>
+      <h3>{{ sharesDetails?.full_name }}</h3>
+      <p>Member ID: {{ sharesDetails?.member_id }}</p>
+      <p>{{ sharesDetails?.address }}</p>
+      <p>
+        {{ sharesDetails?.city }}, {{ sharesDetails?.state }}
+        {{ sharesDetails?.postal_code }}
+      </p>
+    </div>
+  </div>
+
+  <!-- Message Section -->
+  <div class="message-section card">
+    <p>Hello {{ sharesDetails?.full_name }},</p>
+    <p>
+      Please find below the breakdown of this shares payment. If you have any
+      questions about this request, don't hesitate to contact our customer
+      support team.
+    </p>
+    <p>Thank you for choosing JointCrest for your shares needs.</p>
+  </div>
+
+  <!-- Payment Info Card -->
+  <div class="payment-info card highlight-card">
+    <div class="info-item">
+      <span class="info-label">Date:</span>
+      <span class="info-value">{{
+        sharesDetails?.date | date : "mediumDate"
+      }}</span>
+    </div>
+    <div class="info-item">
+      <span class="info-label">Status:</span>
+      <span
+        class="info-value badge"
+        [ngClass]="'status-' + sharesDetails?.status?.toLowerCase()"
+      >
+        {{ sharesDetails?.status | titlecase }}
+      </span>
+    </div>
+    <div class="info-item">
+      <span class="info-label">Shares Type:</span>
+      <span class="info-value">{{
+        sharesDetails?.shares_type | titlecase
+      }}</span>
+    </div>
+  </div>
+
+  <!-- Savings Details Section -->
+  <div class="savings-details card">
+    <h4>Transaction Details</h4>
+    <table class="details-table">
+      <tr>
+        <td>Transaction Reference</td>
+        <td>{{ sharesDetails?.transaction_id }}</td>
+      </tr>
+      <tr>
+        <td>Amount</td>
+        <td>{{ sharesDetails?.amount | currencySymbol }}</td>
+      </tr>
+      <!-- <tr>
+        <td>Interest</td>
+        <td>{{ creditSalesDetails?.interest | currencySymbol }}</td>
+      </tr> -->
+      <tr class="total-row">
+        <td>Total Shares</td>
+        <td>{{ sharesDetails?.amount | currencySymbol }}</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- Footer and Actions -->
+  <div class="slip-footer">
+    <div class="disclaimer">
+      <p>
+        This is an automatically generated payment slip. No signature is
+        required.
+      </p>
+    </div>
+    <div class="slip-actions no-print">
+      <button class="btn btn-print" (click)="printClip()">
+        <i class="fas fa-print"></i> Print Slip
+      </button>
+      <button class="btn btn-close" (click)="closeSlip()">
+        <i class="fas fa-times"></i> Close
+      </button>
+    </div>
+  </div>
+</div>

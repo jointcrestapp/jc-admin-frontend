@@ -1,1 +1,24 @@
-<p>ledger-balance works!</p>
+<app-page-wrapper [gridClass]="'col-sm-12'" [title]="'ledger balance'">
+  <div
+    class="d-flex flex-wrap gap-3"
+    button
+    *hasPermission="'reporting.create'"
+  >
+    <a
+      [routerLink]="['']"
+      class="align-items-center btn btn-theme d-flex rounded"
+    >
+      <i class="ri-download-2-line"></i> {{ "export" | translate }}
+    </a>
+  </div>
+  <app-table
+    [tableConfig]="tableConfig"
+    [dateRange]="true"
+    (tableChanged)="onTableChange($event)"
+  >
+  </app-table>
+</app-page-wrapper>
+
+<app-import-csv-modal [module]="'reporting'" #csvModal> </app-import-csv-modal>
+
+<app-digital-download-modal #downloadModal> </app-digital-download-modal>

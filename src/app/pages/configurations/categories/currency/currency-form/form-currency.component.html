@@ -1,0 +1,34 @@
+<form
+  class="theme-form theme-form-2 mega-form"
+  [formGroup]="form"
+  (ngSubmit)="submit()"
+>
+  <app-form-fields
+    [labelClass]="'form-label-title col-sm-3 mb-0'"
+    [gridClass]="'col-sm-9'"
+    [label]="'currency'"
+    [for]="'currency'"
+    [required]="true"
+  >
+    @if(isBrowser) {
+    <select2
+      class="custom-select"
+      [placeholder]="'currency' | translate"
+      [data]="currencies.length ? currencies : []"
+      formControlName="currency"
+      noResultMessage="{{ 'no_data_found' | translate }}"
+      id="currency"
+      resettable
+    >
+    </select2>
+    } @if(form.controls['currency'].touched &&
+    form.controls['currency'].errors?.['required']){
+    <div class="invalid-feedback">
+      {{ "currency_is_required" | translate }}
+    </div>
+    }
+  </app-form-fields>
+  <app-button [id]="'user_btn'">{{
+    (type == "create" ? "save_currency" : "update_currency") | translate
+  }}</app-button>
+</form>

@@ -1,51 +1,55 @@
+import { Routes } from "@angular/router";
 
-import { Routes } from '@angular/router';
-
-import { AddSingleLoanComponent } from './add-single-loan/add-single-loan.component';
-import { AddBatchRepaymentComponent } from './add-batch-repayment/add-batch-repayment.component';
-import { RequestedLoansComponent } from './requested-loans/requested-loans.component';
-import { ApprovedLoansComponent } from './approved-loans/approved-loans.component';
-import { DisbursedLoansComponent } from './disbursed-loans/disbursed-loans.component';
-import { FinishedLoansComponent } from './finished-loans/finished-loans.component';
-import { LoanRepaymentComponent } from './loan-repayment/loan-repayment.component';
-import { DualLoanPaymentComponent } from './dual-loan-payment/dual-loan-payment.component';
-import { EditLoanComponent } from './edit-loan/edit-loan.component';
+import { AddSingleLoanComponent } from "./add-single-loan/add-single-loan.component";
+import { AddBatchLoanComponent } from "./add-batch-loan/add-batch-loan.component";
+import { RequestedLoansComponent } from "./requested-loans/requested-loans.component";
+import { ApprovedLoansComponent } from "./approved-loans/approved-loans.component";
+import { DisbursedLoansComponent } from "./disbursed-loans/disbursed-loans.component";
+import { FinishedLoansComponent } from "./finished-loans/finished-loans.component";
+import { LoanRepaymentComponent } from "./loan-repayment/loan-repayment.component";
+import { DueLoanPaymentComponent } from "./due-loan-payment/due-loan-payment.component";
+import { EditLoanComponent } from "./edit-loan/edit-loan.component";
+import { DetailsComponent } from "./details/details.component";
 
 export const loanRoutes: Routes = [
   {
     path: "add-single-loan",
-    component: AddSingleLoanComponent
+    component: AddSingleLoanComponent,
   },
   {
     path: "requested-loans",
-    component: RequestedLoansComponent
+    component: RequestedLoansComponent,
   },
   {
     path: "approved-loans",
-    component: ApprovedLoansComponent
+    component: ApprovedLoansComponent,
   },
   {
     path: "disbursed-loans",
-    component: DisbursedLoansComponent
+    component: DisbursedLoansComponent,
   },
   {
     path: "finished-loans",
-    component: FinishedLoansComponent
+    component: FinishedLoansComponent,
   },
   {
     path: "loan-repayment",
-    component: LoanRepaymentComponent
+    component: LoanRepaymentComponent,
   },
   {
-    path: "dual-loan-repayment",
-    component: DualLoanPaymentComponent
+    path: "due-loan-repayment",
+    component: DueLoanPaymentComponent,
   },
   {
-    path: "add-batch-repayment",
-    component: AddBatchRepaymentComponent
+    path: "add-batch-loan",
+    component: AddBatchLoanComponent,
   },
   {
     path: "edit-loan/:id",
-    component: EditLoanComponent
-  }
+    component: EditLoanComponent,
+  },
+  {
+    path: "details/:id",
+    component: DetailsComponent,
+  },
 ];

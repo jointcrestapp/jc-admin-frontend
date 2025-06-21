@@ -1,0 +1,122 @@
+<!-- payment-slip.component.html -->
+<div class="payment-slip-container" #slipContent>
+  <!-- Header Section -->
+  <div class="slip-header">
+    <div class="logo-section">
+      <img
+        src="assets/images/settings/tiny-logo.png"
+        alt="JointCrest Logo"
+        class="logo"
+      />
+      <h2>Loan Payment Slip</h2>
+    </div>
+    <div class="reference-number">
+      Transaction #: <strong>{{ loanDetails?.transaction_id }}</strong>
+    </div>
+  </div>
+
+  <!-- Address and Message Section -->
+  <div class="address-section">
+    <div class="sender-address card">
+      <h4>From:</h4>
+      <h3>JointCrest</h3>
+      <p>123 Financial Street, Banking City</p>
+      <p>BC 12345, United States</p>
+      <p>Phone: +1 (234) 567-8900</p>
+      <p>Email: support&#64;jointcrest.com</p>
+    </div>
+
+    <div class="receiver-address card">
+      <h4>To:</h4>
+      <h3>{{ loanDetails?.full_name }}</h3>
+      <p>Member ID: {{ loanDetails?.member_id }}</p>
+      <p>{{ loanDetails?.address_line1 }}</p>
+      <p>
+        {{ loanDetails?.city }}, {{ loanDetails?.state }}
+        {{ loanDetails?.postal_code }}
+      </p>
+    </div>
+  </div>
+
+  <!-- Message Section -->
+  <div class="message-section card">
+    <p>Hello {{ loanDetails?.full_name }},</p>
+    <p>
+      Please find below the breakdown of this loan request. If you have any
+      questions about this payment, don't hesitate to contact our customer
+      support team.
+    </p>
+    <p>Thank you for choosing JointCrest for your loan needs.</p>
+  </div>
+
+  <!-- Payment Info Card -->
+  <div class="payment-info card highlight-card">
+    <div class="info-item">
+      <span class="info-label">Request Date:</span>
+      <span class="info-value">{{
+        loanDetails?.date | date : "mediumDate"
+      }}</span>
+    </div>
+    <div class="info-item">
+      <span class="info-label">Status:</span>
+      <span
+        class="info-value badge"
+        [ngClass]="'status-' + loanDetails?.status?.toLowerCase()"
+      >
+        {{ loanDetails?.status | titlecase }}
+      </span>
+    </div>
+    <div class="info-item">
+      <span class="info-label">Loan Type:</span>
+      <span class="info-value">{{ loanDetails?.loan_type | titlecase }}</span>
+    </div>
+  </div>
+
+  <!-- Savings Details Section -->
+  <div class="savings-details card">
+    <h4>Transaction Details</h4>
+    <table class="details-table">
+      <tr>
+        <td>Transaction Reference</td>
+        <td>{{ loanDetails?.transaction_id }}</td>
+      </tr>
+      <tr>
+        <td>Amount</td>
+        <td>{{ loanDetails?.amount | currencySymbol }}</td>
+      </tr>
+      <tr>
+        <td>Interest Rate</td>
+        <td>{{ loanDetails?.interest }}%</td>
+      </tr>
+      <tr>
+        <td>Transaction Date</td>
+        <td>{{ loanDetails?.date | date : "medium" }}</td>
+      </tr>
+      <tr>
+        <td>Maturity Date</td>
+        <td>{{ savings?.maturity_date | date : "mediumDate" }}</td>
+      </tr>
+      <tr class="total-row">
+        <td>Monthly Due</td>
+        <td>{{ loanDetails?.monthly_due | currencySymbol }}</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- Footer and Actions -->
+  <div class="slip-footer">
+    <div class="disclaimer">
+      <p>
+        This is an automatically generated loan slip. No signature is required.
+      </p>
+    </div>
+    <div class="slip-actions no-print">
+      <button class="btn btn-print" (click)="printClip()">
+        <i class="fas fa-print"></i> Print Slip
+      </button>
+      <button class="btn btn-close" (click)="closeSlip()">
+        <i class="fas fa-times"></i> Close
+      </button>
+    </div>
+  </div>
+</div>

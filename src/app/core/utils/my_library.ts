@@ -1,6 +1,7 @@
 import { appConfig } from "../config/config";
 import { formatDate } from "@angular/common";
-const yourhandle = require('countrycitystatejson');
+import { AbstractControl, ValidationErrors } from '@angular/forms';
+// const yourhandle = require('countrycitystatejson');
 
 export const GLOBALF = {
     findInvalidControls(form_controls:any) {
@@ -13,21 +14,17 @@ export const GLOBALF = {
         }
         console.log('INVALID FIELD::',invalid);
     },
-    getCountries(){
-        let countries = yourhandle.getCountries();
-        console.log('countries:',countries);
-        return countries;
-    },
-    getStates(countryShort:any){
-       
-        let states = yourhandle.getStatesByShort(countryShort);
-        console.log('states:',states);
-        return states;
-    },
-    getCities(countryShortName:any,state:any){
-        let cities = yourhandle.getCities(countryShortName, state)
-        console.log('Cities:',cities);
-        return cities;
+    fileExtensionValidator(allowedExtensions: string[]): (control: AbstractControl) => ValidationErrors | null {
+        return (control: AbstractControl): ValidationErrors | null => {
+            const file = control.value;
+            if (file && file.name) {
+            const extension = file.name.split('.').pop().toLowerCase();
+            if (!allowedExtensions.includes(extension)) {
+                return { fileExtension: true };
+            }
+            }
+            return null;
+        };
     },
     getLocalUserData() {
         let getJSON = localStorage.getItem(appConfig.storage.USER_DATA);
@@ -65,7 +62,7 @@ export const GLOBALF = {
  
     //timeZoneAbrreviation of any location
     anyTimeZoneAbrreviation(long_tz:any){
-        const zone:any = tz.zone(long_tz);     // return Zone object 
+        const zone:any = long_tz;     // return Zone object 
         return zone.abbr(new Date().getTime()) 
     },
 
@@ -121,6 +118,10 @@ export const GLOBALF = {
     },
     randomDigits(){
         return Math.floor(100000 + Math.random() * 900000);
+    },
+
+    genrateMemberId(){
+        return Math.floor(10000000 + Math.random() * 90000000);
     },
    
     generateOrderNumber() {

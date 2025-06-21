@@ -1,0 +1,185 @@
+<form
+  class="theme-form theme-form-2 mega-form"
+  [formGroup]="form"
+  (ngSubmit)="submit()"
+>
+  <app-form-fields
+    [labelClass]="'form-label-title col-sm-3 mb-0'"
+    [gridClass]="'col-sm-9'"
+    [label]="'name'"
+    [for]="'name'"
+    [required]="true"
+  >
+    @if(isBrowser) {
+    <input
+      class="form-control"
+      id="name"
+      type="text"
+      placeholder="{{ 'enter_name' | translate }}"
+      formControlName="name"
+    />
+    } @if(form.controls['name']?.touched &&
+    form.controls['name'].errors?.['required']){
+    <div class="invalid-feedback">{{ "name_is_required" | translate }}</div>
+    }
+  </app-form-fields>
+  <app-form-fields
+    [labelClass]="'form-label-title col-sm-3 mb-0'"
+    [gridClass]="'col-sm-9'"
+    [label]="'category'"
+    [for]="'category'"
+    [required]="true"
+  >
+    @if(isBrowser) {
+    <select2
+      class="custom-select"
+      [placeholder]="'select_category' | translate"
+      [data]="categories.length ? categories : []"
+      formControlName="category"
+      noResultMessage="{{ 'no_data_found' | translate }}"
+      id="category"
+      resettable
+    >
+    </select2>
+    } @if(form.controls['category']?.touched &&
+    form.controls['category']?.errors?.['required']){
+    <div class="invalid-feedback">
+      {{ "category_is_required" | translate }}
+    </div>
+    }
+  </app-form-fields>
+  <app-form-fields
+    [labelClass]="'form-label-title col-sm-3 mb-0'"
+    [gridClass]="'col-sm-9'"
+    [label]="'vendor'"
+    [for]="'vendor'"
+    [required]="true"
+  >
+    @if(isBrowser) {
+    <select2
+      class="custom-select"
+      [placeholder]="'select_vendor' | translate"
+      [data]="vendors.length ? vendors : []"
+      formControlName="vendor_id"
+      noResultMessage="{{ 'no_data_found' | translate }}"
+      id="vendor"
+      resettable
+    >
+    </select2>
+    } @if(form.controls['vendor_id']?.touched &&
+    form.controls['vendor_id']?.errors?.['required']){
+    <div class="invalid-feedback">
+      {{ "vendor_is_required" | translate }}
+    </div>
+    }
+  </app-form-fields>
+  <app-form-fields
+    [labelClass]="'form-label-title col-sm-3 mb-0'"
+    [gridClass]="'col-sm-9'"
+    [label]="'price'"
+    [for]="'price'"
+    [required]="true"
+  >
+    @if(isBrowser) {
+    <input
+      class="form-control"
+      id="price"
+      type="text"
+      placeholder="{{ 'enter_price' | translate }}"
+      formControlName="price"
+    />
+    } @if(form.controls['price']?.touched &&
+    form.controls['price'].errors?.['required']){
+    <div class="invalid-feedback">{{ "price_is_required" | translate }}</div>
+    }
+  </app-form-fields>
+  <app-form-fields
+    [labelClass]="'form-label-title col-sm-3 mb-0'"
+    [gridClass]="'col-sm-9'"
+    [label]="'stock'"
+    [for]="'stock'"
+    [required]="true"
+  >
+    @if(isBrowser) {
+    <div class="input-group">
+      <button
+        class="btn btn-outline-secondary"
+        type="button"
+        (click)="decrementRate()"
+      >
+        <i class="ri-subtract-line"></i>
+      </button>
+      <input
+        class="form-control text-center"
+        id="rate"
+        type="number"
+        placeholder="{{ 'select_stock' | translate }}"
+        formControlName="stock"
+        min="0"
+      />
+      <button
+        class="btn btn-outline-secondary"
+        type="button"
+        (click)="incrementRate()"
+      >
+        <i class="ri-add-line"></i>
+      </button>
+    </div>
+    } @if(form.controls['stock']?.touched &&
+    form.controls['stock'].errors?.['required']){
+    <div class="invalid-feedback">
+      {{ "stock_is_required" | translate }}
+    </div>
+    }
+  </app-form-fields>
+  <app-form-fields
+    [labelClass]="'form-label-title col-sm-3 mb-0'"
+    [gridClass]="'col-sm-9'"
+    [label]="'product plan'"
+    [for]="'product_plan'"
+    [required]="true"
+  >
+    @if(isBrowser) {
+    <select2
+      class="custom-select"
+      [placeholder]="'select_product_plan' | translate"
+      [data]="product_plans.length ? product_plans : []"
+      formControlName="product_plan_id"
+      noResultMessage="{{ 'no_data_found' | translate }}"
+      id="product_plan"
+      resettable
+    >
+    </select2>
+    } @if(form.controls['product_plan_id']?.touched &&
+    form.controls['product_plan_id']?.errors?.['required']){
+    <div class="invalid-feedback">
+      {{ "product_plan_is_required" | translate }}
+    </div>
+    }
+  </app-form-fields>
+  <app-form-fields
+    [labelClass]="'form-label-title col-sm-3 mb-0'"
+    [gridClass]="'col-sm-9'"
+    [label]="'description'"
+    [for]="'description'"
+  >
+    @if(isBrowser) {
+    <textarea
+      class="form-control"
+      id="description"
+      placeholder="{{ 'enter_description' | translate }}"
+      rows="3"
+      formControlName="description"
+    ></textarea>
+    <p class="help-text">{{ "*Maximum length should be 300 characters." }}</p>
+    } @if(form.controls['description']?.touched &&
+    form.controls['description'].errors?.['required']){
+    <div class="invalid-feedback">
+      {{ "description_is_required" | translate }}
+    </div>
+    }
+  </app-form-fields>
+  <app-button [id]="'user_btn'">{{
+    (type == "create" ? "add_product" : "edit_product") | translate
+  }}</app-button>
+</form>

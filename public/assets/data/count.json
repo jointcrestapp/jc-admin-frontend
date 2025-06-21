@@ -11,5 +11,8 @@
     "total_shipped_orders": 0,
     "total_out_of_delivery_orders": 0,
     "total_cancelled_orders": 1,
-    "total_delivered_orders": 3
+    "total_delivered_orders": 3,
+    "approved_members": 150,
+    "pending_members": 10,
+    "exited_members": 4
 }

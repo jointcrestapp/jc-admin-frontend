@@ -1,0 +1,118 @@
+<form
+  class="theme-form theme-form-2 mega-form"
+  [formGroup]="form"
+  (ngSubmit)="submit()"
+>
+  <app-form-fields
+    [labelClass]="'form-label-title col-sm-3 mb-0'"
+    [gridClass]="'col-sm-9'"
+    [label]="'Dividend Percent'"
+    [for]="'dividendPercent'"
+    [required]="true"
+  >
+    <input
+      class="form-control"
+      id="dividendPercent"
+      type="number"
+      placeholder="{{ 'enter_dividend_percent' | translate }}"
+      formControlName="dividendPercent"
+    />
+    @if(form.controls['dividendPercent']?.touched &&
+    form.controls['dividendPercent']?.errors?.['required']){
+    <div class="invalid-feedback">
+      {{ "dividend_percent_is_required" | translate }}
+    </div>
+    }
+  </app-form-fields>
+  <app-form-fields
+    [labelClass]="'form-label-title col-sm-3 mb-0'"
+    [gridClass]="'col-sm-9'"
+    [label]="'Loan Profit'"
+    [for]="'totalLoanProfit'"
+    [required]="true"
+  >
+    <input
+      class="form-control"
+      id="totalLoanProfit"
+      type="number"
+      placeholder="{{ 'enter_loan_profit' | translate }}"
+      formControlName="totalLoanProfit"
+    />
+    @if(form.controls['totalLoanProfit']?.touched &&
+    form.controls['totalLoanProfit']?.errors?.['required']){
+    <div class="invalid-feedback">
+      {{ "loan_profit_is_required" | translate }}
+    </div>
+    }
+  </app-form-fields>
+  <app-form-fields
+    [labelClass]="'form-label-title col-sm-3 mb-0'"
+    [gridClass]="'col-sm-9'"
+    [label]="'Sales Profit'"
+    [for]="'totalCreditSalesProfit'"
+    [required]="true"
+  >
+    <input
+      class="form-control"
+      id="totalCreditSalesProfit"
+      type="number"
+      placeholder="{{ 'enter_sales_profit' | translate }}"
+      formControlName="totalCreditSalesProfit"
+    />
+    @if(form.controls['totalCreditSalesProfit']?.touched &&
+    form.controls['totalCreditSalesProfit']?.errors?.['required']){
+    <div class="invalid-feedback">
+      {{ "sales_profit_is_required" | translate }}
+    </div>
+    }
+  </app-form-fields>
+  <app-form-fields
+    [labelClass]="'form-label-title col-sm-3 mb-0'"
+    [gridClass]="'col-sm-9'"
+    [label]="'Savings Profit'"
+    [for]="'totalSavingsProfit'"
+    [required]="true"
+  >
+    <input
+      class="form-control"
+      id="totalSavingsProfit"
+      type="number"
+      placeholder="{{ 'enter_savings_profit' | translate }}"
+      formControlName="totalSavingsProfit"
+    />
+    @if(form.controls['totalSavingsProfit']?.touched &&
+    form.controls['totalSavingsProfit']?.errors?.['required']){
+    <div class="invalid-feedback">
+      {{ "savings_profit_is_required" | translate }}
+    </div>
+    }
+  </app-form-fields>
+  <app-form-fields
+    [labelClass]="'form-label-title col-sm-3 mb-0'"
+    [gridClass]="'col-sm-9'"
+    [label]="'month'"
+    [for]="'month'"
+    [required]="true"
+  >
+    @if(isBrowser) {
+    <select2
+      class="custom-select"
+      [placeholder]="'month' | translate"
+      [data]="months?.length ? months : []"
+      formControlName="endMonth"
+      noResultMessage="{{ 'no_data_found' | translate }}"
+      id="month"
+      resettable
+    >
+    </select2>
+    } @if(form.controls['endMonth']?.touched &&
+    form.controls['endMonth'].errors?.['required']){
+    <div class="invalid-feedback">
+      {{ "month_is_required" | translate }}
+    </div>
+    }
+  </app-form-fields>
+  <app-button [id]="'user_btn'">{{
+    (type == "create" ? "generate_dividend" : "update_dividend") | translate
+  }}</app-button>
+</form>

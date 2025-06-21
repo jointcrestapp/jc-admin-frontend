@@ -1,0 +1,230 @@
+<form
+  class="theme-form theme-form-2 mega-form"
+  [formGroup]="form"
+  (ngSubmit)="submit()"
+>
+  <app-form-fields
+    [labelClass]="'form-label-title col-sm-3 mb-0'"
+    [gridClass]="'col-sm-9'"
+    [label]="'name'"
+    [for]="'name'"
+    [required]="true"
+  >
+    @if(isBrowser) {
+    <input
+      class="form-control"
+      id="name"
+      type="text"
+      placeholder="{{ 'enter_name' | translate }}"
+      formControlName="name"
+    />
+    } @if(form.controls['name']?.touched &&
+    form.controls['name'].errors?.['required']){
+    <div class="invalid-feedback">{{ "name_is_required" | translate }}</div>
+    }
+  </app-form-fields>
+  <app-form-fields
+    [labelClass]="'form-label-title col-sm-3 mb-0'"
+    [gridClass]="'col-sm-9'"
+    [label]="'rate'"
+    [for]="'rate'"
+    [required]="true"
+  >
+    @if(isBrowser) {
+    <div class="input-group">
+      <button
+        class="btn btn-outline-secondary"
+        type="button"
+        (click)="decrementRate('rate')"
+      >
+        <i class="ri-subtract-line"></i>
+      </button>
+      <input
+        class="form-control text-center"
+        id="rate"
+        type="number"
+        placeholder="{{ 'select_rate' | translate }}"
+        formControlName="rate"
+        min="0"
+      />
+      <button
+        class="btn btn-outline-secondary"
+        type="button"
+        (click)="incrementRate('rate')"
+      >
+        <i class="ri-add-line"></i>
+      </button>
+    </div>
+    } @if(form.controls['rate']?.touched &&
+    form.controls['rate'].errors?.['required']){
+    <div class="invalid-feedback">{{ "rate_is_required" | translate }}</div>
+    }
+  </app-form-fields>
+  <app-form-fields
+    [labelClass]="'form-label-title col-sm-3 mb-0'"
+    [gridClass]="'col-sm-9'"
+    [label]="'guarantors'"
+    [for]="'guarantors'"
+    [required]="true"
+  >
+    @if(isBrowser) {
+    <div class="input-group">
+      <button
+        class="btn btn-outline-secondary"
+        type="button"
+        (click)="decrementRate('guarantors')"
+      >
+        <i class="ri-subtract-line"></i>
+      </button>
+      <input
+        class="form-control text-center"
+        id="rate"
+        type="number"
+        placeholder="{{ 'select_guarantors' | translate }}"
+        formControlName="guarantors"
+        min="0"
+      />
+      <button
+        class="btn btn-outline-secondary"
+        type="button"
+        (click)="incrementRate('guarantors')"
+      >
+        <i class="ri-add-line"></i>
+      </button>
+    </div>
+    } @if(form.controls['guarantors']?.touched &&
+    form.controls['guarantors'].errors?.['required']){
+    <div class="invalid-feedback">
+      {{ "guarantors_is_required" | translate }}
+    </div>
+    }
+  </app-form-fields>
+  <app-form-fields
+    [labelClass]="'form-label-title col-sm-3 mb-0'"
+    [gridClass]="'col-sm-9'"
+    [label]="'min month'"
+    [for]="'min_month'"
+    [required]="true"
+  >
+    @if(isBrowser) {
+    <div class="input-group">
+      <button
+        class="btn btn-outline-secondary"
+        type="button"
+        (click)="decrementRate('min_month')"
+      >
+        <i class="ri-subtract-line"></i>
+      </button>
+      <input
+        class="form-control text-center"
+        id="min_month"
+        type="number"
+        placeholder="{{ 'select_min_month' | translate }}"
+        formControlName="min_month"
+        min="0"
+      />
+      <button
+        class="btn btn-outline-secondary"
+        type="button"
+        (click)="incrementRate('min_month')"
+      >
+        <i class="ri-add-line"></i>
+      </button>
+    </div>
+    } @if(form.controls['min_month']?.touched &&
+    form.controls['min_month'].errors?.['required']){
+    <div class="invalid-feedback">
+      {{ "min_month_is_required" | translate }}
+    </div>
+    }
+  </app-form-fields>
+  <app-form-fields
+    [labelClass]="'form-label-title col-sm-3 mb-0'"
+    [gridClass]="'col-sm-9'"
+    [label]="'max month'"
+    [for]="'max_month'"
+    [required]="true"
+  >
+    @if(isBrowser) {
+    <div class="input-group">
+      <button
+        class="btn btn-outline-secondary"
+        type="button"
+        (click)="decrementRate('max_month')"
+      >
+        <i class="ri-subtract-line"></i>
+      </button>
+      <input
+        class="form-control text-center"
+        id="max_month"
+        type="number"
+        placeholder="{{ 'select_max_month' | translate }}"
+        formControlName="max_month"
+        min="0"
+      />
+      <button
+        class="btn btn-outline-secondary"
+        type="button"
+        (click)="incrementRate('max_month')"
+      >
+        <i class="ri-add-line"></i>
+      </button>
+    </div>
+    } @if(form.controls['max_month']?.touched &&
+    form.controls['max_month'].errors?.['required']){
+    <div class="invalid-feedback">
+      {{ "max_month_is_required" | translate }}
+    </div>
+    }
+  </app-form-fields>
+  <app-form-fields
+    [labelClass]="'form-label-title col-sm-3 mb-0'"
+    [gridClass]="'col-sm-9'"
+    [label]="'cal method repayment'"
+    [for]="'cal_method'"
+    [required]="true"
+  >
+    @if(isBrowser) {
+    <select2
+      class="custom-select"
+      [placeholder]="'select_repayment_method' | translate"
+      [data]="methods.length ? methods : []"
+      formControlName="cal_method"
+      noResultMessage="{{ 'no_data_found' | translate }}"
+      id="cal_method"
+      resettable
+    >
+    </select2>
+    } @if(form.controls['cal_method'].touched &&
+    form.controls['cal_method'].errors?.['required']){
+    <div class="invalid-feedback">
+      {{ "repayment_method_is_required" | translate }}
+    </div>
+    }
+  </app-form-fields>
+  <app-form-fields
+    [labelClass]="'form-label-title col-sm-3 mb-0'"
+    [gridClass]="'col-sm-9'"
+    [label]="'description'"
+    [for]="'description'"
+  >
+    @if(isBrowser) {
+    <textarea
+      class="form-control"
+      id="description"
+      placeholder="{{ 'enter_description' | translate }}"
+      rows="3"
+      formControlName="description"
+    ></textarea>
+    <p class="help-text">{{ "*Maximum length should be 300 characters." }}</p>
+    } @if(form.controls['description']?.touched &&
+    form.controls['description'].errors?.['required']){
+    <div class="invalid-feedback">
+      {{ "description_is_required" | translate }}
+    </div>
+    }
+  </app-form-fields>
+  <app-button [id]="'user_btn'">{{
+    (type == "create" ? "add_product_plan" : "edit_product_plan") | translate
+  }}</app-button>
+</form>

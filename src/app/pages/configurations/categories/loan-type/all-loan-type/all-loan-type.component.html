@@ -1,1 +1,25 @@
-<p>all-loan-type works!</p>
+<app-page-wrapper [gridClass]="'col-sm-12'" [title]="'laon types'">
+  <div
+    class="d-flex flex-wrap gap-3"
+    button
+    *hasPermission="'configurations.create'"
+  >
+    <a
+      [routerLink]="['/configurations/loan-type/add-loan-type']"
+      class="align-items-center btn btn-theme d-flex rounded"
+    >
+      {{ "add_loan_type" | translate }}
+    </a>
+  </div>
+  <app-table
+    [tableConfig]="tableConfig"
+    (tableChanged)="onTableChange($event)"
+    (action)="onActionClicked($event)"
+  >
+  </app-table>
+</app-page-wrapper>
+
+<app-import-csv-modal [module]="'configurations'" #csvModal>
+</app-import-csv-modal>
+
+<app-digital-download-modal #downloadModal> </app-digital-download-modal>

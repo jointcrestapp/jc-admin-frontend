@@ -69,9 +69,8 @@ export const appConfig = {
         "SUPER_ADMIN": { id: '1', meta: "super_admin", name: "Super Admin"},
         "ADMIN": { id: '2', meta: "admin", name: "Admin"},
         "MEMBER": { id: '3', meta: "member", name: "Member" },
-        "AGENT": { id: '4', meta: "agent", name: "Agent"}
-    },
-    
+        "AGENT": { id: '4', meta: "agent", name: "Agent"}
+    },
     upload_dir: {
         "USER_PROFILE_PIC": `${environment.apiURL}/ProfileImages/`,
         "PICTURES": `${environment.apiURL}/public/images/`,
@@ -90,6 +89,12 @@ export const appConfig = {
         yes:1,
         no:0
     },
+    WITHDRAWAL_STATUS:[
+        {value: 0, label: "Pending" },
+        { value: 1, label: "In Progress" },
+        {  value:2, label: "Completed" },
+        {  value: 3, label: "Declined" }
+    ],
     files: {
         MAX_IMG_SIZE: 20 * 2000 * 2000
     },

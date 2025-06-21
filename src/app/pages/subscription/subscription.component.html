@@ -1,7 +1,8 @@
-<app-page-wrapper [gridClass]="'col-sm-12'" [title]="'subscriber'">
+<app-page-wrapper [gridClass]="'col-sm-12'" [title]="'subscribers'">
   <app-table
     [tableConfig]="tableConfig"
     [hasCheckbox]="true"
-    (tableChanged)="onTableChange($event)">
+    (tableChanged)="onTableChange($event)"
+  >
   </app-table>
 </app-page-wrapper>
