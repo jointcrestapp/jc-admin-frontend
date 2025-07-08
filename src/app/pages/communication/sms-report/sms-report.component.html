@@ -1,1 +1,80 @@
-<p>sms-report works!</p>
+<app-page-wrapper [gridClass]="'col-sm-12'" [title]="'SMS message'">
+  <form
+    class="theme-form theme-form-2 mega-form"
+    [formGroup]="form"
+    (ngSubmit)="submit()"
+  >
+    <app-form-fields
+      [labelClass]="'form-label-title col-sm-3 mb-0'"
+      [gridClass]="'col-sm-9'"
+      [label]="'recipient type'"
+      [for]="'recipient'"
+      [required]="true"
+    >
+      @if(isBrowser) {
+      <select2
+        class="custom-select"
+        [placeholder]="'select_recipient_type' | translate"
+        [data]="recipients.length ? recipients : []"
+        formControlName="recipient"
+        noResultMessage="{{ 'no_data_found' | translate }}"
+        id="recipient"
+      >
+      </select2>
+      } @if(form.controls['recipient']?.touched &&
+      form.controls['recipient'].errors?.['required']){
+      <div class="invalid-feedback">
+        {{ "recipient_is_required" | translate }}
+      </div>
+      }
+    </app-form-fields>
+    @if(form.controls['recipient'].value === 5){
+    <app-form-fields
+      [labelClass]="'form-label-title col-sm-3 mb-0'"
+      [gridClass]="'col-sm-9'"
+      [label]="'phone numbers'"
+      [for]="'phones'"
+      [required]="true"
+    >
+      @if(isBrowser) {
+      <textarea
+        class="form-control"
+        id="phones"
+        placeholder="{{ 'enter_phones' | translate }}"
+        rows="2"
+        formControlName="phones"
+      ></textarea>
+      } @if(form.controls['phones']?.touched &&
+      form.controls['phones'].errors?.['required']){
+      <div class="invalid-feedback">
+        {{ "phones_are_required" | translate }}
+      </div>
+      }
+    </app-form-fields>
+    }
+    <app-form-fields
+      [labelClass]="'form-label-title col-sm-3 mb-0'"
+      [gridClass]="'col-sm-9'"
+      [label]="'message'"
+      [for]="'message'"
+      [required]="true"
+    >
+      @if(isBrowser) {
+      <textarea
+        class="form-control"
+        id="message"
+        placeholder="{{ 'enter_message' | translate }}"
+        rows="8"
+        formControlName="message"
+      ></textarea>
+      <p class="help-text">{{ "*Maximum length should be 400 characters." }}</p>
+      } @if(form.controls['message']?.touched &&
+      form.controls['message'].errors?.['required']){
+      <div class="invalid-feedback">
+        {{ "message_is_required" | translate }}
+      </div>
+      }
+    </app-form-fields>
+    <app-button [id]="'user_btn'">{{ "send_message" | translate }}</app-button>
+  </form>
+</app-page-wrapper>

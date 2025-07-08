@@ -201,7 +201,7 @@ export class ApprovedCreditSalesComponent {
         label: "Delete",
         actionToPerform: "delete",
         icon: "ri-delete-bin-line",
-        permission: "credit.edit",
+        permission: "credit.destroy",
       },
     ],
     data: [] as any[],

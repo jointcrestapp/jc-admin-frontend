@@ -1,0 +1,152 @@
+@if(this.isLoading$ | async){
+<app-loader></app-loader>
+}
+
+<form
+  class="theme-form theme-form-2 mega-form"
+  [formGroup]="form"
+  (ngSubmit)="submit()"
+>
+  <h5 class="mb-3" style="font-weight: bolder">Paystack :</h5>
+  <app-form-fields
+    [label]="'public key'"
+    [for]="'paystack_public'"
+    [required]="true"
+  >
+    <input
+      class="form-control"
+      type="text"
+      placeholder="{{ 'enter_public_key' | translate }}"
+      name="paystack_public"
+      formControlName="paystack_public"
+    />
+    <div *ngIf="form.controls['paystack_public']?.touched">
+      <div
+        *ngIf="form.controls['paystack_public']?.errors?.['required']"
+        class="invalid-feedback"
+      >
+        {{ "public_key_is_required" | translate }}
+      </div>
+    </div>
+  </app-form-fields>
+
+  <app-form-fields
+    [label]="'secret key'"
+    [for]="'paystack_secret'"
+    [required]="true"
+  >
+    <input
+      class="form-control"
+      type="text"
+      placeholder="{{ 'enter_secret_key' | translate }}"
+      name="paystack_secret"
+      formControlName="paystack_secret"
+    />
+    <div *ngIf="form.controls['paystack_secret']?.touched">
+      <div
+        *ngIf="form.controls['paystack_secret']?.errors?.['required']"
+        class="invalid-feedback"
+      >
+        {{ "secret_key_is_required" | translate }}
+      </div>
+    </div>
+  </app-form-fields>
+
+  <h5 class="mb-3" style="font-weight: bolder">Flutterwave :</h5>
+
+  <app-form-fields
+    [label]="'public key'"
+    [for]="'flutterwave_public'"
+    [required]="true"
+  >
+    <input
+      class="form-control"
+      type="text"
+      placeholder="{{ 'enter_public_key' | translate }}"
+      name="flutterwave_public"
+      formControlName="flutterwave_public"
+    />
+    <div *ngIf="form.controls['flutterwave_public']?.touched">
+      <div
+        *ngIf="form.controls['flutterwave_public']?.errors?.['required']"
+        class="invalid-feedback"
+      >
+        {{ "public_key_is_required" | translate }}
+      </div>
+    </div>
+  </app-form-fields>
+
+  <app-form-fields
+    [label]="'secret key'"
+    [for]="'flutterwave_secret'"
+    [required]="true"
+  >
+    <input
+      class="form-control"
+      type="text"
+      placeholder="{{ 'enter_secret_key' | translate }}"
+      name="flutterwave_secret"
+      formControlName="flutterwave_secret"
+    />
+    <div *ngIf="form.controls['flutterwave_secret']?.touched">
+      <div
+        *ngIf="form.controls['flutterwave_secret']?.errors?.['required']"
+        class="invalid-feedback"
+      >
+        {{ "secret_key_is_required" | translate }}
+      </div>
+    </div>
+  </app-form-fields>
+
+  <h5 class="mb-3" style="font-weight: bolder">Interswitch :</h5>
+
+  <app-form-fields
+    [label]="'public key'"
+    [for]="'interswitch_public'"
+    [required]="true"
+  >
+    <input
+      class="form-control"
+      type="text"
+      placeholder="{{ 'enter_public_key' | translate }}"
+      name="interswitch_public"
+      formControlName="interswitch_public"
+    />
+    <div *ngIf="form.controls['interswitch_public']?.touched">
+      <div
+        *ngIf="form.controls['interswitch_public']?.errors?.['required']"
+        class="invalid-feedback"
+      >
+        {{ "public_key_is_required" | translate }}
+      </div>
+    </div>
+  </app-form-fields>
+
+  <app-form-fields
+    [label]="'secret key'"
+    [for]="'interswitch_secret'"
+    [required]="true"
+  >
+    <input
+      class="form-control"
+      type="text"
+      placeholder="{{ 'enter_secret_key' | translate }}"
+      name="interswitch_secret"
+      formControlName="interswitch_secret"
+    />
+    <div *ngIf="form.controls['interswitch_secret']?.touched">
+      <div
+        *ngIf="form.controls['interswitch_secret']?.errors?.['required']"
+        class="invalid-feedback"
+      >
+        {{ "secret_key_is_required" | translate }}
+      </div>
+    </div>
+  </app-form-fields>
+
+  <div class="ms-auto justify-content-end d-flex gap mt-sm-4 mt-2">
+    <app-button [id]="'user_btn'">
+      {{ (type === "create" ? "save" : "save_and_continue") | translate }}
+    </app-button>
+  </div>
+</form>

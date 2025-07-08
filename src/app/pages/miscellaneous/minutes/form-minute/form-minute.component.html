@@ -1,0 +1,86 @@
+<!-- Main Form Section -->
+<form
+  class="theme-form theme-form-2 mega-form"
+  [formGroup]="form"
+  (ngSubmit)="submit()"
+>
+  <app-form-fields
+    [labelClass]="'form-label-title col-sm-3 mb-0'"
+    [gridClass]="'col-sm-9'"
+    [label]="'Title'"
+    [for]="'title'"
+    [required]="true"
+  >
+    <input
+      class="form-control"
+      id="title"
+      type="text"
+      placeholder="{{ 'enter_title' | translate }}"
+      formControlName="title"
+    />
+    @if(form.controls['title']?.touched &&
+    form.controls['title']?.errors?.['required']){
+    <div class="invalid-feedback">
+      {{ "title_is_required" | translate }}
+    </div>
+    }
+  </app-form-fields>
+
+  <!-- Savings Type Field -->
+  <app-form-fields
+    [labelClass]="'form-label-title col-sm-3 mb-0'"
+    [gridClass]="'col-sm-9'"
+    [label]="'file type'"
+    [for]="'file_type'"
+    [required]="true"
+  >
+    @if(isBrowser) {
+    <select2
+      class="custom-select"
+      [placeholder]="'select_file_type' | translate"
+      [data]="fileType?.length ? fileType : []"
+      formControlName="file_type"
+      noResultMessage="{{ 'no_data_found' | translate }}"
+      id="file_type"
+    >
+    </select2>
+    } @if(form.controls['file_type']?.touched &&
+    form.controls['file_type'].errors?.['required']){
+    <div class="invalid-feedback">
+      {{ "file_type_is_required" | translate }}
+    </div>
+    }
+  </app-form-fields>
+  <!-- Deduction Source Field -->
+
+  <!-- File Upload Field -->
+  <app-form-fields
+    [labelClass]="'form-label-title col-sm-3 mb-0'"
+    [gridClass]="'col-sm-9'"
+    [label]="'Upload File (Max: 900KB)'"
+    [for]="'file'"
+    [required]="true"
+  >
+    <input
+      class="form-control"
+      id="file"
+      type="file"
+      accept=".pdf,.docx,.doc"
+      (change)="onFileChange($event)"
+      placeholder="{{ 'upload_file' | translate }}"
+    />
+    @if(!selectedFile && formSubmitted) {
+    <div class="invalid-feedback">
+      {{ "file_is_required" | translate }}
+    </div>
+    } @if(selectedFile?.size > 900 * 1024) {
+    <div class="invalid-feedback">
+      {{ "file_size_exceeded" | translate }}
+    </div>
+    }
+  </app-form-fields>
+  <!-- Submit Button -->
+  <app-button [id]="'user_btn'">{{
+    (type == "create" ? "add_minute" : "update_minute") | translate
+  }}</app-button>
+</form>

@@ -1,5 +1,5 @@
 <app-page-wrapper [gridClass]="'col-sm-12'" [title]="'dividends'">
-  <div class="d-flex flex-wrap gap-3" button *hasPermission="'savings.create'">
+  <div class="d-flex flex-wrap gap-3" button *hasPermission="'dividend.create'">
     <a
       href="javascript:void(0)"
       class="align-items-center btn btn-theme d-flex rounded"
@@ -61,6 +61,6 @@
   </app-table>
 </app-page-wrapper>
 
-<app-import-csv-modal [module]="'product'" #csvModal> </app-import-csv-modal>
+<app-import-csv-modal [module]="'dividend'" #csvModal> </app-import-csv-modal>
 
 <app-digital-download-modal #downloadModal> </app-digital-download-modal>

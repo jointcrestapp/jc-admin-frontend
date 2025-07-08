@@ -4,10 +4,9 @@ import { TranslateModule } from "@ngx-translate/core";
 import { PageWrapperComponent } from "../../../shared/components/page-wrapper/page-wrapper.component";
 import { TableComponent } from "../../../shared/components/ui/table/table.component";
 import { ImportCsvModalComponent } from "../../../shared/components/ui/modal/import-csv-modal/import-csv-modal.component";
-import { Select, Store } from "@ngxs/store";
+import { Store } from "@ngxs/store";
 import { MemberState } from "../../../shared/store/state/member.state";
 import { Observable, Subject, takeUntil } from "rxjs";
-import { User, UserModel } from "../../../shared/interface/user.interface";
 import {
   TableClickedAction,
   TableConfig,
@@ -18,8 +17,6 @@ import {
   DeleteMember,
   ExportMember,
   GetAgents,
-  GetMembers,
-  GetStatistics,
   UpdateMemberStatus,
 } from "../../../shared/store/action/member.action";
 import { HasPermissionDirective } from "../../../shared/directive/has-permission.directive";

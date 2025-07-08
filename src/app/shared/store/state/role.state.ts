@@ -10,7 +10,6 @@ import {
   DeleteRole,
   DeleteAllRole,
 } from "../action/role.action";
-import { Role, Module } from "../../interface/role.interface";
 import { RoleService } from "../../services/role.service";
 import { RleService } from "src/app/core/services/role.service";
 import { NotificationService } from "../../services/notification.service";
@@ -36,8 +35,6 @@ export interface RoleStateModel {
 @Injectable()
 export class RoleState {
   constructor(
-    private store: Store,
-    private notificationService: NotificationService,
     private roleService: RoleService,
     private rleService: RleService
   ) {}
@@ -74,7 +71,6 @@ export class RoleState {
   @Action(GetRoles)
   getRoles(ctx: StateContext<RoleStateModel>, { payload }: GetRoles) {
     ctx.patchState({ loading: true });
-
     return this.rleService.getRoles(payload).pipe(
       tap((result) => {
         ctx.patchState({
@@ -89,14 +85,12 @@ export class RoleState {
       })
     );
   }
-
   @Action(GetRoleModules)
   getRoleModules(ctx: StateContext<RoleStateModel>) {
     ctx.patchState({ loading: true });
     return this.roleService.getRoleModules().pipe(
       tap({
         next: (result) => {
-          const state = ctx.getState();
           ctx.patchState({
             modules: result,
             loading: false,
@@ -109,11 +103,9 @@ export class RoleState {
       })
     );
   }
-
   @Action(CreateRole)
   create(ctx: StateContext<RoleStateModel>, { payload }: CreateRole) {
     ctx.patchState({ loading: true });
-
     return this.rleService.addRole(payload).pipe(
       tap((res: any) => {
         const state = ctx.getState();
@@ -126,11 +118,9 @@ export class RoleState {
       map((res: any) => res) // ✅ this returns the real API response to your component
     );
   }
-
   @Action(EditRole)
   edit(ctx: StateContext<RoleStateModel>, { id }: EditRole) {
     ctx.patchState({ loading: true });
-
     return this.rleService.getRoles({}).pipe(
       tap((results: any) => {
         const state = ctx.getState();
@@ -142,7 +132,6 @@ export class RoleState {
       finalize(() => ctx.patchState({ loading: false }))
     );
   }
-
   @Action(UpdateRole)
   update(ctx: StateContext<RoleStateModel>, { payload, id }: UpdateRole) {
     ctx.patchState({ loading: true });
@@ -170,7 +159,6 @@ export class RoleState {
       })
     );
   }
-
   @Action(DeleteRole)
   deleteRole(ctx: StateContext<RoleStateModel>, { id }: DeleteRole) {
     ctx.patchState({ loading: true });
@@ -191,7 +179,6 @@ export class RoleState {
       })
     );
   }
-
   @Action(DeleteAllRole)
   deleteAllRoles(ctx: StateContext<RoleStateModel>, { ids }: DeleteAllRole) {
     ctx.patchState({ loading: true });

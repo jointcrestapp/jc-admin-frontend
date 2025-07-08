@@ -70,6 +70,7 @@ export class TableComponent {
   @Input() pagination: boolean = true;
   @Input() loading: boolean = true;
   @Input() dateRange: boolean = false;
+  @Input() searchInput: boolean = false;
 
   @Output() tableChanged: EventEmitter<Params> = new EventEmitter();
   @Output() action = new EventEmitter<TableClickedAction>();

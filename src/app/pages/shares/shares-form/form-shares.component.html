@@ -1,129 +1,200 @@
-<form class="theme-form theme-form-2 mega-form" [formGroup]="form" (ngSubmit)="submit()">
-  <app-form-fields [labelClass]="'form-label-title col-sm-3 mb-0'" [gridClass]="'col-sm-9'" [label]="'search member'" [for]="'search_member'" [required]="true">
+<form
+  class="theme-form theme-form-2 mega-form"
+  [formGroup]="form"
+  (ngSubmit)="submit()"
+>
+  <app-form-fields
+    [labelClass]="'form-label-title col-sm-3 mb-0'"
+    [gridClass]="'col-sm-9'"
+    [label]="'search member'"
+    [for]="'search_member'"
+    [required]="true"
+  >
     <div class="search-container">
       <div class="search-input-wrapper">
-        <input 
-          class="form-control search-input" 
-          [(ngModel)]="text" 
-          [ngModelOptions]="{ standalone: true }" 
-          (keyup)="searchTerm(text)" 
-          (click)="openDropDown(text)" 
-          type="text" 
-          autocomplete="off" 
-          placeholder="{{ 'search_by_name_email_phone_member_id' | translate }} ..."
-        >
+        <input
+          class="form-control search-input"
+          [(ngModel)]="text"
+          [ngModelOptions]="{ standalone: true }"
+          (keyup)="searchTerm(text)"
+          (click)="openDropDown(text)"
+          type="text"
+          autocomplete="off"
+          placeholder="{{
+            'search_by_name_email_phone_member_id' | translate
+          }} ..."
+        />
         <i class="ri-search-line search-icon"></i>
       </div>
-      
+
       <div class="search-results-dropdown" [class.open]="searchResult">
         <div class="results-container">
           <ul class="results-list">
             @for(item of items; track item.id){
-              <li class="result-item" (click)="selectMember(item)">
-                <a class="result-link">
-                  <span class="item-title">{{ item.title | translate }}</span>
-                </a>
-              </li>
+            <li class="result-item" (click)="selectMember(item)">
+              <a class="result-link">
+                <span class="item-title">{{ item.title | translate }}</span>
+              </a>
+            </li>
             }
           </ul>
-          
+
           @if(searchResultEmpty){
-            <div class="no-results-message">
-              {{ 'opps!!_There_are_no_result_found' | translate }}
-            </div>
+          <div class="no-results-message">
+            {{ "opps!!_There_are_no_result_found" | translate }}
+          </div>
           }
         </div>
       </div>
-      @if(form.controls['user_id'].touched && form.controls['user_id'].errors?.['required']){
-        <div class="invalid-feedback">
-          {{ 'user_is_required' | translate }}
-        </div>
+      @if(form.controls['user_id'].touched &&
+      form.controls['user_id'].errors?.['required']){
+      <div class="invalid-feedback">
+        {{ "user_is_required" | translate }}
+      </div>
       }
     </div>
   </app-form-fields>
-  <app-form-fields [labelClass]="'form-label-title col-sm-3 mb-0'" [gridClass]="'col-sm-9'" [label]="'Amount'" [for]="'amount'" [required]="true">
-    <input class="form-control" id="amount" type="text" placeholder="{{ 'enter_amount' | translate }}" formControlName="amount">
-    @if(form.controls['amount'].touched && form.controls['amount'].errors?.['required']){
-      <div class="invalid-feedback">
-        {{ 'amount_is_required' | translate }}
-      </div>
+  <app-form-fields
+    [labelClass]="'form-label-title col-sm-3 mb-0'"
+    [gridClass]="'col-sm-9'"
+    [label]="'Amount'"
+    [for]="'amount'"
+    [required]="true"
+  >
+    <input
+      class="form-control"
+      id="amount"
+      type="text"
+      placeholder="{{ 'enter_amount' | translate }}"
+      formControlName="amount"
+    />
+    @if(form.controls['amount'].touched &&
+    form.controls['amount'].errors?.['required']){
+    <div class="invalid-feedback">
+      {{ "amount_is_required" | translate }}
+    </div>
     }
   </app-form-fields>
-  <app-form-fields [labelClass]="'form-label-title col-sm-3 mb-0'" [gridClass]="'col-sm-9'" [label]="'shares type'" [for]="'shares_type'" [required]="true">
+  <app-form-fields
+    [labelClass]="'form-label-title col-sm-3 mb-0'"
+    [gridClass]="'col-sm-9'"
+    [label]="'shares type'"
+    [for]="'shares_type'"
+    [required]="true"
+  >
     @if(isBrowser) {
-    <select2 class="custom-select"
+    <select2
+      class="custom-select"
       [placeholder]="'select_shares_type' | translate"
       [data]="sharesType?.length ? sharesType : []"
       formControlName="shares_type"
       noResultMessage="{{ 'no_data_found' | translate }}"
-      id="shares_type">
+      id="shares_type"
+    >
     </select2>
-  }
-    @if(form.controls['shares_type'].touched && form.controls['shares_type'].errors?.['required']){
-      <div class="invalid-feedback">
-        {{ 'shares_type_is_required' | translate }}
-      </div>
+    } @if(form.controls['shares_type'].touched &&
+    form.controls['shares_type'].errors?.['required']){
+    <div class="invalid-feedback">
+      {{ "shares_type_is_required" | translate }}
+    </div>
     }
   </app-form-fields>
-  <app-form-fields [labelClass]="'form-label-title col-sm-3 mb-0'" [gridClass]="'col-sm-9'" [label]="'month'" [for]="'month'" [required]="true">
+  <app-form-fields
+    [labelClass]="'form-label-title col-sm-3 mb-0'"
+    [gridClass]="'col-sm-9'"
+    [label]="'month'"
+    [for]="'month'"
+    [required]="true"
+  >
     @if(isBrowser) {
-    <select2 class="custom-select"
+    <select2
+      class="custom-select"
       [placeholder]="'month' | translate"
       [data]="months?.length ? months : []"
       formControlName="month"
       noResultMessage="{{ 'no_data_found' | translate }}"
       id="month"
-      resettable>
+      resettable
+    >
     </select2>
-  }
-    @if(form.controls['month'].touched && form.controls['month'].errors?.['required']){
-      <div class="invalid-feedback">
-        {{ 'month_is_required' | translate }}
-      </div>
+    } @if(form.controls['month'].touched &&
+    form.controls['month'].errors?.['required']){
+    <div class="invalid-feedback">
+      {{ "month_is_required" | translate }}
+    </div>
     }
   </app-form-fields>
-  <app-form-fields [labelClass]="'form-label-title col-sm-3 mb-0'" [gridClass]="'col-sm-9'" [label]="'year'" [for]="'year'" [required]="true">
+  <app-form-fields
+    [labelClass]="'form-label-title col-sm-3 mb-0'"
+    [gridClass]="'col-sm-9'"
+    [label]="'year'"
+    [for]="'year'"
+    [required]="true"
+  >
     @if(isBrowser) {
-    <select2 class="custom-select"
+    <select2
+      class="custom-select"
       [placeholder]="'year' | translate"
       [data]="years?.length ? years : []"
       formControlName="year"
       noResultMessage="{{ 'no_data_found' | translate }}"
       id="year"
-      resettable>
+      resettable
+    >
     </select2>
-  }
-    @if(form.controls['year'].touched && form.controls['year'].errors?.['required']){
-      <div class="invalid-feedback">
-        {{ 'year_is_required' | translate }}
-      </div>
+    } @if(form.controls['year'].touched &&
+    form.controls['year'].errors?.['required']){
+    <div class="invalid-feedback">
+      {{ "year_is_required" | translate }}
+    </div>
     }
   </app-form-fields>
-  <app-form-fields [labelClass]="'form-label-title col-sm-3 mb-0'" [gridClass]="'col-sm-9'" [label]="'deduction source'" [for]="'deduction_source'" [required]="true">
+  <app-form-fields
+    [labelClass]="'form-label-title col-sm-3 mb-0'"
+    [gridClass]="'col-sm-9'"
+    [label]="'deduction source'"
+    [for]="'deduction_source'"
+    [required]="true"
+  >
     @if(isBrowser) {
-    <select2 class="custom-select"
+    <select2
+      class="custom-select"
       [placeholder]="'select_deduction_source' | translate"
       [data]="deductionSources?.length ? deductionSources : []"
       formControlName="transferred_from"
       noResultMessage="{{ 'no_data_found' | translate }}"
       id="transferred_from"
-      resettable>
+      resettable
+    >
     </select2>
-  }
-    @if(form.controls['transferred_from'].touched && form.controls['transferred_from'].errors?.['required']){
-      <div class="invalid-feedback">
-        {{ 'deduction_source_is_required' | translate }}
-      </div>
+    } @if(form.controls['transferred_from'].touched &&
+    form.controls['transferred_from'].errors?.['required']){
+    <div class="invalid-feedback">
+      {{ "deduction_source_is_required" | translate }}
+    </div>
     }
   </app-form-fields>
-  <app-form-fields [labelClass]="'form-label-title col-sm-3 mb-0'" [gridClass]="'col-sm-9'" [label]="'narration'" [for]="'narration'">
-    <textarea class="form-control" id="narration" placeholder="{{ 'enter_short_narration' | translate }}" rows="3" formControlName="narration"></textarea>
-    <p class="help-text">{{ '*Maximum length should be 300 characters.' }}</p>
+  <app-form-fields
+    [labelClass]="'form-label-title col-sm-3 mb-0'"
+    [gridClass]="'col-sm-9'"
+    [label]="'narration'"
+    [for]="'narration'"
+  >
+    <textarea
+      class="form-control"
+      id="narration"
+      placeholder="{{ 'enter_short_narration' | translate }}"
+      rows="3"
+      formControlName="narration"
+    ></textarea>
+    <p class="help-text">{{ "*Maximum length should be 300 characters." }}</p>
     <!-- @if(form.controls['narration'].touched && form.controls['narration'].errors?.['required']){
       <div class="invalid-feedback">
         {{ 'narration_is_required' | translate }}
       </div>
     } -->
   </app-form-fields>
-  <app-button [id]="'user_btn'">{{ (type == 'create' ? 'save_user' : 'update_user') | translate }}</app-button>
+  <app-button [id]="'user_btn'">{{
+    (type == "create" ? "save_shares" : "update_shares") | translate
+  }}</app-button>
 </form>

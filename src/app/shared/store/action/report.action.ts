@@ -20,6 +20,11 @@ export class GetLoanReport {
   constructor(public payload?: Params) {}
 }
 
+export class GetCreditSalesReport {
+  static readonly type = "[Reports] Get Credit Sales Report";
+  constructor(public payload?: Params) {}
+}
+
 export class GetLedgerBalance {
   static readonly type = "[Reports] Get Ledger Balance";
   constructor(public payload?: Params) {}

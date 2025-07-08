@@ -46,6 +46,7 @@ export interface MemberStateModel {
   banks?: any | null;
   bank_code?: any | null;
   bank_name?: any | null;
+  account_details?: any | null;
   logo?: any | null;
   total?: any | null;
 }
@@ -70,6 +71,7 @@ export interface MemberStateModel {
     banks: null,
     bank_code: null,
     bank_name: null,
+    account_details: null,
     logo: null,
     total: null,
   },
@@ -124,6 +126,11 @@ export class MemberState {
   @Selector()
   static bank_name(state: MemberStateModel) {
     return state.bank_name;
+  }
+
+  @Selector()
+  static account_details(state: MemberStateModel) {
+    return state.account_details;
   }
 
   @Selector()
@@ -319,7 +326,11 @@ export class MemberState {
 
     return this.memberService.getKYC(payload).pipe(
       tap((result: any) => {
-        console.log("KYC RESULT :::::", result);
+        ctx.patchState({
+          account_details: result,
+          response: result,
+          loading: false,
+        });
       }),
       catchError((err) => {
         ctx.patchState({ loading: false });

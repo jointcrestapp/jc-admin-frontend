@@ -23,12 +23,9 @@ import {
 } from "../../../shared/interface/table.interface";
 import { CommonModule, DOCUMENT, isPlatformBrowser } from "@angular/common";
 import {
-  ApproveProductStatus,
   DeleteAllProduct,
-  DeleteProduct,
   Download,
   ExportProduct,
-  GetProducts,
   ReplicateProduct,
   UpdateProductStatus,
 } from "../../../shared/store/action/product.action";
@@ -210,13 +207,13 @@ export class ApprovedLoansComponent {
         label: "Edit",
         actionToPerform: "edit",
         icon: "ri-pencil-line",
-        permission: "product.edit",
+        permission: "loan.edit",
       },
       {
         label: "Delete",
         actionToPerform: "delete",
         icon: "ri-delete-bin-line",
-        permission: "product.destroy",
+        permission: "loan.destroy",
       },
     ],
     data: [] as Product[],

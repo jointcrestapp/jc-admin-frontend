@@ -12,6 +12,7 @@ import {
   GetLoanReport,
   GetSavingsReport,
   GetSharesReport,
+  GetCreditSalesReport,
   SetLoadingState,
 } from "../action/report.action";
 import { ReportService } from "../../../core/services/reports.service";
@@ -20,6 +21,7 @@ export interface ReportStateModel {
   savings_report: any | null;
   shares_report: any | null;
   loan_report: any | null;
+  credit_sales_report: any | null;
   ledger_balance: {
     data: any[];
     total: any | null;
@@ -33,6 +35,7 @@ export interface ReportStateModel {
     savings_report: null,
     shares_report: null,
     loan_report: null,
+    credit_sales_report: null,
     ledger_balance: {
       data: [],
       total: null,
@@ -62,6 +65,11 @@ export class ReportState {
   @Selector()
   static loan_report(state: ReportStateModel) {
     return state.loan_report;
+  }
+
+  @Selector()
+  static credit_sales_report(state: ReportStateModel) {
+    return state.credit_sales_report;
   }
 
   @Selector()
@@ -165,6 +173,28 @@ export class ReportState {
       catchError((err) => {
         ctx.patchState({ loading: false });
         console.error("Error fetching loan report:", err);
+        return throwError(() => err);
+      })
+    );
+  }
+
+  @Action(GetCreditSalesReport)
+  getCreditSalesReport(
+    ctx: StateContext<ReportStateModel>,
+    { payload }: GetCreditSalesReport
+  ) {
+    ctx.patchState({ loading: true });
+
+    return this.reportService.getCreditSalesReport(payload).pipe(
+      tap((result: any) => {
+        ctx.patchState({
+          credit_sales_report: result?.data,
+          loading: false,
+        });
+      }),
+      catchError((err) => {
+        ctx.patchState({ loading: false });
+        console.error("Error fetching credit sales report:", err);
         return throwError(() => err);
       })
     );

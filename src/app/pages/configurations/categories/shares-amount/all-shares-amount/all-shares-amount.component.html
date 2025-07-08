@@ -1,16 +1,4 @@
 <app-page-wrapper [gridClass]="'col-sm-12'" [title]="'share_amount'">
-  <!-- <div
-    class="d-flex flex-wrap gap-3"
-    button
-    *hasPermission="'configurations.create'"
-  >
-    <a
-      [routerLink]="['/configurations/share-amount/add-share-amount']"
-      class="align-items-center btn btn-theme d-flex rounded"
-    >
-      {{ "add_share_amount" | translate }}
-    </a>
-  </div> -->
   <app-table
     [tableConfig]="tableConfig"
     (tableChanged)="onTableChange($event)"

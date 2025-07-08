@@ -1,0 +1,134 @@
+@if(this.isLoading$ | async){
+<app-loader></app-loader>
+}
+
+<form
+  class="theme-form theme-form-2 mega-form"
+  [formGroup]="form"
+  (ngSubmit)="submit()"
+>
+  <app-form-fields
+    [label]="'Loan Fee'"
+    [for]="'processing_fee'"
+    [required]="true"
+  >
+    <input
+      class="form-control"
+      type="number"
+      placeholder="{{ 'enter_processing_fee' | translate }}"
+      name="processing_fee"
+      formControlName="processing_fee"
+    />
+    <div *ngIf="form.controls['processing_fee']?.touched">
+      <div
+        *ngIf="form.controls['processing_fee']?.errors?.['required']"
+        class="invalid-feedback"
+      >
+        {{ "processing_fee_is_required" | translate }}
+      </div>
+    </div>
+  </app-form-fields>
+
+  <app-form-fields
+    [label]="'requestable'"
+    [for]="'loan_requestable'"
+    [required]="true"
+  >
+    <input
+      class="form-control"
+      type="number"
+      placeholder="{{ 'enter_loan_requestable' | translate }}"
+      name="loan_requestable"
+      formControlName="loan_requestable"
+    />
+    <div *ngIf="form.controls['loan_requestable']?.touched">
+      <div
+        *ngIf="form.controls['loan_requestable']?.errors?.['required']"
+        class="invalid-feedback"
+      >
+        {{ "loan_requestable_is_required" | translate }}
+      </div>
+    </div>
+  </app-form-fields>
+  <app-form-fields
+    [labelClass]="'form-label-title col-sm-3 mb-0'"
+    [gridClass]="'col-sm-9'"
+    [label]="'approval level'"
+    [for]="'approval_level'"
+    [required]="true"
+  >
+    <div class="input-group">
+      <button
+        class="btn btn-outline-secondary"
+        type="button"
+        (click)="handleDecrement('approval level')"
+      >
+        <i class="ri-subtract-line"></i>
+      </button>
+      <input
+        class="form-control text-center"
+        id="rate"
+        type="number"
+        placeholder="{{ 'select' | translate }}"
+        formControlName="approval_level"
+        min="0"
+      />
+      <button
+        class="btn btn-outline-secondary"
+        type="button"
+        (click)="handleIncrement('approval level')"
+      >
+        <i class="ri-add-line"></i>
+      </button>
+    </div>
+    @if(form.controls['approval_level']?.touched &&
+    form.controls['approval_level'].errors?.['required']){
+    <div class="invalid-feedback">
+      {{ "approval_level_is_required" | translate }}
+    </div>
+    }
+  </app-form-fields>
+  <app-form-fields
+    [labelClass]="'form-label-title col-sm-3 mb-0'"
+    [gridClass]="'col-sm-9'"
+    [label]="'repayment'"
+    [for]="'repayment'"
+    [required]="true"
+  >
+    <div class="input-group">
+      <button
+        class="btn btn-outline-secondary"
+        type="button"
+        (click)="handleDecrement('repayment')"
+      >
+        <i class="ri-subtract-line"></i>
+      </button>
+      <input
+        class="form-control text-center"
+        id="rate"
+        type="number"
+        placeholder="{{ 'select' | translate }}"
+        formControlName="repayment"
+        min="0"
+      />
+      <button
+        class="btn btn-outline-secondary"
+        type="button"
+        (click)="handleIncrement('repayment')"
+      >
+        <i class="ri-add-line"></i>
+      </button>
+    </div>
+    @if(form.controls['repayment']?.touched &&
+    form.controls['repayment'].errors?.['required']){
+    <div class="invalid-feedback">
+      {{ "start_repayment_is_required" | translate }}
+    </div>
+    }
+  </app-form-fields>
+  <div class="ms-auto justify-content-end d-flex gap mt-sm-4 mt-2">
+    <app-button [id]="'user_btn'">
+      {{ (type === "create" ? "save" : "save_and_continue") | translate }}
+    </app-button>
+  </div>
+</form>

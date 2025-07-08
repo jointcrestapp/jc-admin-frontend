@@ -1,1 +1,26 @@
-<p>all-bye-laws works!</p>
+<app-page-wrapper [gridClass]="'col-sm-12'" [title]="'bye law'">
+  <div
+    class="d-flex flex-wrap gap-3"
+    button
+    *hasPermission="'miscellaneous.create'"
+  >
+    <a
+      [routerLink]="['/miscellaneous/add-bye-law']"
+      class="align-items-center btn btn-theme d-flex rounded"
+    >
+      {{ "add_bye_law" | translate }}
+    </a>
+  </div>
+  <app-table
+    [tableConfig]="tableConfig"
+    (tableChanged)="onTableChange($event)"
+    (rowClicked)="edit($event)"
+    (action)="onActionClicked($event)"
+  >
+  </app-table>
+</app-page-wrapper>
+
+<app-import-csv-modal [module]="'miscellaneous'" #csvModal>
+</app-import-csv-modal>
+
+<app-digital-download-modal #downloadModal> </app-digital-download-modal>

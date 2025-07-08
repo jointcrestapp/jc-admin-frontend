@@ -120,7 +120,7 @@
         {{ "close" | translate }}
       </button>
     </ng-template>
-    }
+    } @if(searchInput){
     <div class="role-search product-search justify-content-end w-auto">
       <label for="role-search" class="form-label"
         >{{ "search" | translate }} :</label
@@ -132,6 +132,7 @@
         [formControl]="term"
       />
     </div>
+    }
     <ng-content select="[filter]"></ng-content>
   </div>
 </div>

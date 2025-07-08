@@ -1,8 +1,7 @@
 import { Params } from "../../interface/core.interface";
 
-
 export class SetLoadingState {
-  static readonly type = '[Loading] Set Loading State';
+  static readonly type = "[Loading] Set Loading State";
   constructor(public isLoading: boolean) {}
 }
 
@@ -17,7 +16,7 @@ export class GetActiveThriftForUser {
 }
 
 export class EditThrifts {
-  static readonly type = '[Thrifts] Edit';
+  static readonly type = "[Thrifts] Edit";
   constructor(public id: number) {}
 }
 
@@ -49,4 +48,14 @@ export class GetThriftsCategories {
 export class DeleteThrifts {
   static readonly type = "[Thrifts] Delete";
   constructor(public id: number) {}
+}
+
+export class GenerateThriftTemplate {
+  static readonly type = "[Thrifts] Generate";
+  constructor(public payload?: Params) {}
+}
+
+export class AddBatchThrifts {
+  static readonly type = "[Thrifts] Add Batch Thrifts";
+  constructor(public payload: any) {}
 }

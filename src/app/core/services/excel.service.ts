@@ -70,4 +70,54 @@ export class ExcelService {
       })
     );
   }
+
+  generateSharesTemplate(): Observable<any> {
+    if (!isPlatformBrowser(this.platformId)) {
+      return throwError(() => new Error("Excel operations are browser-only"));
+    }
+
+    return from(import("xlsx")).pipe(
+      map((XLSX) => {
+        const template = [["member_id", "amount"]];
+
+        const ws: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet(template);
+        const wb: XLSX.WorkBook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "Shares Template");
+        XLSX.writeFile(wb, "shares_template.xlsx");
+        return true;
+      }),
+      tap(() =>
+        this.notification.showSuccess("Template downloaded successfully")
+      ),
+      catchError((error) => {
+        this.notification.showError("Failed to generate template");
+        return throwError(() => error);
+      })
+    );
+  }
+
+  generateThriftsTemplate(): Observable<any> {
+    if (!isPlatformBrowser(this.platformId)) {
+      return throwError(() => new Error("Excel operations are browser-only"));
+    }
+
+    return from(import("xlsx")).pipe(
+      map((XLSX) => {
+        const template = [["member_id", "amount"]];
+
+        const ws: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet(template);
+        const wb: XLSX.WorkBook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "Thrifts Template");
+        XLSX.writeFile(wb, "thrifts_template.xlsx");
+        return true;
+      }),
+      tap(() =>
+        this.notification.showSuccess("Template downloaded successfully")
+      ),
+      catchError((error) => {
+        this.notification.showError("Failed to generate template");
+        return throwError(() => error);
+      })
+    );
+  }
 }

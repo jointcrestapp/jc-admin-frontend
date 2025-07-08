@@ -1,36 +1,56 @@
 <app-page-wrapper [gridClass]="'col-sm-12'" [title]="'members'">
   <div class="container-fluid">
     <div class="card-bottom-space">
-      <div class="row row-cols-xxl-5 row-cols-md-3 row-cols-sm-2 row-cols-1 g-sm-4 g-3">
+      <div
+        class="row row-cols-xxl-5 row-cols-md-3 row-cols-sm-2 row-cols-1 g-sm-4 g-3"
+      >
         <div class="widget-card-box">
           <a href="javascript:void(0)" class="widget-card card">
             <div class="widget-icon">
-              <img src="assets/images/svg/check-mark.png" class="img-fluid" alt="check-mark">
+              <img
+                src="assets/images/svg/check-mark.png"
+                class="img-fluid"
+                alt="check-mark"
+              />
             </div>
             <div>
-              <h6>{{ 'approved_members' | translate }}</h6>
+              <h6>{{ "approved_members" | translate }}</h6>
               <h2>{{ (statistics$ | async)?.approved_members }}</h2>
             </div>
           </a>
         </div>
         <div class="widget-card-box">
-          <a [routerLink]="['/registration/pending-members']" class="widget-card card">
+          <a
+            [routerLink]="['/registration/pending-members']"
+            class="widget-card card"
+          >
             <div class="widget-icon">
-              <img src="assets/images/svg/receipt-2.svg" class="img-fluid" alt="receipt">
+              <img
+                src="assets/images/svg/receipt-2.svg"
+                class="img-fluid"
+                alt="receipt"
+              />
             </div>
             <div>
-              <h6>{{ 'pending_members' | translate }}</h6>
+              <h6>{{ "pending_members" | translate }}</h6>
               <h2>{{ (statistics$ | async)?.pending_members }}</h2>
             </div>
           </a>
         </div>
         <div class="widget-card-box">
-          <a [routerLink]="['/registration/exited-members']" class="widget-card card">
+          <a
+            [routerLink]="['/registration/exited-members']"
+            class="widget-card card"
+          >
             <div class="widget-icon">
-              <img src="assets/images/svg/sign-out-option.png" class="img-fluid" alt="log-out">
+              <img
+                src="assets/images/svg/sign-out-option.png"
+                class="img-fluid"
+                alt="log-out"
+              />
             </div>
             <div>
-              <h6>{{ 'exited_members' | translate }}</h6>
+              <h6>{{ "exited_members" | translate }}</h6>
               <h2>{{ (statistics$ | async)?.exited_members }}</h2>
             </div>
           </a>
@@ -39,19 +59,27 @@
     </div>
   </div>
   <div class="d-flex flex-wrap gap-2" *hasPermission="'user.create'" button>
-    <!-- <a href="javascript:void(0)" class="align-items-center btn btn-light-bg me-2" (click)="CSVModal.openModal()">
-      <i class="ri-upload-2-line"></i> {{ 'import' | translate }}
-    </a> -->
-    <a href="javascript:void(0)" class="align-items-center btn btn-light-bg me-2" (click)="export()">
-      <i class="ri-download-2-line"></i> {{ 'export' | translate }}
+    <a
+      href="javascript:void(0)"
+      class="align-items-center btn btn-light-bg me-2"
+      (click)="export()"
+    >
+      <i class="ri-download-2-line"></i> {{ "export" | translate }}
     </a>
-    <a [routerLink]="['/registration/create']" class="align-items-center btn btn-theme">
-      <i class="ri-add-line"></i> {{ 'add_member' | translate }}
+    <a
+      [routerLink]="['/registration/create']"
+      class="align-items-center btn btn-theme"
+    >
+      <i class="ri-add-line"></i> {{ "add_member" | translate }}
     </a>
   </div>
-  <app-table [tableConfig]="tableConfig"  (tableChanged)="onTableChange($event)" (rowClicked)="edit($event)" (action)="onActionClicked($event)">
+  <app-table
+    [tableConfig]="tableConfig"
+    (tableChanged)="onTableChange($event)"
+    (rowClicked)="edit($event)"
+    (action)="onActionClicked($event)"
+  >
   </app-table>
 </app-page-wrapper>
 
-<app-import-csv-modal [module]="'user'" #csvModal>
-</app-import-csv-modal>
+<app-import-csv-modal [module]="'user'" #csvModal> </app-import-csv-modal>

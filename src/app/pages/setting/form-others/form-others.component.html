@@ -1,0 +1,198 @@
+@if(this.isLoading$ | async){
+<app-loader></app-loader>
+}
+
+<form
+  class="theme-form theme-form-2 mega-form"
+  [formGroup]="form"
+  (ngSubmit)="submit()"
+>
+  <app-form-fields
+    [label]="'credit sales approval level'"
+    [for]="'sales_approval_level'"
+    [required]="true"
+  >
+    <input
+      class="form-control"
+      type="text"
+      placeholder="{{ 'enter_sales_approval_level' | translate }}"
+      name="sales_approval_level"
+      formControlName="sales_approval_level"
+    />
+    <div *ngIf="form.controls['sales_approval_level']?.touched">
+      <div
+        *ngIf="form.controls['sales_approval_level']?.errors?.['required']"
+        class="invalid-feedback"
+      >
+        {{ "sales_approval_level_is_required" | translate }}
+      </div>
+    </div>
+  </app-form-fields>
+
+  <app-form-fields
+    [label]="'member exit approval'"
+    [for]="'member_exit_level'"
+    [required]="true"
+  >
+    <input
+      class="form-control"
+      type="text"
+      placeholder="{{ 'enter_member_exit_level' | translate }}"
+      name="member_exit_level"
+      formControlName="member_exit_level"
+    />
+    <div *ngIf="form.controls['member_exit_level']?.touched">
+      <div
+        *ngIf="form.controls['member_exit_level']?.errors?.['required']"
+        class="invalid-feedback"
+      >
+        {{ "member_exit_level_is_required" | translate }}
+      </div>
+    </div>
+  </app-form-fields>
+
+  <app-form-fields
+    [label]="'withdrawal approval level'"
+    [for]="'withdrawal_approval_level'"
+    [required]="true"
+  >
+    <input
+      class="form-control"
+      type="text"
+      placeholder="{{ 'enter_withdrawal_approval_level' | translate }}"
+      name="withdrawal_approval_level"
+      formControlName="withdrawal_approval_level"
+    />
+    <div *ngIf="form.controls['withdrawal_approval_level']?.touched">
+      <div
+        *ngIf="form.controls['withdrawal_approval_level']?.errors?.['required']"
+        class="invalid-feedback"
+      >
+        {{ "withdrawal_approval_level_is_required" | translate }}
+      </div>
+    </div>
+  </app-form-fields>
+
+  <app-form-fields
+    [label]="'share approval level'"
+    [for]="'share_approval_level'"
+    [required]="true"
+  >
+    <input
+      class="form-control"
+      type="text"
+      placeholder="{{ 'enter_share_approval_level' | translate }}"
+      name="share_approval_level"
+      formControlName="share_approval_level"
+    />
+    <div *ngIf="form.controls['share_approval_level']?.touched">
+      <div
+        *ngIf="form.controls['share_approval_level']?.errors?.['required']"
+        class="invalid-feedback"
+      >
+        {{ "share_approval_level_is_required" | translate }}
+      </div>
+    </div>
+  </app-form-fields>
+
+  <app-form-fields
+    [label]="'approve member'"
+    [for]="'approve_member'"
+    [required]="false"
+  >
+    <div class="form-check form-switch ps-0">
+      <label class="switch">
+        <input
+          type="checkbox"
+          id="approve_member"
+          formControlName="approve_member"
+        />
+        <span class="switch-state"></span>
+      </label>
+    </div>
+  </app-form-fields>
+
+  <app-form-fields
+    [label]="'member wallet'"
+    [for]="'member_wallet'"
+    [required]="false"
+  >
+    <div class="form-check form-switch ps-0">
+      <label class="switch">
+        <input
+          type="checkbox"
+          id="member_wallet"
+          formControlName="member_wallet"
+        />
+        <span class="switch-state"></span>
+      </label>
+    </div>
+  </app-form-fields>
+
+  <app-form-fields
+    [label]="'account details'"
+    [for]="'account_details'"
+    [required]="false"
+  >
+    <div class="form-check form-switch ps-0">
+      <label class="switch">
+        <input
+          type="checkbox"
+          id="account_details"
+          formControlName="account_details"
+        />
+        <span class="switch-state"></span>
+      </label>
+    </div>
+  </app-form-fields>
+
+  <app-form-fields
+    [label]="'suspend all members'"
+    [for]="'suspendend_all_members'"
+    [required]="false"
+  >
+    <div class="form-check form-switch ps-0">
+      <label class="switch">
+        <input
+          type="checkbox"
+          id="suspendend_all_members"
+          formControlName="suspendend_all_members"
+        />
+        <span class="switch-state"></span>
+      </label>
+    </div>
+  </app-form-fields>
+
+  <app-form-fields
+    [labelClass]="'form-label-title col-sm-3 mb-0'"
+    [gridClass]="'col-sm-9'"
+    [label]="'suspension message'"
+    [for]="'suspension_message'"
+    [required]="true"
+  >
+    @if(isBrowser) {
+    <textarea
+      class="form-control"
+      id="suspension_message"
+      name="suspension_message"
+      placeholder="{{ 'enter_message' | translate }}"
+      rows="5"
+      formControlName="suspension_message"
+    ></textarea>
+    <p class="help-text">
+      {{ "*Maximum length should be 300 characters." }}
+    </p>
+    } @if(form.controls['suspension_message'].touched &&
+    form.controls['suspension_message'].errors?.['required']){
+    <div class="invalid-feedback">
+      {{ "message_is_required" | translate }}
+    </div>
+    }
+  </app-form-fields>
+
+  <div class="ms-auto justify-content-end d-flex gap mt-sm-4 mt-2">
+    <app-button [id]="'user_btn'">
+      {{ (type === "create" ? "save" : "save_and_continue") | translate }}
+    </app-button>
+  </div>
+</form>

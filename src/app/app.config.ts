@@ -79,6 +79,8 @@ import { CommunicationState } from "./shared/store/state/communication.state";
 import { InvestmentsState } from "./shared/store/state/investment.state";
 import { ReportState } from "./shared/store/state/reports.state";
 import { CreditState } from "./shared/store/state/credit.state";
+import { MiscellaneousState } from "./shared/store/state/miscellaneous.state";
+import { SettingsState } from "./shared/store/state/settings.state";
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
@@ -180,6 +182,8 @@ export const appConfig: ApplicationConfig = {
         InvestmentsState,
         ReportState,
         CreditState,
+        MiscellaneousState,
+        SettingsState,
       ]),
       NgxsModule.forFeature([AuthState, StoreState]),
       NgxsStoragePluginModule.forRoot({

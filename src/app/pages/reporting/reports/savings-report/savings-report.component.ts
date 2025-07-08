@@ -27,10 +27,7 @@ import { PageWrapperComponent } from "../../../../shared/components/page-wrapper
 import { TableComponent } from "../../../../shared/components/ui/table/table.component";
 import { HasPermissionDirective } from "../../../../shared/directive/has-permission.directive";
 import { ReportState } from "src/app/shared/store/state/reports.state";
-import {
-  SetLoadingState,
-  GetSavingsReport,
-} from "src/app/shared/store/action/report.action";
+import { GetSavingsReport } from "src/app/shared/store/action/report.action";
 import { NotificationService } from "src/app/shared/services/notification.service";
 
 @Component({

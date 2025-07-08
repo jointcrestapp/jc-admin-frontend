@@ -1,0 +1,169 @@
+@if(this.isLoading$ | async){
+<app-loader></app-loader>
+}
+
+<form
+  class="theme-form theme-form-2 mega-form"
+  [formGroup]="form"
+  (ngSubmit)="submit()"
+>
+  <app-form-fields
+    [label]="'SMS sender'"
+    [for]="'sms_sender'"
+    [required]="true"
+  >
+    <input
+      class="form-control"
+      type="text"
+      placeholder="{{ 'enter_sms_sender' | translate }}"
+      name="sms_sender"
+      formControlName="sms_sender"
+    />
+    <div *ngIf="form.controls['sms_sender']?.touched">
+      <div
+        *ngIf="form.controls['sms_sender']?.errors?.['required']"
+        class="invalid-feedback"
+      >
+        {{ "sms_sender_is_required" | translate }}
+      </div>
+    </div>
+  </app-form-fields>
+
+  <app-form-fields
+    [label]="'SMS channel'"
+    [for]="'sms_channel'"
+    [required]="true"
+  >
+    <input
+      class="form-control"
+      type="text"
+      placeholder="{{ 'enter_sms_channel' | translate }}"
+      name="sms_channel"
+      formControlName="sms_channel"
+    />
+    <div *ngIf="form.controls['sms_channel']?.touched">
+      <div
+        *ngIf="form.controls['sms_channel']?.errors?.['required']"
+        class="invalid-feedback"
+      >
+        {{ "sms_channel_is_required" | translate }}
+      </div>
+    </div>
+  </app-form-fields>
+
+  <app-form-fields
+    [label]="'SMS API key'"
+    [for]="'sms_api_key'"
+    [required]="true"
+  >
+    <input
+      class="form-control"
+      type="text"
+      placeholder="{{ 'enter_sms_api_key' | translate }}"
+      name="sms_api_key"
+      formControlName="sms_api_key"
+    />
+    <div *ngIf="form.controls['sms_api_key']?.touched">
+      <div
+        *ngIf="form.controls['sms_api_key']?.errors?.['required']"
+        class="invalid-feedback"
+      >
+        {{ "sms_api_key_is_required" | translate }}
+      </div>
+    </div>
+  </app-form-fields>
+
+  <app-form-fields
+    [label]="'SMS price per unit'"
+    [for]="'sms_price_per_unit'"
+    [required]="true"
+  >
+    <input
+      class="form-control"
+      type="text"
+      placeholder="{{ 'enter_sms_price_per_unit' | translate }}"
+      name="sms_price_per_unit"
+      formControlName="sms_price_per_unit"
+    />
+    <div *ngIf="form.controls['sms_price_per_unit']?.touched">
+      <div
+        *ngIf="form.controls['sms_price_per_unit']?.errors?.['required']"
+        class="invalid-feedback"
+      >
+        {{ "sms_price_per_unit_is_required" | translate }}
+      </div>
+    </div>
+  </app-form-fields>
+
+  <app-form-fields
+    [label]="'SMS length per unit'"
+    [for]="'sms_length_per_unit'"
+    [required]="true"
+  >
+    <input
+      class="form-control"
+      type="text"
+      placeholder="{{ 'enter_sms_length_per_unit' | translate }}"
+      name="sms_length_per_unit"
+      formControlName="sms_length_per_unit"
+    />
+    <div *ngIf="form.controls['sms_length_per_unit']?.touched">
+      <div
+        *ngIf="form.controls['sms_length_per_unit']?.errors?.['required']"
+        class="invalid-feedback"
+      >
+        {{ "sms_length_per_unit_is_required" | translate }}
+      </div>
+    </div>
+  </app-form-fields>
+
+  <app-form-fields
+    [label]="'SMS username'"
+    [for]="'sms_username'"
+    [required]="true"
+  >
+    <input
+      class="form-control"
+      type="text"
+      placeholder="{{ 'enter_sms_username' | translate }}"
+      name="sms_username"
+      formControlName="sms_username"
+    />
+    <div *ngIf="form.controls['sms_username']?.touched">
+      <div
+        *ngIf="form.controls['sms_username']?.errors?.['required']"
+        class="invalid-feedback"
+      >
+        {{ "sms_username_is_required" | translate }}
+      </div>
+    </div>
+  </app-form-fields>
+
+  <app-form-fields
+    [label]="'SMS password'"
+    [for]="'sms_password'"
+    [required]="true"
+  >
+    <input
+      class="form-control"
+      type="password"
+      placeholder="{{ 'enter_sms_password' | translate }}"
+      name="sms_password"
+      formControlName="sms_password"
+    />
+    <div *ngIf="form.controls['sms_password']?.touched">
+      <div
+        *ngIf="form.controls['sms_password']?.errors?.['required']"
+        class="invalid-feedback"
+      >
+        {{ "sms_password_is_required" | translate }}
+      </div>
+    </div>
+  </app-form-fields>
+
+  <div class="ms-auto justify-content-end d-flex gap mt-sm-4 mt-2">
+    <app-button [id]="'user_btn'">
+      {{ (type === "create" ? "save" : "save_and_continue") | translate }}
+    </app-button>
+  </div>
+</form>

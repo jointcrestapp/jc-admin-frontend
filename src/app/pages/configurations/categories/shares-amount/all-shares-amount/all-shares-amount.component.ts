@@ -1,6 +1,5 @@
 import {
   Component,
-  inject,
   Inject,
   PLATFORM_ID,
   Renderer2,
@@ -11,11 +10,7 @@ import { SettingState } from "../../../../../shared/store/state/setting.state";
 import { Observable, Subject, takeUntil } from "rxjs";
 import { Product } from "../../../../../shared/interface/product.interface";
 import { Values } from "../../../../../shared/interface/setting.interface";
-import {
-  Select2Data,
-  Select2Module,
-  Select2UpdateEvent,
-} from "ng-select2-component";
+import { Select2Module } from "ng-select2-component";
 import { ImportCsvModalComponent } from "../../../../../shared/components/ui/modal/import-csv-modal/import-csv-modal.component";
 import { DigitalDownloadModalComponent } from "../../../../../shared/components/ui/modal/digital-download-modal/digital-download-modal.component";
 import { Params, Router, RouterModule } from "@angular/router";
