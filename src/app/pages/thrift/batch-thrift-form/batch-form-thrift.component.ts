@@ -1,39 +1,101 @@
-import { Component, ElementRef, HostListener, inject, Inject, Input, PLATFORM_ID, Renderer2, ViewChild } from '@angular/core';
-import { NgbCalendar, NgbDate, NgbDateParserFormatter, NgbDateStruct, NgbModule, NgbNav } from '@ng-bootstrap/ng-bootstrap';
-import {  Store } from '@ngxs/store';
-import { ProductState } from '../../../shared/store/state/product.state';
-import { Observable, Subject, debounceTime, distinctUntilChanged, finalize, map, mergeMap, of, switchMap, take, takeUntil } from 'rxjs';
-import { Select2Data, Select2Module } from 'ng-select2-component';
-import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Product, VariationCombination } from '../../../shared/interface/product.interface';
-import { MediaConfig, mediaConfig } from '../../../shared/data/media-config';
-import { Editor, NgxEditorModule } from 'ngx-editor';
-import { ActivatedRoute, Router } from '@angular/router';
-import { CommonModule, DOCUMENT, isPlatformBrowser } from '@angular/common';
-import { CreateProduct, UpdateProduct } from '../../../shared/store/action/product.action';
-import { TranslateModule } from '@ngx-translate/core';
-import { FormFieldsComponent } from '../../../shared/components/ui/form-fields/form-fields.component';
-import { ButtonComponent } from '../../../shared/components/ui/button/button.component';
-import { NavService } from 'src/app/shared/services/nav.service';
-import { Sidebar } from 'src/app/shared/interface/sidebar.interface';
-import { RouterModule } from '@angular/router';
-import { GetThriftsCategories, GetThriftsTiers, GetFilteredMembers, SetLoadingState, GetActiveThriftForUser, CreateThrifts, EditThrifts, UpdateThrifts } from 'src/app/shared/store/action/thrift.action';
-import { appConfig } from 'src/app/core/config/config';
-import { NotificationService } from 'src/app/shared/services/notification.service';
-import { ThriftsState } from 'src/app/shared/store/state/thrift.state';
+import {
+  Component,
+  ElementRef,
+  HostListener,
+  inject,
+  Inject,
+  Input,
+  PLATFORM_ID,
+  Renderer2,
+  ViewChild,
+} from "@angular/core";
+import {
+  NgbCalendar,
+  NgbDate,
+  NgbDateParserFormatter,
+  NgbDateStruct,
+  NgbModule,
+  NgbNav,
+} from "@ng-bootstrap/ng-bootstrap";
+import { Store } from "@ngxs/store";
+import { ProductState } from "../../../shared/store/state/product.state";
+import {
+  Observable,
+  Subject,
+  debounceTime,
+  distinctUntilChanged,
+  finalize,
+  map,
+  mergeMap,
+  of,
+  switchMap,
+  take,
+  takeUntil,
+} from "rxjs";
+import { Select2Data, Select2Module } from "ng-select2-component";
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from "@angular/forms";
+import {
+  Product,
+  VariationCombination,
+} from "../../../shared/interface/product.interface";
+import { MediaConfig, mediaConfig } from "../../../shared/data/media-config";
+import { Editor, NgxEditorModule } from "ngx-editor";
+import { ActivatedRoute, Router } from "@angular/router";
+import { CommonModule, DOCUMENT, isPlatformBrowser } from "@angular/common";
+import {
+  CreateProduct,
+  UpdateProduct,
+} from "../../../shared/store/action/product.action";
+import { TranslateModule } from "@ngx-translate/core";
+import { FormFieldsComponent } from "../../../shared/components/ui/form-fields/form-fields.component";
+import { ButtonComponent } from "../../../shared/components/ui/button/button.component";
+import { NavService } from "src/app/shared/services/nav.service";
+import { Sidebar } from "src/app/shared/interface/sidebar.interface";
+import { RouterModule } from "@angular/router";
+import {
+  GetThriftsCategories,
+  GetThriftsTiers,
+  GetFilteredMembers,
+  SetLoadingState,
+  GetActiveThriftForUser,
+  CreateThrifts,
+  EditThrifts,
+  UpdateThrifts,
+  GenerateThriftTemplate,
+  AddBatchThrifts,
+} from "src/app/shared/store/action/thrift.action";
+import { appConfig } from "src/app/core/config/config";
+import { NotificationService } from "src/app/shared/services/notification.service";
+import { ThriftsState } from "src/app/shared/store/state/thrift.state";
+import { UpdateSavings } from "src/app/shared/store/action/savings.action";
 
 function convertToNgbDate(date: NgbDateStruct): NgbDate {
   return new NgbDate(date.year, date.month, date.day);
 }
 
 @Component({
-    selector: 'app-batch-form-thrift',
-    imports: [CommonModule, TranslateModule, FormsModule,
-      ReactiveFormsModule, NgbModule, Select2Module, RouterModule,
-      NgxEditorModule, FormFieldsComponent, ButtonComponent,
-    ],
-    templateUrl: './batch-form-thrift.component.html',
-    styleUrl: './batch-form-thrift.component.scss'
+  selector: "app-batch-form-thrift",
+  imports: [
+    CommonModule,
+    TranslateModule,
+    FormsModule,
+    ReactiveFormsModule,
+    NgbModule,
+    Select2Module,
+    RouterModule,
+    NgxEditorModule,
+    FormFieldsComponent,
+    ButtonComponent,
+  ],
+  templateUrl: "./batch-form-thrift.component.html",
+  styleUrl: "./batch-form-thrift.component.scss",
 })
 export class BatchFormThriftComponent {
   public searchResult: boolean = false;
@@ -53,17 +115,21 @@ export class BatchFormThriftComponent {
   public menuItems: Sidebar[];
   public items: Sidebar[] = [];
 
-
   @Input() type: string;
-  @ViewChild('nav') nav: NgbNav;
-  @ViewChild('toggleButton') toggleButton: ElementRef;
-  @ViewChild('menu') menu: ElementRef;
-  @ViewChild('dropdownContainer', { static: false }) dropdownContainer: ElementRef;
+  @ViewChild("nav") nav: NgbNav;
+  @ViewChild("toggleButton") toggleButton: ElementRef;
+  @ViewChild("menu") menu: ElementRef;
+  @ViewChild("dropdownContainer", { static: false })
+  dropdownContainer: ElementRef;
 
-  member$: Observable<any> = inject(Store).select(ThriftsState.member) as Observable<any>;
+  member$: Observable<any> = inject(Store).select(
+    ThriftsState.member
+  ) as Observable<any>;
   tiers$: Observable<any> = inject(Store).select(ThriftsState.tiers);
   categories$: Observable<any> = inject(Store).select(ThriftsState.categories);
-  thrift_tier$: Observable<any> = inject(Store).select(ThriftsState.thrift_tier) as Observable<any>;
+  thrift_tier$: Observable<any> = inject(Store).select(
+    ThriftsState.thrift_tier
+  ) as Observable<any>;
 
   public attribute$: Observable<Select2Data>;
   public tabError: string[] | null = [];
@@ -74,8 +140,8 @@ export class BatchFormThriftComponent {
   public variationCombinations: VariationCombination[] = [];
   public retrieveVariants: boolean = false;
   public variantCount: number = 0;
-	public fromDate: NgbDate | null;
-	public toDate: NgbDate | null;
+  public fromDate: NgbDate | null;
+  public toDate: NgbDate | null;
   public hoveredDate: NgbDate | null = null;
   public collectionProduct: Select2Data;
   public product: Product;
@@ -83,84 +149,75 @@ export class BatchFormThriftComponent {
   public mediaConfig: MediaConfig = mediaConfig;
   public editor: Editor;
   public selectedMember: any = null;
-  public html = '';
+  public html = "";
   public isCodeEditor = true;
   public templateGenerated = false;
+  public selectedFile: File | null = null;
+  public formSubmitted: boolean;
   public templateData: any;
-  public years: Select2Data;
-  public sharesType: Select2Data = [{
-    value: 'Savings',
-    label: 'Savings',
-  },{
-    value: 'Fixed',
-    label: 'Fixed',
-  },{
-    value: 'Special',
-    label: 'Special',
-  }];
 
   public months: Select2Data = [
     {
       value: 1,
-      label: "January"
+      label: "January",
     },
     {
       value: 2,
-      label: "Feburary"
+      label: "Feburary",
     },
     {
       value: 3,
-      label: "March"
+      label: "March",
     },
     {
       value: 4,
-      label: "April"
+      label: "April",
     },
     {
       value: 5,
-      label: "May"
+      label: "May",
     },
     {
       value: 6,
-      label: "June"
+      label: "June",
     },
     {
       value: 7,
-      label: "July"
+      label: "July",
     },
     {
       value: 8,
-      label: "August"
+      label: "August",
     },
     {
       value: 9,
-      label: "September"
+      label: "September",
     },
     {
       value: 10,
-      label: "October"
+      label: "October",
     },
     {
       value: 11,
-      label: "November"
+      label: "November",
     },
     {
       value: 12,
-      label: "December"
-    }
-  ]
+      label: "December",
+    },
+  ];
 
   public deductionSources: Select2Data = [
     {
-      value: '1',
-      label: 'Savings',
-    }
+      value: "1",
+      label: "Savings",
+    },
   ];
 
   public isBrowser: boolean;
-  
-  
-  constructor(private store: Store,
+
+  constructor(
+    private store: Store,
     private route: ActivatedRoute,
     private router: Router,
     public navServices: NavService,
@@ -170,170 +227,84 @@ export class BatchFormThriftComponent {
     public formatter: NgbDateParserFormatter,
     private renderer: Renderer2,
     @Inject(PLATFORM_ID) private platformId: object,
-    @Inject(DOCUMENT) private document: Document) {
+    @Inject(DOCUMENT) private document: Document
+  ) {
     this.isBrowser = isPlatformBrowser(platformId);
     this.form = this.formBuilder.group({
-      user_id: new FormControl('', [Validators.required]),
-      amount: new FormControl(''),
-      savings_bal: new FormControl('', [Validators.required]),
-      tiers_id: new FormControl('', [Validators.required]),
-      category_id: new FormControl('', [Validators.required]),
-      duration: new FormControl(''),
-      currency: new FormControl(''),
-      thrift_cat: new FormControl(''),
-      members_allowed: new FormControl(''),
-      paid_from: new FormControl('', [Validators.required])
+      tiers_id: new FormControl("", [Validators.required]),
+      category_id: new FormControl("", [Validators.required]),
+      duration: new FormControl(""),
+      currency: new FormControl(""),
+      thrift_cat: new FormControl(""),
+      members_allowed: new FormControl(""),
+      paid_from: new FormControl("", [Validators.required]),
     });
   }
 
-    generateYearOptions(startYear: number = new Date().getFullYear(), numberOfYears: number = 50): any[] {
-      return Array.from({ length: numberOfYears }, (_, i) => {
-        const year = startYear + i;
-        return {
-          value: year,
-          label: year.toString(),
-        };
-      });
-    }
-
-    closeSearch() {
-      this.navServices.search = false;
-    }
-
-    selectMember(member: any) {
-      console.log("SelectedMember :::::::::::", member);
-      this.selectedMember = member;
-      this.text = member.title; // Display the name in the input
-      this.form.controls['user_id'].setValue(member.id); // Set the ID as form value
-      this.form.controls['savings_bal'].setValue(member.savings_bal);
-      this.user_savings_balance = member.savings_bal;
-      this.removeFix(); // Close the dropdown
-    }
-  
-    openDropDown(text: string) {
-      text && (this.searchResult = !this.searchResult);
-      var element = document.getElementsByTagName("body")[0];
-      element.classList.toggle("overlay-search");
-    }
-  
-    searchTerm(term?: string)  {
-      console.log("Term ::::::::", term);
-      if(term){
-        this.addFix()
-        this.store.dispatch(new GetFilteredMembers({search: term})).subscribe(() => {
-          this.member$.pipe(take(1)).subscribe((response: any) => {
-            console.log("Response :::::", response);
-            if (response) {
-              this.items = response.map((member: any) => ({
-                id: member.value,
-                title: member.label,
-                member_id: member.memberId,
-                savings_bal: member.savings_bal,
-                type: 'link',
-                path: '#',
-                rawData: member // Store original data if needed
-              }));
-              this.checkSearchResultEmpty(this.items);
-            } else {
-              this.items = [];
-              this.checkSearchResultEmpty([]);
-            }
-          });
-        });
-      }else {
-        this.removeFix();
-        return this.menuItems = []
-      }
-      return this.menuItems;
-    }
-  
-  
-    checkSearchResultEmpty(items: Sidebar[]) {
-      if (!items.length) this.searchResultEmpty = true;
-      else this.searchResultEmpty = false;
-    }
-  
-    addFix() {
-      this.searchResult = true;
-      document.getElementsByTagName("body")[0].classList.add("overlay-search");
-    }
-  
-    removeFix() {
-      this.searchResult = false;
-      // this.text = "";
-      document.getElementsByTagName("body")[0].classList.remove("overlay-search");
-    }
-  
-    clickOutside(): void {
-      this.searchResult = false
-    }
-
-
   ngOnInit() {
-    this.years = this.generateYearOptions();
     this.store.dispatch(new GetThriftsTiers({}));
-    if(this.isBrowser) {
+    if (this.isBrowser) {
       this.editor = new Editor();
     }
-  
     // Dispatch action to get loan types and wait for them to load
-    this.store.dispatch(new GetThriftsTiers({})).pipe(
-      take(1),
-      switchMap(() => this.tiers$),
-      takeUntil(this.destroy$)
-    ).subscribe(tiers => {
-      // Now that loan types are loaded, handle the route params
-      this.route.params.pipe(
-        switchMap(params => {
-          if(!params['id']) return of(null);
-          return this.store.dispatch(new EditThrifts(params['id']))
-            .pipe(mergeMap(() => this.store.select(ThriftsState.selectedThrifts)));
-        }),
+    this.store
+      .dispatch(new GetThriftsTiers({}))
+      .pipe(
+        take(1),
+        switchMap(() => this.tiers$),
         takeUntil(this.destroy$)
-      ).subscribe(thrift => {
-        if(thrift){
-          this.id = thrift.id,
-          this.old_amount = thrift.amount,
-          console.log("Loan :::::", thrift);
-          let patchData: any = {
-            user_id: thrift.user_id,
-            amount: thrift.amount,
-            savings_bal: thrift.savings_bal,
-            tiers_id: thrift.tiers_id,
-            category_id: thrift.category_id,
-            duration: thrift.duration,
-          }
-          
-          if(thrift.full_name){
-            this.text = thrift?.full_name;
-            console.log("Text :::::::::;;;", this.text);
-          }
-          
-          // Patch the form values after loan types are loaded
-          this.form.patchValue(patchData);
+      )
+      .subscribe((tiers) => {
+        // Now that loan types are loaded, handle the route params
+        this.route.params
+          .pipe(
+            switchMap((params) => {
+              if (!params["id"]) return of(null);
+              return this.store
+                .dispatch(new EditThrifts(params["id"]))
+                .pipe(
+                  mergeMap(() =>
+                    this.store.select(ThriftsState.selectedThrifts)
+                  )
+                );
+            }),
+            takeUntil(this.destroy$)
+          )
+          .subscribe((thrift) => {
+            if (thrift) {
+              (this.id = thrift.id),
+                (this.old_amount = thrift.amount),
+                console.log("Loan :::::", thrift);
+              let patchData: any = {
+                tiers_id: thrift.tiers_id,
+                category_id: thrift.category_id,
+                duration: thrift.duration,
+              };
+              if (thrift.full_name) {
+                this.text = thrift?.full_name;
+              }
+              // Patch the form values after loan types are loaded
+              this.form.patchValue(patchData);
+            }
+          });
+      });
 
-          if(this.type === 'edit'){
-            this.form.get('user_id')?.disable();
-            this.form.get('amount')?.disable();
-            this.searchState = true;
-          }
+    // Set up the loan_offer_id change listener
+    this.form
+      .get("tiers_id")
+      .valueChanges.pipe(takeUntil(this.destroy$))
+      .subscribe((selectedTiersId) => {
+        if (selectedTiersId) {
+          this.store.dispatch(new GetThriftsCategories(selectedTiersId));
+          this.selectedCategory = null; // Reset selected category when tier changes
+          this.thrift_tier$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((thrift_tier) => {
+              this.thrift_tier = thrift_tier;
+            });
+          this.form.get("category_id").reset();
         }
       });
-    });
-  
-    // Set up the loan_offer_id change listener
-    this.form.get('tiers_id').valueChanges.pipe(
-      takeUntil(this.destroy$)
-    ).subscribe(selectedTiersId => {
-      if (selectedTiersId) {
-        this.store.dispatch(new GetThriftsCategories(selectedTiersId));
-        this.selectedCategory = null; // Reset selected category when tier changes
-        this.thrift_tier$.pipe(takeUntil(this.destroy$)).subscribe(thrift_tier => {
-          this.thrift_tier = thrift_tier
-        })
-        this.form.get('category_id').reset();
-      }
-    });
   }
 
   toggleCategoryDropdown() {
@@ -343,157 +314,221 @@ export class BatchFormThriftComponent {
   selectCategory(category: any) {
     // Prevent selection if no slots available
     if (category.available_slots === 0) {
-      this.notificationService.showError('This category has no available slots');
+      this.notificationService.showError(
+        "This category has no available slots"
+      );
       return;
     }
 
     console.log("Category selected :::::::::::::::", category);
-    this.form.get('category_id').setValue(category.value);
-    this.form.get('currency').setValue(category.currency);
-    this.form.get('thrift_cat').setValue(category.label);
-    this.form.get('members_allowed').setValue(category.members_allowed);
+    this.form.get("category_id").setValue(category.value);
+    this.form.get("currency").setValue(category.currency);
+    this.form.get("thrift_cat").setValue(category.label);
+    this.form.get("members_allowed").setValue(category.members_allowed);
     this.user_amount = category.amount;
     this.members_allowed = category.members_allowed;
     this.selectedCategory = category;
     this.showCategoryDropdown = false;
 
-    if(!this.form.valid){
-      return
+    if (!this.form.valid) {
+      return;
     }
 
-    this.form.get('duration')?.setValidators([Validators.required, Validators.min(1)]);
-    this.form.get('duration')?.updateValueAndValidity();
+    this.form
+      .get("duration")
+      ?.setValidators([Validators.required, Validators.min(1)]);
+    this.form.get("duration")?.updateValueAndValidity();
 
-    this.form.get('amount')?.setValidators([Validators.required, Validators.min(1)]);
-    this.form.get('amount')?.updateValueAndValidity();
+    this.form
+      .get("amount")
+      ?.setValidators([Validators.required, Validators.min(1)]);
+    this.form.get("amount")?.updateValueAndValidity();
 
-    if (this.type === 'edit') {
-      this.form.get('user_id')?.enable();
-      this.form.get('amount')?.enable();
+    if (this.type === "edit") {
+      this.form.get("user_id")?.enable();
+      this.form.get("amount")?.enable();
     }
 
-    let payload = {...this.form.value};
+    let payload = { ...this.form.value };
     console.log("Payload ::::::::::", payload);
     this.store.dispatch(new SetLoadingState(true));
     let action: any;
 
-    action = new GetActiveThriftForUser(payload)
+    action = new GetActiveThriftForUser(payload);
 
-    this.store.dispatch(action).pipe(
-      finalize(() => this.store.dispatch(new SetLoadingState(false))),
-      takeUntil(this.destroy$)
-    ).subscribe({
-      next: (res: any) => {
-        console.log("Response :::::", res);
-        const response = res?.thrifts?.response;
-        let is_active = res?.thrifts?.is_active;
-        if (response?.status === appConfig.statusCode.ok) {
-          const successMessage = is_active ? response.message : "User does not have active thrift";
-          this.notificationService.showSuccess(successMessage);
-          if (is_active === false) this.form.get('duration').setValue(category.duration);
-          this.tabError = [];
-        } else {
-          this.tabError = [];
-          this.notificationService.showError(response?.message || 'Update failed');
-        }
-      },
-      error: (err) => {
-        this.notificationService.showError(err?.message || 'An unexpected error occurred');
-      }
-    })
-
+    this.store
+      .dispatch(action)
+      .pipe(
+        finalize(() => this.store.dispatch(new SetLoadingState(false))),
+        takeUntil(this.destroy$)
+      )
+      .subscribe({
+        next: (res: any) => {
+          console.log("Response :::::", res);
+          const response = res?.thrifts?.response;
+          let is_active = res?.thrifts?.is_active;
+          if (response?.status === appConfig.statusCode.ok) {
+            const successMessage = is_active
+              ? response.message
+              : "User does not have active thrift";
+            this.notificationService.showSuccess(successMessage);
+            if (is_active === false)
+              this.form.get("duration").setValue(category.duration);
+            this.tabError = [];
+          } else {
+            this.tabError = [];
+            this.notificationService.showError(
+              response?.message || "Update failed"
+            );
+          }
+        },
+        error: (err) => {
+          this.notificationService.showError(
+            err?.message || "An unexpected error occurred"
+          );
+        },
+      });
   }
-  
+
   // Add click outside handler
-  @HostListener('document:click', ['$event'])
+  @HostListener("document:click", ["$event"])
   onClick(event: MouseEvent) {
     const target = event.target as HTMLElement;
-    if (!target.closest('.custom-card-dropdown')) {
+    if (!target.closest(".custom-card-dropdown")) {
       this.showCategoryDropdown = false;
     }
   }
 
-  
-
   submit() {
     this.form.markAllAsTouched();
-    if(!this.form.valid){
-      return
+    this.formSubmitted = true;
+
+    if (!this.selectedFile || !this.form.valid) {
+      this.notificationService.showError("Please fill all required fields");
+      return;
     }
 
-    let payload = {...this.form.value};
-    this.store.dispatch(new SetLoadingState(true));
-    let action: any;
+    const formData = new FormData();
 
-    if(this.type == 'edit' && this.id) {
-      action = new UpdateThrifts({...payload, paid_from: "1", thrift_tier: this.thrift_tier, old_amount: this.old_amount},  this.id);
-    }
+    // Add form values
+    Object.keys(this.form.value).forEach((key) => {
+      formData.append(key, this.form.value[key]);
+    });
 
-    if(this.type === 'create'){
-      action = new CreateThrifts({...payload, paid_from: "1", thrift_tier: this.thrift_tier}) //paid from savings equals "1"
-    }
+    // Add the file
+    formData.append("excel_file", this.selectedFile);
+    formData.append("paid_from", "1");
+    formData.append("thrift_tier", this.thrift_tier);
 
-    this.store.dispatch(action).pipe(
-      finalize(() => this.store.dispatch(new SetLoadingState(false))),
-      takeUntil(this.destroy$)
-    ).subscribe({
-      next: (res: any) => {
-        console.log("Response :::::", res);
-        const response = res?.savings?.response;
-        const successStatus = this.type === 'edit' ? appConfig.statusCode.ok : appConfig.statusCode.created;
-        if (response?.status === successStatus) {
-          const successMessage = this.type === 'edit' ? 'Savings updated successfully' : 'Savings created successfully';
-          this.notificationService.showSuccess(response?.message || successMessage);
-          this.router.navigateByUrl('/savings');
-          this.tabError = [];
-        } else {
-          this.tabError = [];
-          this.notificationService.showError(response?.message || 'Update failed');
-        }
-      },
-      error: (err) => {
-        this.notificationService.showError(err?.message || 'An unexpected error occurred');
+    // 1. Simple log method
+    console.log("--- FormData Contents ---");
+    formData.forEach((value, key) => {
+      console.log(`${key}:`, value);
+    });
+
+    // 2. Detailed log method (recommended)
+    console.log("--- Detailed FormData Inspection ---");
+    const formDataObject: { [key: string]: any } = {};
+    for (const [key, value] of formData.entries()) {
+      if (value instanceof File) {
+        formDataObject[key] = {
+          filename: value.name,
+          size: value.size + " bytes",
+          type: value.type,
+        };
+      } else {
+        formDataObject[key] = value;
       }
-    })
+    }
+    console.table(formDataObject);
+
+    this.store.dispatch(new SetLoadingState(true));
+    const action =
+      this.type === "create"
+        ? new AddBatchThrifts(formData)
+        : new UpdateSavings(formData, this.id);
+
+    this.store
+      .dispatch(action)
+      .pipe(
+        finalize(() => this.store.dispatch(new SetLoadingState(false))),
+        takeUntil(this.destroy$)
+      )
+      .subscribe({
+        next: (res: any) => {
+          const response = res?.thrifts?.response;
+          const successStatus =
+            this.type === "edit"
+              ? appConfig.statusCode.ok
+              : appConfig.statusCode.created;
+          if (response?.status === successStatus) {
+            const successMessage =
+              this.type === "edit"
+                ? "Thrift updated successfully"
+                : "Thrift created successfully";
+            this.notificationService.showSuccess(
+              response?.message || successMessage
+            );
+            this.router.navigateByUrl("/thrift");
+            this.tabError = [];
+          } else {
+            this.tabError = [];
+            this.notificationService.showError(
+              response?.message || "Update failed"
+            );
+          }
+        },
+        error: (err) => {
+          this.notificationService.showError(
+            err?.message || "An unexpected error occurred"
+          );
+        },
+      });
   }
 
   generateTemplate() {
-    // Generate template structure
-    this.templateData = {
-      headers: ['Member ID', 'Amount', 'Date', 'Reference'],
-      sampleData: ['M001', '5000', '2023-01-15', 'REF123']
-    };
-    this.templateGenerated = true;
-    this.notificationService.showSuccess('Template generated successfully');
+    this.store.dispatch(new GenerateThriftTemplate());
   }
-  
-  downloadTemplate() {
-    if (!this.templateGenerated) return;
-    
-    // Implement download logic using a service like FileSaver.js
-    // Example:
-    // const blob = new Blob([this.templateData], {type: 'application/vnd.ms-excel'});
-    // saveAs(blob, 'savings_template.xlsx');
-    this.notificationService.showSuccess('Template downloaded successfully');
-  }
-  
+
   onFileChange(event: any) {
     const file = event.target.files[0];
+
+    this.selectedFile = file;
+
+    if (!file) return;
+
     if (file) {
-      // Check file size (900KB limit)
-      if (file.size > 900 * 1024) {
-        this.form.controls['file'].setErrors({'fileSize': true});
+      // Validate file type
+      const validTypes = ["xls", "xlsx", "csv"];
+      const fileType = file.name.split(".").pop().toLowerCase();
+
+      if (!validTypes.includes(fileType)) {
+        this.notificationService.showError("File type is not allowed");
+        event.target.value = ""; // Clear the input
+        this.selectedFile = null;
         return;
       }
-      // Process the file
+
+      if (file.size > 900 * 1024) {
+        this.notificationService.showError("File size exceeded");
+        event.target.value = "";
+        this.selectedFile = null;
+        return;
+      }
+
+      // Read file content if needed
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        // Your existing code
+      };
+      reader.readAsArrayBuffer(file);
     }
   }
-  
 
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
     this.form.reset();
-    this.renderer.removeClass(this.document.body, 'loader-none');
+    this.renderer.removeClass(this.document.body, "loader-none");
   }
 }

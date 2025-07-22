@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Store, Action, Selector, State, StateContext } from "@ngxs/store";
 import { catchError, finalize, map, tap, throwError } from "rxjs";
-import { SendMessage } from "../action/communication.action";
+import { SendMessage, SendSms } from "../action/communication.action";
 import { COmmunicationService } from "src/app/core/services/communication.service";
 
 export interface CommunicationStateModel {
@@ -35,6 +35,21 @@ export class CommunicationState {
     return this.communicationService.sendMessage(payload).pipe(
       tap((res: any) => {
         const state = ctx.getState();
+        ctx.patchState({
+          response: res,
+        });
+      }),
+      finalize(() => ctx.patchState({ loading: false })),
+      map((res: any) => res) // ✅ this returns the real API response to your component
+    );
+  }
+
+  @Action(SendSms)
+  createSms(ctx: StateContext<CommunicationStateModel>, { payload }: SendSms) {
+    ctx.patchState({ loading: true });
+
+    return this.communicationService.sendSms(payload).pipe(
+      tap((res: any) => {
         ctx.patchState({
           response: res,
         });

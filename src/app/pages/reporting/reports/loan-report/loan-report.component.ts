@@ -101,6 +101,7 @@ export class LoanReportComponent {
 
   public tableConfig: TableConfig = {
     columns: [
+      { title: "Status", dataField: "status", type: "transition" },
       { title: "Principal", dataField: "total_principal", type: "price" },
       { title: "Interest", dataField: "total_interest", type: "price" },
       { title: "Total", dataField: "total_balance", type: "price" },
@@ -127,7 +128,7 @@ export class LoanReportComponent {
       },
     ],
     rowActions: [],
-    data: [] as Product[],
+    data: [] as any[],
     total: 0,
   };
 
@@ -158,7 +159,14 @@ export class LoanReportComponent {
       )
       .subscribe((loanTypes) => {
         this.loan_report$.pipe(takeUntil(this.destroy$)).subscribe((lr) => {
-          let loan_report = lr?.data?.filter((element: any) => {
+          // console.log("Loan report :::::::::::::::", lr);
+          let loan_report = lr?.filter((element: any) => {
+            element.status =
+              element.status === 0
+                ? `<div class="status-pending"><span>Requested</span></div>`
+                : element.status === 1
+                ? `<div class="status-approved"><span>Approved</span></div>`
+                : `<div class="status-delivered"><span>Dispatched</span></div>`;
             return element;
           });
           this.tableConfig.data = lr ? lr : [];

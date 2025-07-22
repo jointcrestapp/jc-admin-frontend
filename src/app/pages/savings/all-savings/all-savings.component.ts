@@ -2,19 +2,18 @@ import {
   Component,
   inject,
   Inject,
-  OnDestroy,
   PLATFORM_ID,
   Renderer2,
   ViewChild,
 } from "@angular/core";
-import { Select, Store } from "@ngxs/store";
+import { Store } from "@ngxs/store";
 import { ProductState } from "../../../shared/store/state/product.state";
 import { SettingState } from "../../../shared/store/state/setting.state";
 import { CategoryState } from "../../../shared/store/state/category.state";
 import { BrandState } from "../../../shared/store/state/brand.state";
 import { StoreState } from "../../../shared/store/state/store.state";
 import { AccountState } from "../../../shared/store/state/account.state";
-import { finalize, Observable, Subject, takeUntil } from "rxjs";
+import { Observable, Subject, takeUntil } from "rxjs";
 import {
   Product,
   ProductModel,
@@ -36,16 +35,11 @@ import {
   TableConfig,
 } from "../../../shared/interface/table.interface";
 import { CommonModule, DOCUMENT, isPlatformBrowser } from "@angular/common";
-import { GetCategories } from "../../../shared/store/action/category.action";
-import { GetBrands } from "../../../shared/store/action/brand.action";
-import { GetStores } from "../../../shared/store/action/store.action";
 import {
   ApproveProductStatus,
   DeleteAllProduct,
-  DeleteProduct,
   Download,
   ExportProduct,
-  GetProducts,
   ReplicateProduct,
   UpdateProductStatus,
 } from "../../../shared/store/action/product.action";
@@ -56,7 +50,6 @@ import { HasPermissionDirective } from "../../../shared/directive/has-permission
 import { CurrencySymbolPipe } from "../../../shared/pipe/currency-symbol.pipe";
 import { SavingsState } from "src/app/shared/store/state/savings.state";
 import {
-  SetLoadingState,
   GetSavings,
   DeleteSaving,
 } from "src/app/shared/store/action/savings.action";
@@ -250,13 +243,13 @@ export class AllSavingsComponent {
         label: "Edit",
         actionToPerform: "edit",
         icon: "ri-pencil-line",
-        permission: "product.edit",
+        permission: "savings.edit",
       },
       {
         label: "Delete",
         actionToPerform: "delete",
         icon: "ri-delete-bin-line",
-        permission: "product.destroy",
+        permission: "savings.destroy",
       },
     ],
     data: [] as Product[],

@@ -124,15 +124,9 @@ export class DividendState {
   @Action(CreateDividend)
   create(ctx: StateContext<DividendStateModel>, { payload }: CreateDividend) {
     ctx.patchState({ loading: true });
-
     return this.dividendService.addDividend(payload).pipe(
       tap((res: any) => {
-        const state = ctx.getState();
         ctx.patchState({
-          dividend: {
-            data: [...state.dividend.data, res.data],
-            total: state.dividend.total + 1,
-          },
           response: res,
         });
       }),

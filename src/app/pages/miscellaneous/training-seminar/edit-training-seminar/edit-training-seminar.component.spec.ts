@@ -1,23 +1,22 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { EditMinuteComponent } from './edit-minute.component';
+import { EditMinuteComponent } from "./edit-training-seminar.component";
 
-describe('EditMinuteComponent', () => {
+describe("EditMinuteComponent", () => {
   let component: EditMinuteComponent;
   let fixture: ComponentFixture<EditMinuteComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [EditMinuteComponent]
-    })
-    .compileComponents();
+      imports: [EditMinuteComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(EditMinuteComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

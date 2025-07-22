@@ -10,11 +10,7 @@ import { Store } from "@ngxs/store";
 import { SettingState } from "../../../../../shared/store/state/setting.state";
 import { Observable, Subject, takeUntil } from "rxjs";
 import { Values } from "../../../../../shared/interface/setting.interface";
-import {
-  Select2Data,
-  Select2Module,
-  Select2UpdateEvent,
-} from "ng-select2-component";
+import { Select2Module } from "ng-select2-component";
 import { ImportCsvModalComponent } from "../../../../../shared/components/ui/modal/import-csv-modal/import-csv-modal.component";
 import { DigitalDownloadModalComponent } from "../../../../../shared/components/ui/modal/digital-download-modal/digital-download-modal.component";
 import { Params, Router, RouterModule } from "@angular/router";

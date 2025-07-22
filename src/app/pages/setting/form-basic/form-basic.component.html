@@ -1,0 +1,244 @@
+@if(this.isLoading$ | async){
+<app-loader></app-loader>
+}
+
+<form
+  class="theme-form theme-form-2 mega-form"
+  [formGroup]="form"
+  (ngSubmit)="submit()"
+>
+  <app-form-fields
+    [label]="'name'"
+    [for]="'cooperative_name'"
+    [required]="true"
+  >
+    <input
+      class="form-control"
+      type="text"
+      placeholder="{{ 'enter_cooperative_name' | translate }}"
+      name="cooperative_name"
+      formControlName="cooperative_name"
+    />
+    <div *ngIf="form.controls['cooperative_name']?.touched">
+      <div
+        *ngIf="form.controls['cooperative_name']?.errors?.['required']"
+        class="invalid-feedback"
+      >
+        {{ "cooperative_name_is_required" | translate }}
+      </div>
+      <div
+        *ngIf="form.controls['cooperative_name']?.errors?.['pattern']"
+        class="invalid-feedback"
+      >
+        {{ "cooperative_name_invalid" | translate }}
+      </div>
+    </div>
+  </app-form-fields>
+
+  <app-form-fields
+    [label]="'Initial'"
+    [for]="'cooperative_initial'"
+    [required]="true"
+  >
+    <input
+      class="form-control"
+      type="text"
+      placeholder="{{ 'enter_cooperative_initial' | translate }}"
+      name="cooperative_initial"
+      formControlName="cooperative_initial"
+    />
+    <div *ngIf="form.controls['cooperative_initial']?.touched">
+      <div
+        *ngIf="form.controls['cooperative_initial']?.errors?.['required']"
+        class="invalid-feedback"
+      >
+        {{ "cooperative_initial_is_required" | translate }}
+      </div>
+      <div
+        *ngIf="form.controls['cooperative_initial']?.errors?.['pattern']"
+        class="invalid-feedback"
+      >
+        {{ "cooperative_initial_invalid" | translate }}
+      </div>
+    </div>
+  </app-form-fields>
+  <app-form-fields
+    [labelClass]="'form-label-title col-sm-3 mb-0'"
+    [gridClass]="'col-sm-9'"
+    [label]="'address'"
+    [for]="'address'"
+    [required]="true"
+  >
+    @if(isBrowser) {
+    <textarea
+      class="form-control"
+      id="address"
+      name="address"
+      placeholder="{{ 'enter_address' | translate }}"
+      rows="3"
+      formControlName="address_line"
+    ></textarea>
+    <p class="help-text">
+      {{ "*Maximum length should be 300 characters." }}
+    </p>
+    } @if(form.controls['address_line'].touched &&
+    form.controls['address_line'].errors?.['required']){
+    <div class="invalid-feedback">
+      {{ "address_is_required" | translate }}
+    </div>
+    }
+  </app-form-fields>
+  <app-form-fields
+    [labelClass]="'form-label-title col-sm-3 mb-0'"
+    [gridClass]="'col-sm-9'"
+    [label]="'country'"
+    [for]="'country'"
+    [required]="true"
+  >
+    @if(isBrowser) {
+    <select2
+      class="custom-select"
+      [placeholder]="'select_country' | translate"
+      [data]="(countries$ | async)?.length ? (countries$ | async) : []"
+      formControlName="country"
+      noResultMessage="{{ 'no_data_found' | translate }}"
+      id="country"
+      resettable
+    >
+    </select2>
+    } @if(form.controls['country'].touched &&
+    form.controls['country'].errors?.['required']){
+    <div class="invalid-feedback">
+      {{ "country_is_required" | translate }}
+    </div>
+    }
+  </app-form-fields>
+  <app-form-fields
+    [labelClass]="'form-label-title col-sm-3 mb-0'"
+    [gridClass]="'col-sm-9'"
+    [label]="'state'"
+    [for]="'state'"
+    [required]="true"
+  >
+    @if(isBrowser) {
+    <select2
+      class="custom-select"
+      [placeholder]="'select_state' | translate"
+      [data]="(states$ | async)?.length ? (states$ | async) : []"
+      formControlName="state"
+      noResultMessage="{{ 'no_data_found' | translate }}"
+      id="state"
+      resettable
+    >
+    </select2>
+    } @if(form.controls['state'].touched &&
+    form.controls['state'].errors?.['required']){
+    <div class="invalid-feedback">
+      {{ "state_is_required" | translate }}
+    </div>
+    }
+  </app-form-fields>
+  <app-form-fields
+    [labelClass]="'form-label-title col-sm-3 mb-0'"
+    [gridClass]="'col-sm-9'"
+    [label]="'city'"
+    [for]="'city'"
+    [required]="true"
+  >
+    @if(isBrowser) {
+    <select2
+      class="custom-select"
+      [placeholder]="'select_city' | translate"
+      [data]="(states$ | async)?.length ? (states$ | async) : []"
+      formControlName="city"
+      noResultMessage="{{ 'no_data_found' | translate }}"
+      id="city"
+      resettable
+    >
+    </select2>
+    } @if(form.controls['city'].touched &&
+    form.controls['city'].errors?.['required']){
+    <div class="invalid-feedback">
+      {{ "city_is_required" | translate }}
+    </div>
+    }
+  </app-form-fields>
+
+  <h4 class="mb-3" style="font-weight: bolder">
+    Cooperative Account Information :
+  </h4>
+
+  <app-form-fields
+    [labelClass]="'form-label-title col-sm-3 mb-0'"
+    [gridClass]="'col-sm-9'"
+    [label]="'bank name'"
+    [for]="'bank_name'"
+    [required]="true"
+  >
+    @if(isBrowser) {
+    <select2
+      class="custom-select"
+      [placeholder]="'select_bank' | translate"
+      [data]="(banks$ | async)?.length ? (banks$ | async) : []"
+      formControlName="bank_name"
+      noResultMessage="{{ 'no_data_found' | translate }}"
+      id="bank_name"
+      resettable
+    >
+    </select2>
+    } @if(form.get('bank_name')?.touched &&
+    form.get('bank_name')?.errors?.['required']){
+    <div class="invalid-feedback">
+      {{ "bank_is_required" | translate }}
+    </div>
+    }
+  </app-form-fields>
+  <app-form-fields
+    [label]="'Account Number'"
+    [for]="'account_number'"
+    [required]="true"
+  >
+    <input
+      class="form-control"
+      type="text"
+      placeholder="{{ 'enter_account_number' | translate }}"
+      name="account_number"
+      formControlName="account_number"
+    />
+    <div *ngIf="form.get('account_number')?.touched">
+      <div
+        *ngIf="form.get('account_number')?.errors?.['required']"
+        class="invalid-feedback"
+      >
+        {{ "account_number_is_required" | translate }}
+      </div>
+    </div>
+  </app-form-fields>
+  <app-form-fields
+    [label]="'Account Name'"
+    [for]="'account_name'"
+    [required]="true"
+  >
+    <input
+      class="form-control"
+      type="text"
+      placeholder="{{ 'enter_account_name' | translate }}"
+      name="account_name"
+      formControlName="account_name"
+    />
+    <div *ngIf="form.get('account_name')?.touched">
+      <div
+        *ngIf="form.get('account_name')?.errors?.['required']"
+        class="invalid-feedback"
+      >
+        {{ "account_name_is_required" | translate }}
+      </div>
+    </div>
+  </app-form-fields>
+
+  <div class="ms-auto justify-content-end d-flex gap mt-sm-4 mt-2">
+    <app-button [id]="'user_btn'">
+      {{ (type === "create" ? "save" : "save_and_continue") | translate }}
+    </app-button>
+  </div>
+</form>

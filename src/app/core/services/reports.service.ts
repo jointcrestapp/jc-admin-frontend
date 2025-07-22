@@ -24,6 +24,10 @@ export class ReportService extends BaseApiService {
     return this.get(`${environment.apiURL}/get_loan_report`, filter);
   }
 
+  getCreditSalesReport(filter: any): Observable<any> {
+    return this.get(`${environment.apiURL}/get_credit_sales_report`, filter);
+  }
+
   getLedgerBalance(filter: any): Observable<any> {
     return this.get(`${environment.apiURL}/get_ledger_balance`, filter);
   }

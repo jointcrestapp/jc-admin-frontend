@@ -263,17 +263,6 @@ export class FormDividendComponent {
     this.store.dispatch(new SetLoadingState(true));
     let action: any;
 
-    // if (this.type == "edit" && this.id) {
-    //   action = new UpdateSavings(
-    //     {
-    //       ...payload,
-    //       old_amount: this.old_amount,
-    //       wallet_trx_history_id: this.wallet_trx_history_id,
-    //     },
-    //     this.id
-    //   );
-    // }
-
     if (this.type === "create") {
       action = new CreateDividend(payload);
     }
@@ -286,7 +275,6 @@ export class FormDividendComponent {
       )
       .subscribe({
         next: (res: any) => {
-          console.log("Response :::::", res);
           const response = res?.dividend?.response;
           const successStatus =
             this.type === "edit"

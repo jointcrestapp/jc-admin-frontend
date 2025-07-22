@@ -38,15 +38,6 @@
       </div>
     </div>
   </div>
-
-  <!-- <div class="d-flex flex-wrap gap-3" button *hasPermission="'savings.create'">
-    <a [routerLink]="['/savings/add-batch-savings']"  class="align-items-center btn btn-theme d-flex rounded">
-      <i class="ri-download-2-line"></i> {{ 'export' | translate }}
-    </a>
-    <a [routerLink]="['/thrift/add-thrift']" class="align-items-center btn btn-theme rounded">
-      <i class="ri-add-line"></i> {{ 'add_single_thrift' | translate }}
-    </a>
-  </div> -->
   <app-table
     [tableConfig]="tableConfig"
     [dateRange]="true"
@@ -54,12 +45,6 @@
     (rowClicked)="edit($event)"
     (action)="onActionClicked($event)"
   >
-    <!-- <div filter class="top-panel-selection">
-      <button class="align-items-center btn d-flex h-100 btn-light-bg fs-5 px-3 py-1" (click)="openFilter()">
-        <i class="ri-filter-3-line"></i>
-      </button>
-    </div> -->
-
     @if(open){
     <div advanceFilter class="show-box mb-4 d-block product-category-option">
       <div class="row g-sm-4 g-3">
@@ -108,6 +93,6 @@
   </app-table>
 </app-page-wrapper>
 
-<app-import-csv-modal [module]="'product'" #csvModal> </app-import-csv-modal>
+<app-import-csv-modal [module]="'withdrawal'" #csvModal> </app-import-csv-modal>
 
 <app-digital-download-modal #downloadModal> </app-digital-download-modal>

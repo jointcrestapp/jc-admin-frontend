@@ -1,0 +1,26 @@
+<app-page-wrapper [gridClass]="'col-sm-12'" [title]="'training seminar'">
+  <div
+    class="d-flex flex-wrap gap-3"
+    button
+    *hasPermission="'miscellaneous.create'"
+  >
+    <a
+      [routerLink]="['/miscellaneous/add-training-seminar']"
+      class="align-items-center btn btn-theme d-flex rounded"
+    >
+      {{ "add_training_seminar" | translate }}
+    </a>
+  </div>
+  <app-table
+    [tableConfig]="tableConfig"
+    (tableChanged)="onTableChange($event)"
+    (rowClicked)="edit($event)"
+    (action)="onActionClicked($event)"
+  >
+  </app-table>
+</app-page-wrapper>
+
+<app-import-csv-modal [module]="'miscellaneous'" #csvModal>
+</app-import-csv-modal>
+
+<app-digital-download-modal #downloadModal> </app-digital-download-modal>

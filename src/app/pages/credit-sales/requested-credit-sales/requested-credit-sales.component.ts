@@ -203,7 +203,7 @@ export class RequestedCreditSalesComponent {
         label: "Delete",
         actionToPerform: "delete",
         icon: "ri-delete-bin-line",
-        permission: "credit.edit",
+        permission: "credit.destroy",
       },
     ],
     data: [] as any[],
@@ -225,7 +225,7 @@ export class RequestedCreditSalesComponent {
   ngOnInit() {
     this.years = this.generateYearOptions();
     this.requestedCreditSales();
-
+    this.getProductPlan();
     this.product_types$.pipe(takeUntil(this.destroy$)).subscribe((pt) => {
       this.product_plans = pt?.data.filter((element: any) => {
         element.value = element.id;

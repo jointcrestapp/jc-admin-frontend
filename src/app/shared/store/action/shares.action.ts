@@ -1,8 +1,7 @@
 import { Params } from "../../interface/core.interface";
 
-
 export class SetLoadingState {
-  static readonly type = '[Shares] Set Loading State';
+  static readonly type = "[Shares] Set Loading State";
   constructor(public isLoading: boolean) {}
 }
 
@@ -12,7 +11,7 @@ export class GetShares {
 }
 
 export class EditShares {
-  static readonly type = '[Shares] Edit';
+  static readonly type = "[Shares] Edit";
   constructor(public id: number) {}
 }
 
@@ -34,4 +33,14 @@ export class GetFilteredMembers {
 export class DeleteShares {
   static readonly type = "[Shares] Delete";
   constructor(public id: number) {}
+}
+
+export class AddBatchShares {
+  static readonly type = "[Shares] Add Batch Shares";
+  constructor(public payload: any) {}
+}
+
+export class GenerateSharesTemplate {
+  static readonly type = "[Shares] Generate";
+  constructor(public payload?: Params) {}
 }

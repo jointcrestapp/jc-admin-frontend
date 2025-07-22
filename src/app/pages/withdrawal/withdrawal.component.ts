@@ -188,16 +188,16 @@ export class WithdrawalComponent {
         label: "Edit",
         actionToPerform: "edit",
         icon: "ri-pencil-line",
-        permission: "thrift.edit",
+        permission: "withdrawal.edit",
       },
       {
         label: "Delete",
         actionToPerform: "delete",
         icon: "ri-delete-bin-line",
-        permission: "thrift.edit",
+        permission: "withdrawal.destroy",
       },
     ],
-    data: [] as Product[],
+    data: [] as any[],
     total: 0,
   };
 

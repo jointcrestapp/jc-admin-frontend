@@ -15,10 +15,13 @@ import {
   CreateShares,
   UpdateShares,
   DeleteShares,
+  AddBatchShares,
+  GenerateSharesTemplate,
 } from "../action/shares.action";
 import { SharesService } from "../../../core/services/shares.service";
 import { CountryService } from "../../services/country.service";
 import { NotificationService } from "../../services/notification.service";
+import { ExcelService } from "src/app/core/services/excel.service";
 
 export interface SharesStateModel {
   shares: {
@@ -49,8 +52,7 @@ export interface SharesStateModel {
 export class SharesState {
   constructor(
     private sharesService: SharesService,
-    private countryService: CountryService,
-    private notificationService: NotificationService
+    private excelService: ExcelService
   ) {}
 
   @Selector()
@@ -239,6 +241,41 @@ export class SharesState {
       catchError((err) => {
         ctx.patchState({ loading: false });
         console.error("Error deleting user:", err);
+        return throwError(() => err);
+      })
+    );
+  }
+
+  @Action(AddBatchShares)
+  addBatchShares(
+    ctx: StateContext<SharesStateModel>,
+    { payload }: AddBatchShares
+  ) {
+    console.log("Batch data ::::::::", payload);
+    return this.sharesService.uploadBatchShares(payload).pipe(
+      tap((result: any) => {
+        ctx.patchState({
+          response: result,
+        });
+      }),
+      finalize(() => ctx.patchState({ loading: false })),
+      map((res: any) => res) // ✅ this returns the real API response to your component
+    );
+  }
+
+  @Action(GenerateSharesTemplate)
+  generateSharesTemplate(
+    ctx: StateContext<SharesStateModel>,
+    { payload }: GenerateSharesTemplate
+  ) {
+    ctx.patchState({ loading: true });
+    return this.excelService.generateSharesTemplate().pipe(
+      tap(() => {
+        ctx.patchState({ loading: false });
+      }),
+      catchError((err) => {
+        ctx.patchState({ loading: false });
+        console.error("Error in generating batch savings:", err);
         return throwError(() => err);
       })
     );

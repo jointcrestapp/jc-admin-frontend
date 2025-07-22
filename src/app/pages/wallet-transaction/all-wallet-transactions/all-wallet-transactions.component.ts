@@ -2,32 +2,20 @@ import {
   Component,
   inject,
   Inject,
-  OnDestroy,
   PLATFORM_ID,
   Renderer2,
   ViewChild,
 } from "@angular/core";
-import { Select, Store } from "@ngxs/store";
-import { ProductState } from "../../../shared/store/state/product.state";
+import { Store } from "@ngxs/store";
 import { SettingState } from "../../../shared/store/state/setting.state";
-import { CategoryState } from "../../../shared/store/state/category.state";
-import { BrandState } from "../../../shared/store/state/brand.state";
-import { StoreState } from "../../../shared/store/state/store.state";
-import { AccountState } from "../../../shared/store/state/account.state";
-import { finalize, Observable, Subject, takeUntil } from "rxjs";
-import {
-  Product,
-  ProductModel,
-} from "../../../shared/interface/product.interface";
+import { Observable, Subject, takeUntil } from "rxjs";
+import { Product } from "../../../shared/interface/product.interface";
 import { Values } from "../../../shared/interface/setting.interface";
-import { CategoryModel } from "../../../shared/interface/category.interface";
 import {
   Select2Data,
   Select2Module,
   Select2Option,
-  Select2UpdateEvent,
 } from "ng-select2-component";
-import { AccountUser } from "../../../shared/interface/account.interface";
 import { ImportCsvModalComponent } from "../../../shared/components/ui/modal/import-csv-modal/import-csv-modal.component";
 import { DigitalDownloadModalComponent } from "../../../shared/components/ui/modal/digital-download-modal/digital-download-modal.component";
 import { Params, Router, RouterModule } from "@angular/router";
@@ -36,18 +24,10 @@ import {
   TableConfig,
 } from "../../../shared/interface/table.interface";
 import { CommonModule, DOCUMENT, isPlatformBrowser } from "@angular/common";
-import { GetCategories } from "../../../shared/store/action/category.action";
-import { GetBrands } from "../../../shared/store/action/brand.action";
-import { GetStores } from "../../../shared/store/action/store.action";
 import {
-  ApproveProductStatus,
-  DeleteAllProduct,
-  DeleteProduct,
   Download,
   ExportProduct,
-  GetProducts,
   ReplicateProduct,
-  UpdateProductStatus,
 } from "../../../shared/store/action/product.action";
 import { TranslateModule } from "@ngx-translate/core";
 import { PageWrapperComponent } from "../../../shared/components/page-wrapper/page-wrapper.component";
@@ -55,12 +35,8 @@ import { TableComponent } from "../../../shared/components/ui/table/table.compon
 import { HasPermissionDirective } from "../../../shared/directive/has-permission.directive";
 import { CurrencySymbolPipe } from "../../../shared/pipe/currency-symbol.pipe";
 import { WalletState } from "src/app/shared/store/state/wallet.state";
-import {
-  SetLoadingState,
-  GetUserTransaction,
-} from "src/app/shared/store/action/wallet.action";
+import { GetUserTransaction } from "src/app/shared/store/action/wallet.action";
 import { CountryState } from "src/app/shared/store/state/country.state";
-import { appConfig } from "src/app/core/config/config";
 import { NotificationService } from "src/app/shared/services/notification.service";
 
 @Component({

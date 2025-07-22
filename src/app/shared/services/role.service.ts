@@ -9,14 +9,15 @@ import { Module, RoleModel } from "../interface/role.interface";
   providedIn: "root",
 })
 export class RoleService {
-
   constructor(private http: HttpClient) {}
 
   getRoleModules(): Observable<Module[]> {
-    return this.http.get<Module[]>(`${environment.URL}/module.json`);
+    return this.http.get<Module[]>(`${environment.URL}/app-module.json`);
   }
 
   getRoles(payload?: Params): Observable<RoleModel> {
-    return this.http.get<RoleModel>(`${environment.URL}/role.json`, { params: payload });
+    return this.http.get<RoleModel>(`${environment.URL}/role.json`, {
+      params: payload,
+    });
   }
 }

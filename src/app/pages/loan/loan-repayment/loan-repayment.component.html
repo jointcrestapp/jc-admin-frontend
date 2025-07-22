@@ -1,5 +1,5 @@
 <app-page-wrapper [gridClass]="'col-sm-12'" [title]="'loan repayment'">
-  <div class="d-flex flex-wrap gap-3" button *hasPermission="'savings.create'">
+  <div class="d-flex flex-wrap gap-3" button *hasPermission="'loan.create'">
     <a
       [routerLink]="['/shares/add-batch-shares']"
       class="align-items-center btn btn-theme d-flex rounded"
@@ -75,6 +75,6 @@
   </app-table>
 </app-page-wrapper>
 
-<app-import-csv-modal [module]="'product'" #csvModal> </app-import-csv-modal>
+<app-import-csv-modal [module]="'loan'" #csvModal> </app-import-csv-modal>
 
 <app-digital-download-modal #downloadModal> </app-digital-download-modal>

@@ -9,3 +9,8 @@ export class SendMessage {
   static readonly type = "[Communication] Message";
   constructor(public payload: any) {}
 }
+
+export class SendSms {
+  static readonly type = "[Communication] Sms";
+  constructor(public payload: any) {}
+}

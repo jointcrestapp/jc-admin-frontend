@@ -123,6 +123,9 @@ export class FormMemberComponent {
   logo$: Observable<any> = inject(Store).select(
     MemberState.logo
   ) as Observable<any>;
+  account_details$: Observable<any> = inject(Store).select(
+    MemberState.account_details
+  ) as Observable<any>;
   role$: Observable<Select2Data> = this.store.select(RoleState.roles);
   isLoading$: Observable<boolean> = this.store.select(MemberState.isLoading);
   kycDetails: any = {
@@ -180,7 +183,7 @@ export class FormMemberComponent {
           this.validateDob.bind(this),
         ]),
         gender: new FormControl("", [Validators.required]),
-        marital_status: new FormControl("", [Validators.required]),
+        // marital_status: new FormControl("", [Validators.required]),
         address_line1: new FormControl("", [Validators.required]),
         means_of_identification: new FormControl("", [Validators.required]),
         account_type: new FormControl("", [Validators.required]),
@@ -263,7 +266,7 @@ export class FormMemberComponent {
               state: parseInt(member.state),
               city: parseInt(member.city),
               gender: member.gender,
-              marital_status: member.marital_status,
+              // marital_status: member.marital_status,
               address_line1: member.address_line1,
               means_of_identification: member.means_of_identification,
               account_type: parseInt(member?.account_type),
@@ -366,8 +369,14 @@ export class FormMemberComponent {
           this.handleBankSelection(id);
           this.form.get("bankDetails.bankCode")?.reset();
           this.form.get("bankDetails.bankCode")?.markAsUntouched();
+          this.form.get("bankDetails.accountNumber")?.reset();
+          this.form.get("bankDetails.accountNumber")?.markAsUntouched();
+          this.form.get("bankDetails.accountName")?.reset();
+          this.form.get("bankDetails.accountName")?.markAsUntouched();
         } else {
           this.form.get("bankDetails.bankCode")?.reset();
+          this.form.get("bankDetails.accountNumber")?.reset();
+          this.form.get("bankDetails.accountName")?.reset();
         }
       });
 
@@ -380,10 +389,22 @@ export class FormMemberComponent {
             .pipe(takeUntil(this.destroy$))
             .subscribe((bankCode: any) => {
               if (bankCode) {
-                // this.handleBankKYC({ account_number: accountNumber, bank_code: bankCode  });
-                this.form
-                  .get("bankDetails.accountName")
-                  ?.setValue(this.kycDetails.name);
+                this.handleBankKYC({
+                  account_number: accountNumber,
+                  bank_code: bankCode,
+                });
+                this.account_details$
+                  .pipe(takeUntil(this.destroy$))
+                  .subscribe((accountDetails: any) => {
+                    if (accountDetails) {
+                      this.form
+                        .get("bankDetails.accountName")
+                        ?.setValue(accountDetails?.data?.account_name);
+                    }
+                  });
+                // this.form
+                //   .get("bankDetails.accountName")
+                //   ?.setValue(this.kycDetails.name);
               }
             });
         }

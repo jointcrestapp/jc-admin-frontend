@@ -1,14 +1,22 @@
 <app-page-wrapper [gridClass]="'col-sm-12'" [title]="'thrifts'">
   <div class="card-bottom-space">
-    <div class="row row-cols-xxl-5 row-cols-md-3 row-cols-sm-2 row-cols-1 g-sm-4 g-3">
+    <div
+      class="row row-cols-xxl-5 row-cols-md-3 row-cols-sm-2 row-cols-1 g-sm-4 g-3"
+    >
       <div class="widget-card-box">
         <a href="javascript:void(0)" class="widget-card card">
           <div class="widget-icon">
-            <img src="assets/images/svg/empty-wallet.svg" class="img-fluid" alt="empty-wallet">
+            <img
+              src="assets/images/svg/empty-wallet.svg"
+              class="img-fluid"
+              alt="empty-wallet"
+            />
           </div>
           <div>
-            <h6>{{ 'total_thrifts' | translate }}</h6>
-            <h2>{{ (statistics$ | async)?.total_thrift_amount | currencySymbol }}</h2>
+            <h6>{{ "total_thrifts" | translate }}</h6>
+            <h2>
+              {{ (statistics$ | async)?.total_thrift_amount | currencySymbol }}
+            </h2>
           </div>
         </a>
       </div>
@@ -16,10 +24,14 @@
       <div class="widget-card-box">
         <a [routerLink]="['/product']" class="widget-card card">
           <div class="widget-icon">
-            <img src="assets/images/svg/receipt-2.svg" class="img-fluid" alt="receipt">
+            <img
+              src="assets/images/svg/receipt-2.svg"
+              class="img-fluid"
+              alt="receipt"
+            />
           </div>
           <div>
-            <h6>{{ 'total_active_thrifts' | translate }}</h6>
+            <h6>{{ "total_active_thrifts" | translate }}</h6>
             <h2>{{ (statistics$ | async)?.total_active_thrifts }}</h2>
           </div>
         </a>
@@ -27,12 +39,18 @@
     </div>
   </div>
 
-  <div class="d-flex flex-wrap gap-3" button *hasPermission="'savings.create'">
-    <a [routerLink]="['/savings/add-batch-savings']"  class="align-items-center btn btn-theme d-flex rounded">
-      <i class="ri-download-2-line"></i> {{ 'export' | translate }}
+  <div class="d-flex flex-wrap gap-3" button *hasPermission="'thrift.create'">
+    <a
+      [routerLink]="['/savings/add-batch-savings']"
+      class="align-items-center btn btn-theme d-flex rounded"
+    >
+      <i class="ri-download-2-line"></i> {{ "export" | translate }}
     </a>
-    <a [routerLink]="['/thrift/add-thrift']" class="align-items-center btn btn-theme rounded">
-      <i class="ri-add-line"></i> {{ 'add_single_thrift' | translate }}
+    <a
+      [routerLink]="['/thrift/add-thrift']"
+      class="align-items-center btn btn-theme rounded"
+    >
+      <i class="ri-add-line"></i> {{ "add_single_thrift" | translate }}
     </a>
   </div>
   <app-table
@@ -40,7 +58,8 @@
     [dateRange]="true"
     (tableChanged)="onTableChange($event)"
     (rowClicked)="edit($event)"
-    (action)="onActionClicked($event)">
+    (action)="onActionClicked($event)"
+  >
     <!-- <div filter class="top-panel-selection">
       <button class="align-items-center btn d-flex h-100 btn-light-bg fs-5 px-3 py-1" (click)="openFilter()">
         <i class="ri-filter-3-line"></i>
@@ -48,60 +67,66 @@
     </div> -->
 
     @if(open){
-      <div advanceFilter class="show-box mb-4 d-block product-category-option">
-        <div class="row g-sm-4 g-3">
-          <div class="col-xl-4 col-lg-6 col-md-3 col-sm-6">
-            @if(isBrowser) {
-              <select2 class="custom-select"
-                [data]="(countries$ | async)?.length ? (countries$ | async) : []"
-                [placeholder]="'select_country' | translate"
-                (update)="filters($event, 'country')"
-                noResultMessage="{{'no_data_found' | translate }}"
-                resettable>
-              </select2>
-            }
-          </div>
-          <div class="col-xl-4 col-lg-6 col-md-3 col-sm-6">
-            @if(isBrowser) {
-              <select2 class="custom-select"
-                [placeholder]="'select_thrifts_type' | translate"
-                [data]="(tiers$ | async)?.length ? (tiers$ | async) : []"
-                (update)="applyFilter($event)"
-                noResultMessage="{{ 'no_data_found' | translate }}"
-                resettable>
-              </select2>
-            }
-          </div>
-          <div class="col-xl-2 col-lg-6 col-md-3 col-sm-6">
-            @if(isBrowser) {
-              <select2 class="custom-select"
-                [data]="months.length ? months : []"
-                [placeholder]="'month' | translate "
-                (update)="filters($event, 'month')"
-                noResultMessage="{{'no_data_found' | translate }}"
-                resettable>
-              </select2>
-            }
-          </div>
-          <div class="col-xl-2 col-lg-6 col-md-3 col-sm-6">
-            @if(isBrowser) {
-              <select2 class="custom-select"
-                [data]="years.length ? years : []"
-                [placeholder]="'year' | translate "
-                (update)="filters($event, 'year')"
-                noResultMessage="{{'no_data_found' | translate }}"
-                resettable>
-              </select2>
-            }
-          </div>
+    <div advanceFilter class="show-box mb-4 d-block product-category-option">
+      <div class="row g-sm-4 g-3">
+        <div class="col-xl-4 col-lg-6 col-md-3 col-sm-6">
+          @if(isBrowser) {
+          <select2
+            class="custom-select"
+            [data]="(countries$ | async)?.length ? (countries$ | async) : []"
+            [placeholder]="'select_country' | translate"
+            (update)="filters($event, 'country')"
+            noResultMessage="{{ 'no_data_found' | translate }}"
+            resettable
+          >
+          </select2>
+          }
+        </div>
+        <div class="col-xl-4 col-lg-6 col-md-3 col-sm-6">
+          @if(isBrowser) {
+          <select2
+            class="custom-select"
+            [placeholder]="'select_thrifts_type' | translate"
+            [data]="(tiers$ | async)?.length ? (tiers$ | async) : []"
+            (update)="applyFilter($event)"
+            noResultMessage="{{ 'no_data_found' | translate }}"
+            resettable
+          >
+          </select2>
+          }
+        </div>
+        <div class="col-xl-2 col-lg-6 col-md-3 col-sm-6">
+          @if(isBrowser) {
+          <select2
+            class="custom-select"
+            [data]="months.length ? months : []"
+            [placeholder]="'month' | translate"
+            (update)="filters($event, 'month')"
+            noResultMessage="{{ 'no_data_found' | translate }}"
+            resettable
+          >
+          </select2>
+          }
+        </div>
+        <div class="col-xl-2 col-lg-6 col-md-3 col-sm-6">
+          @if(isBrowser) {
+          <select2
+            class="custom-select"
+            [data]="years.length ? years : []"
+            [placeholder]="'year' | translate"
+            (update)="filters($event, 'year')"
+            noResultMessage="{{ 'no_data_found' | translate }}"
+            resettable
+          >
+          </select2>
+          }
         </div>
       </div>
+    </div>
     }
   </app-table>
 </app-page-wrapper>
 
-<app-import-csv-modal [module]="'product'" #csvModal>
-</app-import-csv-modal>
+<app-import-csv-modal [module]="'thrift'" #csvModal> </app-import-csv-modal>
 
-<app-digital-download-modal #downloadModal>
-</app-digital-download-modal>
+<app-digital-download-modal #downloadModal> </app-digital-download-modal>
