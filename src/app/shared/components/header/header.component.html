@@ -16,14 +16,14 @@
          }  
       </div>
    </div>
-   <app-search></app-search>
+   <!-- <app-search></app-search> -->
    <div class="nav-right right-header p-0">
-      <div class="header-btns d-none d-lg-flex">
+      <!-- <div class="header-btns d-none d-lg-flex">
          <app-quick-view></app-quick-view>
          <a [routerLink]="['/order/create']" class="btn btn-animation" *hasPermission="'order.create'">
             {{ 'pos' | translate }}
          </a>
-      </div>
+      </div> -->
       <ul class="nav-menus">
          <li>
             <span class="header-search" (click)="clickHeaderOnMobile()">
@@ -48,9 +48,9 @@
                }
             </a>
          </li>
-         <li>
+         <!-- <li>
             <app-languages></app-languages>
-         </li>
+         </li> -->
          <li>
             <app-notification></app-notification>
          </li>
