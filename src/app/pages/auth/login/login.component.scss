@@ -1,0 +1,28 @@
+
+img{
+    width:80% !important;
+}
+
+.auth-bg-wrapper {
+    background-image: url('/assets/images/login/login-bg.jpg'); // change to your actual image path
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  
+    .log-in-box {
+      background-color: rgba(255, 255, 255, 0.95); // Slight white overlay for readability
+      border-radius: 1rem;
+    }
+  }
+  h3{
+    color:rgba(0, 0, 0, 0.884) !important;
+  }
+  
+  .logo-img{
+    width:150px !important;
+    height: auto;
+  }
