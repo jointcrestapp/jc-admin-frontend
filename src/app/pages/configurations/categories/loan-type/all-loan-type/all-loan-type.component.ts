@@ -154,6 +154,19 @@ export class AllLoanTypeComponent {
     );
   }
 
+  navigateToAddLoanType() {
+    // Store the current tab info before navigation
+    sessionStorage.setItem("categoriesActiveTab", "loan_type");
+
+    // Navigate to add-loan-type page with return information
+    this.router.navigate(["/configurations/loan-type/add-loan-type"], {
+      queryParams: {
+        returnTab: "loan_type",
+        returnUrl: "/configurations/categories",
+      },
+    });
+  }
+
   delete(data: any) {
     this.store
       .dispatch(new DeleteLoanType(data.id))

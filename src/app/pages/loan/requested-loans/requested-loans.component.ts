@@ -38,6 +38,7 @@ import {
   GetLoan,
   DeleteLoan,
   ApproveLoanStatus,
+  ExportLoans,
 } from "src/app/shared/store/action/loan.action";
 import { CountryState } from "src/app/shared/store/state/country.state";
 import { appConfig } from "src/app/core/config/config";
@@ -186,7 +187,7 @@ export class RequestedLoansComponent {
       },
       {
         title: "Status",
-        dataField: "status",
+        dataField: "loan_status",
       },
       {
         title: "Loan Type",
@@ -237,7 +238,7 @@ export class RequestedLoansComponent {
     this.loans$.pipe(takeUntil(this.destroy$)).subscribe((loan) => {
       let loans = loan?.data?.filter((element: any) => {
         //Comeback and fix country name rather than code
-        element.status =
+        element.loan_status =
           element.status == "0"
             ? `<div class="status-pending"><span>Requested</span></div>`
             : "-";
@@ -364,7 +365,20 @@ export class RequestedLoansComponent {
   }
 
   export() {
-    this.store.dispatch(new ExportProduct(this.filter));
+    this.store
+      .dispatch(new ExportLoans("requested_loans"))
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res: any) => {
+          console.log("Export completed successfully:", res);
+        },
+        error: (err) => {
+          console.error("Export failed:", err);
+          this.notificationService.showError(
+            err?.message || "Failed to export requested loans"
+          );
+        },
+      });
   }
 
   openFilter() {

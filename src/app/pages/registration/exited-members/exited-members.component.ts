@@ -1,4 +1,11 @@
-import { Component, inject, ViewChild } from "@angular/core";
+import {
+  Component,
+  Inject,
+  inject,
+  PLATFORM_ID,
+  Renderer2,
+  ViewChild,
+} from "@angular/core";
 import { Router, RouterModule } from "@angular/router";
 import { TranslateModule } from "@ngx-translate/core";
 import { PageWrapperComponent } from "../../../shared/components/page-wrapper/page-wrapper.component";
@@ -23,16 +30,18 @@ import {
   ReactivateMember,
 } from "../../../shared/store/action/member.action";
 import { HasPermissionDirective } from "../../../shared/directive/has-permission.directive";
-import { CommonModule } from "@angular/common";
+import { CommonModule, DOCUMENT } from "@angular/common";
 import { UserService } from "src/app/core/services/user.service";
 import { appConfig } from "src/app/core/config/config";
 import { NotificationService } from "src/app/shared/services/notification.service";
+import { Select2Module, Select2UpdateEvent } from "ng-select2-component";
 
 @Component({
   selector: "app-exited-members",
   imports: [
     RouterModule,
     TranslateModule,
+    Select2Module,
     HasPermissionDirective,
     PageWrapperComponent,
     TableComponent,
@@ -57,6 +66,18 @@ export class ExitedMembersComponent {
   @ViewChild("csvModal") CSVModal: ImportCsvModalComponent;
 
   @ViewChild(TableComponent) confirmAction: TableComponent; // Get reference to the modal component in the table component
+
+  public filter: Params = {
+    search: "",
+    field: "",
+    status: "",
+    sort: "", // current Sorting Order
+    page: 1, // current page number
+    paginate: 15, // Display per page,
+  };
+
+  public open: boolean = true;
+  public isBrowser: boolean;
 
   public tableConfig: TableConfig = {
     columns: [
@@ -92,6 +113,9 @@ export class ExitedMembersComponent {
   constructor(
     private notificationService: NotificationService,
     private userService: UserService,
+    @Inject(DOCUMENT) private document: Document,
+    @Inject(PLATFORM_ID) private platformId: object,
+    private renderer: Renderer2,
     public router: Router
   ) {}
 
@@ -161,6 +185,29 @@ export class ExitedMembersComponent {
     this.router.navigateByUrl(`/user/detail/${data.id}`);
   }
 
+  applyFilter(data: Select2UpdateEvent) {
+    this.filter["status"] = data && data.value ? data.value : null;
+    if (!this.filter["status"]) {
+      delete this.filter["status"];
+    }
+    this.onTableChange(this.filter);
+  }
+
+  filters(data: any, key: string) {
+    console.log("Filters ::::", {
+      data,
+      key,
+    });
+    this.renderer.addClass(this.document.body, "loader-none");
+    console.log(data && data.value);
+    if (data && data.value) {
+      this.filter[key] = data.value;
+    } else {
+      this.filter[key] = [];
+    }
+    this.onTableChange(this.filter);
+  }
+
   status(data: any) {
     this.store
       .dispatch(new ReactivateMember(data.id))
@@ -221,6 +268,19 @@ export class ExitedMembersComponent {
   }
 
   export() {
-    this.store.dispatch(new ExportMember());
+    this.store
+      .dispatch(new ExportMember("exited_members"))
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res: any) => {
+          console.log("Export completed successfully:", res);
+        },
+        error: (err) => {
+          console.error("Export failed:", err);
+          this.notificationService.showError(
+            err?.message || "Failed to export pending members"
+          );
+        },
+      });
   }
 }

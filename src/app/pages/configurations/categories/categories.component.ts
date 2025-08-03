@@ -49,6 +49,7 @@ import { AllThriftCategoryComponent } from "./thrift-category/all-thrift-categor
 import { AllCurrenciesComponent } from "./currency/all-currencies/all-currencies.component";
 import { AllSubscriptionFeeComponent } from "./subscription-fee/all-subscription-fee/all-subscription-fee.component";
 import { AllSharesAmountComponent } from "./shares-amount/all-shares-amount/all-shares-amount.component";
+import { ActivatedRoute, Router } from "@angular/router";
 
 function convertToNgbDate(date: NgbDateStruct): NgbDate {
   return new NgbDate(date?.year, date?.month, date?.day);
@@ -165,6 +166,8 @@ export class CategoriesComponent {
     private calendar: NgbCalendar,
     private notificationService: NotificationService,
     public formatter: NgbDateParserFormatter,
+    private router: Router,
+    private route: ActivatedRoute,
     @Inject(PLATFORM_ID) platformId: object
   ) {
     this.isBrowser = isPlatformBrowser(platformId);
@@ -414,6 +417,18 @@ export class CategoriesComponent {
       complete: () => {
         this.patchForm();
       },
+    });
+
+    this.route.queryParams.subscribe((params) => {
+      if (params["tab"]) {
+        this.active = params["tab"];
+      } else {
+        // Check if there's a stored tab in sessionStorage
+        const storedTab = sessionStorage.getItem("categoriesActiveTab");
+        if (storedTab) {
+          this.active = storedTab;
+        }
+      }
     });
   }
 

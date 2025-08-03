@@ -3,11 +3,13 @@ import { Action, Selector, State, StateContext } from "@ngxs/store";
 import { catchError, finalize, tap, throwError } from "rxjs";
 import {
   EditTransaction,
+  ExportTransactions,
   GetUserTransaction,
   SetLoadingState,
 } from "../action/wallet.action";
 import { WalletTxnService } from "src/app/core/services/wallet.service";
 import { NotificationService } from "../../services/notification.service";
+import { WalletExcelService } from "src/app/core/services/wallet-export.service";
 
 export interface WalletStateModel {
   transactions: {
@@ -35,7 +37,8 @@ export interface WalletStateModel {
 export class WalletState {
   constructor(
     private notificationService: NotificationService,
-    private walletService: WalletTxnService
+    private walletService: WalletTxnService,
+    private walletExcelService: WalletExcelService
   ) {}
 
   @Selector()
@@ -115,5 +118,43 @@ export class WalletState {
       }),
       finalize(() => ctx.patchState({ loading: false }))
     );
+  }
+
+  @Action(ExportTransactions)
+  export(
+    ctx: StateContext<WalletStateModel>,
+    { customData }: ExportTransactions
+  ) {
+    const state = ctx.getState();
+    ctx.patchState({ loading: true });
+
+    let transactionsToExport: any[] = [];
+
+    if (customData && customData.length > 0) {
+      transactionsToExport = customData;
+    } else {
+      transactionsToExport = state.transactions.data;
+    }
+
+    if (!transactionsToExport || transactionsToExport.length === 0) {
+      ctx.patchState({ loading: false });
+      this.notificationService.showError(
+        `No Transactions data available to export`
+      );
+      return;
+    }
+
+    return this.walletExcelService
+      .exportWalletToExcel(transactionsToExport)
+      .pipe(
+        tap(() => {
+          ctx.patchState({ loading: false });
+        }),
+        catchError((err) => {
+          ctx.patchState({ loading: false });
+          console.error("Error exporting transactions:", err);
+          return throwError(() => err);
+        })
+      );
   }
 }

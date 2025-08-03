@@ -14,8 +14,11 @@ import {
   GetSharesReport,
   GetCreditSalesReport,
   SetLoadingState,
+  ExportReport,
 } from "../action/report.action";
 import { ReportService } from "../../../core/services/reports.service";
+import { NotificationService } from "../../services/notification.service";
+import { ReportExcelService } from "src/app/core/services/report-export.service";
 
 export interface ReportStateModel {
   savings_report: any | null;
@@ -45,7 +48,11 @@ export interface ReportStateModel {
 })
 @Injectable()
 export class ReportState {
-  constructor(private reportService: ReportService) {}
+  constructor(
+    private reportService: ReportService,
+    private notificationService: NotificationService,
+    private reportExcelService: ReportExcelService
+  ) {}
 
   @Selector()
   static isLoading(state: ReportStateModel) {
@@ -198,5 +205,77 @@ export class ReportState {
         return throwError(() => err);
       })
     );
+  }
+
+  @Action(ExportReport)
+  export(
+    ctx: StateContext<ReportStateModel>,
+    { reportType, customData }: ExportReport
+  ) {
+    const state = ctx.getState();
+    ctx.patchState({ loading: true });
+
+    let reportsToExport: any[] = [];
+    let exportType = reportType;
+
+    if (customData && customData.length > 0) {
+      reportsToExport = customData;
+      exportType = "custom_selection";
+    } else {
+      switch (reportType) {
+        case "savings_report":
+          reportsToExport = state.savings_report || [];
+          break;
+        case "shares_report":
+          reportsToExport = state.shares_report || [];
+          break;
+        case "loan_report":
+          reportsToExport = state.loan_report || [];
+          break;
+        case "credit_sales_report":
+          reportsToExport = state.credit_sales_report || [];
+          break;
+        case "ledger_balance_report":
+        default:
+          reportsToExport = state.ledger_balance.data || [];
+          exportType = "ledger_balance_report";
+          break;
+      }
+    }
+
+    if (!reportsToExport || reportsToExport.length === 0) {
+      ctx.patchState({ loading: false });
+      this.notificationService.showError(
+        `No ${this.getReportTypeDisplayName(
+          exportType
+        )} data available to export`
+      );
+      return;
+    }
+
+    return this.reportExcelService
+      .exportReportsToExcel(reportsToExport, exportType)
+      .pipe(
+        tap(() => {
+          ctx.patchState({ loading: false });
+        }),
+        catchError((err) => {
+          ctx.patchState({ loading: false });
+          console.error("Error exporting loans:", err);
+          return throwError(() => err);
+        })
+      );
+  }
+
+  private getReportTypeDisplayName(reportType: string): string {
+    const displayNames: { [key: string]: string } = {
+      savings_report: "savings report",
+      shares_report: "shaers report",
+      loan_report: "loan report",
+      credit_sales_report: "credit sales report",
+      ledger_balance_repeort: "ledger balance report",
+      reports: "reports",
+    };
+    return displayNames[reportType] || "reports";
   }
 }

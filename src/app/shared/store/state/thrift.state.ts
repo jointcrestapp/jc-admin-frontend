@@ -20,9 +20,12 @@ import {
   GetActiveThriftForUser,
   GenerateThriftTemplate,
   AddBatchThrifts,
+  ExportThrifts,
 } from "../action/thrift.action";
 import { ThriftsService } from "src/app/core/services/thrift.service";
+import { NotificationService } from "../../services/notification.service";
 import { ExcelService } from "src/app/core/services/excel.service";
+import { ThriftsExcelService } from "src/app/core/services/thrifts-export.service";
 
 export interface ThriftsStateModel {
   thrifts: {
@@ -61,7 +64,9 @@ export interface ThriftsStateModel {
 export class ThriftsState {
   constructor(
     private thriftsService: ThriftsService,
-    private excelService: ExcelService
+    private excelService: ExcelService,
+    private notificationService: NotificationService,
+    private thriftExcelService: ThriftsExcelService
   ) {}
 
   @Selector()
@@ -389,6 +394,37 @@ export class ThriftsState {
       }),
       finalize(() => ctx.patchState({ loading: false })),
       map((res: any) => res) // ✅ this returns the real API response to your component
+    );
+  }
+
+  @Action(ExportThrifts)
+  export(ctx: StateContext<ThriftsStateModel>, { customData }: ExportThrifts) {
+    const state = ctx.getState();
+    ctx.patchState({ loading: true });
+
+    let thriftsToExport: any[] = [];
+
+    if (customData && customData.length > 0) {
+      thriftsToExport = customData;
+    } else {
+      thriftsToExport = state.thrifts.data;
+    }
+
+    if (!thriftsToExport || thriftsToExport.length === 0) {
+      ctx.patchState({ loading: false });
+      this.notificationService.showError(`No thrifts data available to export`);
+      return;
+    }
+
+    return this.thriftExcelService.exportThriftsToExcel(thriftsToExport).pipe(
+      tap(() => {
+        ctx.patchState({ loading: false });
+      }),
+      catchError((err) => {
+        ctx.patchState({ loading: false });
+        console.error("Error exporting thrifts:", err);
+        return throwError(() => err);
+      })
     );
   }
 }

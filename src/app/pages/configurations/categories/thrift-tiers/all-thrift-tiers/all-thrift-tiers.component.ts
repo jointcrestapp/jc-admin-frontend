@@ -149,6 +149,19 @@ export class AllThriftTiersComponent {
     else if (action.actionToPerform == "delete") this.delete(action.data);
   }
 
+  navigateToAddThriftTiers() {
+    // Store the current tab info before navigation
+    sessionStorage.setItem("categoriesActiveTab", "thrift_tiers");
+
+    // Navigate to add-loan-type page with return information
+    this.router.navigate(["/configurations/thrift-tier/add-thrift-tier"], {
+      queryParams: {
+        returnTab: "thrift_tiers",
+        returnUrl: "/configurations/categories",
+      },
+    });
+  }
+
   edit(data: any) {
     this.router.navigateByUrl(
       `/configurations/thrift-tier/edit-thrift-tier/${data.id}`

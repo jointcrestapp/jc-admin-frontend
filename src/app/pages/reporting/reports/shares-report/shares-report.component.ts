@@ -29,6 +29,7 @@ import { ReportState } from "src/app/shared/store/state/reports.state";
 import {
   SetLoadingState,
   GetSharesReport,
+  ExportReport,
 } from "src/app/shared/store/action/report.action";
 import { NotificationService } from "src/app/shared/services/notification.service";
 
@@ -147,7 +148,20 @@ export class SharesReportComponent {
     this.onTableChange(this.filter);
   }
 
-  // export() {
-  //   this.store.dispatch(new ExportProduct(this.filter));
-  // }
+  export() {
+    this.store
+      .dispatch(new ExportReport("shares_report"))
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res: any) => {
+          console.log("Export completed successfully:", res);
+        },
+        error: (err) => {
+          console.error("Export failed:", err);
+          this.notificationService.showError(
+            err?.message || "Failed to export shares report"
+          );
+        },
+      });
+  }
 }

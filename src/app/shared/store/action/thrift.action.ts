@@ -59,3 +59,8 @@ export class AddBatchThrifts {
   static readonly type = "[Thrifts] Add Batch Thrifts";
   constructor(public payload: any) {}
 }
+
+export class ExportThrifts {
+  static readonly type = "[Thrift] Export";
+  constructor(public customData?: any[]) {}
+}

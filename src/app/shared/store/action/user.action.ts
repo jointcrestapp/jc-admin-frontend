@@ -1,19 +1,17 @@
 import { Params } from "../../interface/core.interface";
 import { User, UserAddress } from "../../interface/user.interface";
 
-
 export class LoginSuccess {
-  static readonly type = '[Auth] Login Success';
+  static readonly type = "[Auth] Login Success";
   constructor(public payload: { token: string; user: any }) {}
 }
 
 export class Logout {
-  static readonly type = '[Auth] Logout';
+  static readonly type = "[Auth] Logout";
 }
 
-
 export class SetLoadingState {
-  static readonly type = '[Loading] Set Loading State';
+  static readonly type = "[Loading] Set Loading State";
   constructor(public isLoading: boolean) {}
 }
 
@@ -23,10 +21,9 @@ export class GetUsers {
 }
 
 export class DeactivateUser {
-  static readonly type = '[User] Deactivate';
+  static readonly type = "[User] Deactivate";
   constructor(public id: any) {}
 }
-
 
 export class CreateUser {
   static readonly type = "[User] Create";
@@ -34,7 +31,7 @@ export class CreateUser {
 }
 //mine
 export class EditUser {
-  static readonly type = '[User] Edit';
+  static readonly type = "[User] Edit";
   constructor(public id: number) {}
 }
 
@@ -65,8 +62,8 @@ export class ImportUser {
 
 export class ExportUser {
   static readonly type = "[User] Export";
+  constructor(public customData?: any[]) {}
 }
-
 
 export class CreateUserAddress {
   static readonly type = "[User] Address Create";

@@ -103,6 +103,16 @@ export class ImportMember {
 
 export class ExportMember {
   static readonly type = "[Member] Export";
+  constructor(
+    public memberType:
+      | "all_members"
+      | "pending_members"
+      | "exited_members"
+      | "account_closure_request"
+      | "agents"
+      | "custom_selection" = "all_members",
+    public customData?: any[]
+  ) {}
 }
 
 export class CreateMemberAddress {

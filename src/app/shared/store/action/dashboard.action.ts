@@ -10,6 +10,11 @@ export class GetStatisticsCount {
   constructor(public payload?: Params) {}
 }
 
+export class GetNotifications {
+  static readonly type = "[Dashboard] Notifications";
+  constructor(public payload?: Params) {}
+}
+
 export class GetRevenueChart {
   static readonly type = "[Dashboard] Revenue Get";
 }

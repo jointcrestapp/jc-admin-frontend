@@ -40,6 +40,7 @@ import { CurrencySymbolPipe } from "../../../shared/pipe/currency-symbol.pipe";
 import {
   ApproveCreditSalesStatus,
   DeleteCreditSales,
+  ExportCredits,
   RequestedCreditSales,
 } from "src/app/shared/store/action/credit.action";
 import { CountryState } from "src/app/shared/store/state/country.state";
@@ -182,7 +183,7 @@ export class RequestedCreditSalesComponent {
       },
       {
         title: "Status",
-        dataField: "status",
+        dataField: "credit_status",
         type: "transition",
       },
     ],
@@ -237,7 +238,7 @@ export class RequestedCreditSalesComponent {
       .pipe(takeUntil(this.destroy$))
       .subscribe((rcs) => {
         let request_credit_sales = rcs?.data?.filter((element: any) => {
-          element.status =
+          element.credit_status =
             element.status == "0"
               ? `<div class="status-pending"><span>Requested</span></div>`
               : "-";
@@ -364,7 +365,20 @@ export class RequestedCreditSalesComponent {
   }
 
   export() {
-    this.store.dispatch(new ExportProduct(this.filter));
+    this.store
+      .dispatch(new ExportCredits("requested_credit_sales"))
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res: any) => {
+          console.log("Export completed successfully:", res);
+        },
+        error: (err) => {
+          console.error("Export failed:", err);
+          this.notificationService.showError(
+            err?.message || "Failed to export requested credit sales"
+          );
+        },
+      });
   }
 
   openFilter() {

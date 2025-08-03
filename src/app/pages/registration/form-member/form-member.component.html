@@ -132,11 +132,12 @@
                   </select2>
                   }
                   <input
-                    type="number"
+                    type="tel"
                     class="form-control intl-input-padding"
                     formControlName="phone"
                     placeholder="{{ 'enter_phone' | translate }}"
                     name="phone"
+                    (keydown)="preventLeadingZero($event)"
                   />
                   @if(form.controls['phone'].touched &&
                   form.controls['phone'].errors?.['required']){
@@ -259,7 +260,7 @@
                   <select2
                     class="custom-select"
                     [placeholder]="'select_city' | translate"
-                    [data]="(states$ | async)?.length ? (states$ | async) : []"
+                    [data]="(cities$ | async)?.length ? (cities$ | async) : []"
                     formControlName="city"
                     noResultMessage="{{ 'no_data_found' | translate }}"
                     id="city"

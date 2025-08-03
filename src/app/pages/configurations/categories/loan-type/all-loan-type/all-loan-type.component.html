@@ -5,7 +5,7 @@
     *hasPermission="'configurations.create'"
   >
     <a
-      [routerLink]="['/configurations/loan-type/add-loan-type']"
+      (click)="navigateToAddLoanType()"
       class="align-items-center btn btn-theme d-flex rounded"
     >
       {{ "add_loan_type" | translate }}

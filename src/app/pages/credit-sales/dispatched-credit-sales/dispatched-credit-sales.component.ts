@@ -39,6 +39,7 @@ import {
   ApprovedCreditSales,
   DeleteCreditSales,
   DispatchedCreditSales,
+  ExportCredits,
 } from "src/app/shared/store/action/credit.action";
 import { CountryState } from "src/app/shared/store/state/country.state";
 import { ConfigurationsState } from "src/app/shared/store/state/configurations.state";
@@ -180,7 +181,7 @@ export class DispatchedCreditSalesComponent {
       },
       {
         title: "Status",
-        dataField: "status",
+        dataField: "credit_status",
         type: "transition",
       },
     ],
@@ -236,7 +237,7 @@ export class DispatchedCreditSalesComponent {
       .pipe(takeUntil(this.destroy$))
       .subscribe((rcs) => {
         let dispatched_credit_sales = rcs?.data?.filter((element: any) => {
-          element.status =
+          element.credit_status =
             element.status == "2"
               ? `<div class="status-delivered"><span>Dispatched</span></div>`
               : "-";
@@ -363,7 +364,20 @@ export class DispatchedCreditSalesComponent {
   }
 
   export() {
-    this.store.dispatch(new ExportProduct(this.filter));
+    this.store
+      .dispatch(new ExportCredits("disbursed_credit_sales"))
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res: any) => {
+          console.log("Export completed successfully:", res);
+        },
+        error: (err) => {
+          console.error("Export failed:", err);
+          this.notificationService.showError(
+            err?.message || "Failed to export dispatched credit sales"
+          );
+        },
+      });
   }
 
   openFilter() {

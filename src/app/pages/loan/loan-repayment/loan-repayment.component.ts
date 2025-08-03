@@ -36,6 +36,7 @@ import { TableComponent } from "../../../shared/components/ui/table/table.compon
 import { HasPermissionDirective } from "../../../shared/directive/has-permission.directive";
 import {
   DeleteLoan,
+  ExportLoans,
   GetFinishedLoan,
   GetPaidLoan,
 } from "src/app/shared/store/action/loan.action";
@@ -328,7 +329,20 @@ export class LoanRepaymentComponent {
   }
 
   export() {
-    this.store.dispatch(new ExportProduct(this.filter));
+    this.store
+      .dispatch(new ExportLoans("loan_repayment"))
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res: any) => {
+          console.log("Export completed successfully:", res);
+        },
+        error: (err) => {
+          console.error("Export failed:", err);
+          this.notificationService.showError(
+            err?.message || "Failed to export requested loans"
+          );
+        },
+      });
   }
 
   openFilter() {

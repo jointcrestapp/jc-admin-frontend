@@ -29,3 +29,17 @@ export class GetLedgerBalance {
   static readonly type = "[Reports] Get Ledger Balance";
   constructor(public payload?: Params) {}
 }
+
+export class ExportReport {
+  static readonly type = "[Report] Export";
+  constructor(
+    public reportType:
+      | "savings_report"
+      | "shares_report"
+      | "loan_report"
+      | "credit_sales_report"
+      | "ledger_balance_report"
+      | "custom_selection" = "savings_report",
+    public customData?: any[]
+  ) {}
+}

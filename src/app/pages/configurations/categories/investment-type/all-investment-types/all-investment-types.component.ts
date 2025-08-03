@@ -148,6 +148,22 @@ export class AllInvestmentTypesComponent {
     else if (action.actionToPerform == "delete") this.delete(action.data);
   }
 
+  navigateToAddInvestmentType() {
+    // Store the current tab info before navigation
+    sessionStorage.setItem("categoriesActiveTab", "investments_type");
+
+    // Navigate to add-loan-type page with return information
+    this.router.navigate(
+      ["/configurations/investment-type/add-investment-type"],
+      {
+        queryParams: {
+          returnTab: "investments_type",
+          returnUrl: "/configurations/categories",
+        },
+      }
+    );
+  }
+
   edit(data: any) {
     this.router.navigateByUrl(
       `/configurations/investment-type/edit-investment-type/${data.id}`

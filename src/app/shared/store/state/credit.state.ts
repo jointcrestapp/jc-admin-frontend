@@ -15,12 +15,15 @@ import {
   DispatchCreditSalesStatus,
   DispatchedCreditSales,
   EditCredit,
+  ExportCredits,
   OrderCreditSales,
   OrderedProducts,
   RequestedCreditSales,
   SetLoadingState,
 } from "../action/credit.action";
 import { CreditService } from "../../../core/services/credit.service";
+import { NotificationService } from "../../services/notification.service";
+import { CreditExcelService } from "src/app/core/services/credit-export.service";
 
 export interface CreditStateModel {
   request_credit_sales: {
@@ -80,7 +83,11 @@ export interface CreditStateModel {
 })
 @Injectable()
 export class CreditState {
-  constructor(private creditService: CreditService) {}
+  constructor(
+    private creditService: CreditService,
+    private notificationService: NotificationService,
+    private creditExcleService: CreditExcelService
+  ) {}
 
   @Selector()
   static isLoading(state: CreditStateModel) {
@@ -406,5 +413,75 @@ export class CreditState {
         return throwError(() => err);
       })
     );
+  }
+
+  @Action(ExportCredits)
+  export(
+    ctx: StateContext<CreditStateModel>,
+    { creditType, customData }: ExportCredits
+  ) {
+    const state = ctx.getState();
+    ctx.patchState({ loading: true });
+
+    let creditsToExport: any[] = [];
+    let exportType = creditType;
+
+    if (customData && customData.length > 0) {
+      creditsToExport = customData;
+      exportType = "custom_selection";
+    } else {
+      switch (creditType) {
+        case "requested_credit_sales":
+          creditsToExport = state.request_credit_sales.data || [];
+          break;
+        case "approved_credit_sales":
+          creditsToExport = state.approved_credit_sales.data || [];
+          break;
+        case "disbursed_credit_sales":
+          creditsToExport = state.dispatched_credit_sales.data || [];
+          break;
+        case "ordered_products":
+        default:
+          creditsToExport = state.ordered_products.data || [];
+          exportType = "ordered_products";
+          break;
+      }
+    }
+
+    if (!creditsToExport || creditsToExport.length === 0) {
+      ctx.patchState({ loading: false });
+      this.notificationService.showError(
+        `No ${this.getCreditTypeDisplayName(
+          exportType
+        )} data available to export`
+      );
+      return;
+    }
+
+    return this.creditExcleService
+      .exportCreditToExcel(creditsToExport, exportType)
+      .pipe(
+        tap(() => {
+          ctx.patchState({ loading: false });
+        }),
+        catchError((err) => {
+          ctx.patchState({ loading: false });
+          console.error("Error exporting credits:", err);
+          return throwError(() => err);
+        })
+      );
+  }
+
+  private getCreditTypeDisplayName(creditType: string): string {
+    const displayNames: { [key: string]: string } = {
+      requested_credit_sales: "Requested Credit Sales",
+      approved_credit_sales: "Approved Credit Sales",
+      disbursed_credit_sales: "Disbursed Credit Sales",
+      finished_credit_sales: "Finished Credit Sales",
+      ordered_products: "Ordered Products",
+      repayments: "Repayments",
+      credits: "Credits",
+    };
+    return displayNames[creditType] || "Credits";
   }
 }

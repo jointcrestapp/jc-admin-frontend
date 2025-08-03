@@ -63,7 +63,10 @@ import { LoaderComponent } from "../../../shared/components/loader/loader.compon
 import { appConfig } from "src/app/core/config/config";
 import { NotificationService } from "src/app/shared/services/notification.service";
 import { CountryState } from "src/app/shared/store/state/country.state";
-import { GetStates } from "src/app/shared/store/action/country.action";
+import {
+  GetCities,
+  GetStates,
+} from "src/app/shared/store/action/country.action";
 import { GetRoles } from "src/app/shared/store/action/role.action";
 import {
   genders,
@@ -114,6 +117,9 @@ export class FormMemberComponent {
   states$: Observable<Select2Data> = inject(Store).select(
     CountryState.states
   ) as Observable<Select2Data>;
+  cities$: Observable<Select2Data> = inject(Store).select(
+    CountryState.cities
+  ) as Observable<Select2Data>;
   banks$: Observable<Select2Data> = inject(Store).select(
     MemberState.banks
   ) as Observable<Select2Data>;
@@ -128,10 +134,6 @@ export class FormMemberComponent {
   ) as Observable<any>;
   role$: Observable<Select2Data> = this.store.select(RoleState.roles);
   isLoading$: Observable<boolean> = this.store.select(MemberState.isLoading);
-  kycDetails: any = {
-    name: "Farouk Bello",
-    bank_name: "Moniepoint Micro Finance",
-  };
 
   @Input() type: string;
   @ViewChild("nav") nav: NgbNav;
@@ -252,7 +254,6 @@ export class FormMemberComponent {
           takeUntil(this.destroy$)
         )
         .subscribe((member: any) => {
-          console.log("Member ::::::::", member);
           if (member) {
             this.id = member.id;
             let patchData: any = {
@@ -348,67 +349,86 @@ export class FormMemberComponent {
 
           // Clear the state field when country changes
           this.form.get("state")?.reset();
-          this.form.get("city")?.reset();
 
           // Optional: Mark the state field as untouched if you want to reset validation state
           this.form.get("state")?.markAsUntouched();
-          this.form.get("city")?.markAsUntouched();
         } else {
           // If country is cleared, also reset state
           this.form.get("state")?.reset();
+        }
+      });
+
+    this.form
+      .get("state")
+      ?.valueChanges.pipe(takeUntil(this.destroy$))
+      .subscribe((stateId) => {
+        if (stateId) {
+          console.log("State changed to:", stateId);
+          this.handleStateSelection(stateId);
+
+          // Clear the state field when country changes
+          this.form.get("city")?.reset();
+          // Optional: Mark the state field as untouched if you want to reset validation state
+          this.form.get("city")?.markAsUntouched();
+        } else {
+          // If country is cleared, also reset state
           this.form.get("city")?.reset();
         }
       });
 
-    this.form
-      .get("bankDetails.bankName")
-      ?.valueChanges.pipe(takeUntil(this.destroy$), distinctUntilChanged())
-      .subscribe((id) => {
-        if (id) {
-          console.log("Bank changed to:", id);
-          this.handleBankSelection(id);
-          this.form.get("bankDetails.bankCode")?.reset();
-          this.form.get("bankDetails.bankCode")?.markAsUntouched();
-          this.form.get("bankDetails.accountNumber")?.reset();
-          this.form.get("bankDetails.accountNumber")?.markAsUntouched();
-          this.form.get("bankDetails.accountName")?.reset();
-          this.form.get("bankDetails.accountName")?.markAsUntouched();
-        } else {
-          this.form.get("bankDetails.bankCode")?.reset();
-          this.form.get("bankDetails.accountNumber")?.reset();
-          this.form.get("bankDetails.accountName")?.reset();
-        }
-      });
+    if (this.type !== "edit") {
+      this.form
+        .get("bankDetails.bankName")
+        ?.valueChanges.pipe(takeUntil(this.destroy$), distinctUntilChanged())
+        .subscribe((id) => {
+          if (id) {
+            console.log("Bank changed to:", id);
+            this.handleBankSelection(id);
+            this.form.get("bankDetails.bankCode")?.reset();
+            this.form.get("bankDetails.bankCode")?.markAsUntouched();
+            this.form.get("bankDetails.accountNumber")?.reset();
+            this.form.get("bankDetails.accountNumber")?.markAsUntouched();
+            this.form.get("bankDetails.accountName")?.reset();
+            this.form.get("bankDetails.accountName")?.markAsUntouched();
+          } else {
+            // this.form.get("bankDetails.bankCode")?.reset();
+            // this.form.get("bankDetails.accountNumber")?.reset();
+            // this.form.get("bankDetails.accountName")?.reset();
+          }
+        });
+    }
 
-    this.form
-      .get("bankDetails.accountNumber")
-      .valueChanges.pipe(takeUntil(this.destroy$))
-      .subscribe((accountNumber: any) => {
-        if (accountNumber.length >= 10) {
-          this.bank_code$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((bankCode: any) => {
-              if (bankCode) {
-                this.handleBankKYC({
-                  account_number: accountNumber,
-                  bank_code: bankCode,
-                });
-                this.account_details$
-                  .pipe(takeUntil(this.destroy$))
-                  .subscribe((accountDetails: any) => {
-                    if (accountDetails) {
-                      this.form
-                        .get("bankDetails.accountName")
-                        ?.setValue(accountDetails?.data?.account_name);
-                    }
+    if (this.type !== "edit") {
+      this.form
+        .get("bankDetails.accountNumber")
+        .valueChanges.pipe(takeUntil(this.destroy$))
+        .subscribe((accountNumber: any) => {
+          if (accountNumber.length >= 10) {
+            this.bank_code$
+              .pipe(takeUntil(this.destroy$))
+              .subscribe((bankCode: any) => {
+                if (bankCode) {
+                  this.handleBankKYC({
+                    account_number: accountNumber,
+                    bank_code: bankCode,
                   });
-                // this.form
-                //   .get("bankDetails.accountName")
-                //   ?.setValue(this.kycDetails.name);
-              }
-            });
-        }
-      });
+                  this.account_details$
+                    .pipe(takeUntil(this.destroy$))
+                    .subscribe((accountDetails: any) => {
+                      if (accountDetails) {
+                        this.form
+                          .get("bankDetails.accountName")
+                          ?.setValue(accountDetails?.data?.account_name);
+                      }
+                    });
+                }
+              });
+          } else if (accountNumber.length === 0) {
+            this.form.get("bankDetails.accountName")?.reset();
+            this.form.get("bankDetails.accountName")?.markAsUntouched();
+          }
+        });
+    }
 
     this.bank_code$
       .pipe(takeUntil(this.destroy$))
@@ -422,10 +442,26 @@ export class FormMemberComponent {
       this.form.get("bankDetails.bankLogo")?.setValue(logo);
     });
 
+    this.form.get("phone").valueChanges.subscribe((value) => {
+      if (value?.startsWith("0")) {
+        const newValue = value.replace(/^0+/, ""); // Remove leading zeros
+        this.form
+          .get("phone")
+          .setValue(newValue, { emitEvent: false, onlySelf: true });
+      }
+    });
+
     this.store.dispatch(new GetRoles({}));
     this.store.dispatch(new GetBanks());
 
     this.role$.pipe(takeUntil(this.destroy$)).subscribe((roles) => {});
+  }
+
+  preventLeadingZero(event: KeyboardEvent) {
+    const input = event.target as HTMLInputElement;
+    if (input.value === "" && event.key === "0") {
+      event.preventDefault();
+    }
   }
 
   // Function to capitalize the first letter
@@ -523,6 +559,10 @@ export class FormMemberComponent {
 
   handleCountrySelection(id: number) {
     this.store.dispatch(new GetStates(id));
+  }
+
+  handleStateSelection(id: number) {
+    this.store.dispatch(new GetCities(id));
   }
 
   handleBankSelection(id: number) {
@@ -632,6 +672,7 @@ export class FormMemberComponent {
     let payload = { ...this.form.value };
     payload.account_type = appConfig.roles.AGENT;
     payload.is_activated = payload.status ? 1 : 0;
+    payload.phone = `0${payload.phone}`;
     payload.is_deleted = 0;
 
     delete payload.password_confirmation;

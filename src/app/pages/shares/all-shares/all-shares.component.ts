@@ -42,6 +42,7 @@ import { SharesState } from "src/app/shared/store/state/shares.state";
 import {
   GetShares,
   DeleteShares,
+  ExportShares,
 } from "src/app/shared/store/action/shares.action";
 import { CountryState } from "src/app/shared/store/state/country.state";
 import { appConfig } from "src/app/core/config/config";
@@ -390,7 +391,20 @@ export class AllSharesComponent {
   }
 
   export() {
-    this.store.dispatch(new ExportProduct(this.filter));
+    this.store
+      .dispatch(new ExportShares(this.tableConfig.data))
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res: any) => {
+          console.log("Export completed successfully:", res);
+        },
+        error: (err) => {
+          console.error("Export failed:", err);
+          this.notificationService.showError(
+            err?.message || "Failed to export shares"
+          );
+        },
+      });
   }
 
   openFilter() {

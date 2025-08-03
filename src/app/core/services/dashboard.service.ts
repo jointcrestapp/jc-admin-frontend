@@ -15,4 +15,9 @@ export class DashboardService extends BaseApiService {
   getDashboardStatistics(filter: any): Observable<any> {
     return this.get(`${environment.apiURL}/get_dashboard_statistics`, filter);
   }
+
+  getNotifications(filter: any): Observable<any> {
+    console.log("Response >>>>>>>>");
+    return this.get(`${environment.apiURL}/get_notifications`, filter);
+  }
 }

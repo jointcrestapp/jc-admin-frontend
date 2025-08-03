@@ -17,12 +17,14 @@ import {
   DeleteSaving,
   GenerateSavingsTemplate,
   AddBatchSavings,
+  ExportSavings,
 } from "../action/savings.action";
 import { SavingsService } from "../../../core/services/savings.service";
 import { CountryService } from "../../services/country.service";
 import { NotificationService } from "../../services/notification.service";
 import { appConfig } from "src/app/core/config/config";
 import { ExcelService } from "src/app/core/services/excel.service";
+import { SavingsExcelService } from "src/app/core/services/savings-export.service";
 
 export interface SavingsStateModel {
   savings: {
@@ -55,7 +57,8 @@ export class SavingsState {
     private savingsService: SavingsService,
     private countryService: CountryService,
     private notificationService: NotificationService,
-    private excelService: ExcelService
+    private excelService: ExcelService,
+    private savingsExcelService: SavingsExcelService
   ) {}
 
   @Selector()
@@ -273,6 +276,39 @@ export class SavingsState {
       catchError((err) => {
         ctx.patchState({ loading: false });
         console.error("Error in generating batch savings:", err);
+        return throwError(() => err);
+      })
+    );
+  }
+
+  @Action(ExportSavings)
+  exportSavings(
+    ctx: StateContext<SavingsStateModel>,
+    { customData }: ExportSavings
+  ) {
+    const state = ctx.getState();
+    ctx.patchState({ loading: true });
+
+    let savingsToExport: any[] = [];
+
+    if (customData && customData.length > 0) {
+      savingsToExport = customData;
+    } else {
+      savingsToExport = state.savings.data;
+    }
+
+    if (!savingsToExport || savingsToExport.length === 0) {
+      ctx.patchState({ loading: false });
+      this.notificationService.showError(`No Savings data available to export`);
+    }
+
+    return this.savingsExcelService.exportSavingsToExcel(savingsToExport).pipe(
+      tap(() => {
+        ctx.patchState({ loading: false });
+      }),
+      catchError((err) => {
+        ctx.patchState({ loading: false });
+        console.error("Error exporting savings:", err);
         return throwError(() => err);
       })
     );

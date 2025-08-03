@@ -280,14 +280,7 @@ export class DashboardComponent {
       { title: "Tier Category", dataField: "tier_category" },
       // { title: "Duration", dataField: "duration" },
     ],
-    rowActions: [
-      {
-        label: "Edit",
-        actionToPerform: "edit",
-        icon: "ri-pencil-line",
-        permission: "product.edit",
-      },
-    ],
+    rowActions: [],
     data: [] as any[],
     total: 0,
   };

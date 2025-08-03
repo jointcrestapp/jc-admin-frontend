@@ -42,6 +42,7 @@ import {
   SetLoadingState,
   GetDividends,
   GetFilteredMembers,
+  ExportDividends,
 } from "src/app/shared/store/action/dividend.action";
 import { CountryState } from "src/app/shared/store/state/country.state";
 import { appConfig } from "src/app/core/config/config";
@@ -295,7 +296,20 @@ export class DividendHistoryComponent {
   }
 
   export() {
-    this.store.dispatch(new ExportProduct(this.filter));
+    this.store
+      .dispatch(new ExportDividends())
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res: any) => {
+          console.log("Export completed successfully:", res);
+        },
+        error: (err) => {
+          console.error("Export failed:", err);
+          this.notificationService.showError(
+            err?.message || "Failed to export dividend history"
+          );
+        },
+      });
   }
 
   openFilter() {

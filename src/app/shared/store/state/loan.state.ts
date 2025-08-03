@@ -28,10 +28,12 @@ import {
   EditFinishedLoan,
   GenerateLoanTemplate,
   AddBatchLoan,
+  ExportLoans,
 } from "../action/loan.action";
 import { LoanService } from "../../../core/services/loan.service";
 import { NotificationService } from "../../services/notification.service";
 import { ExcelService } from "src/app/core/services/excel.service";
+import { LoanExcelService } from "src/app/core/services/loan-export.service";
 
 export interface LoanStateModel {
   request_loans: {
@@ -105,7 +107,8 @@ export class LoanState {
   constructor(
     private loanService: LoanService,
     private notificationService: NotificationService,
-    private excelService: ExcelService
+    private excelService: ExcelService,
+    private loanExcelService: LoanExcelService
   ) {}
 
   @Selector()
@@ -652,5 +655,79 @@ export class LoanState {
         return throwError(() => err);
       })
     );
+  }
+
+  @Action(ExportLoans)
+  export(
+    ctx: StateContext<LoanStateModel>,
+    { loanType, customData }: ExportLoans
+  ) {
+    const state = ctx.getState();
+    ctx.patchState({ loading: true });
+
+    let loansToExport: any[] = [];
+    let exportType = loanType;
+
+    if (customData && customData.length > 0) {
+      loansToExport = customData;
+      exportType = "custom_selection";
+    } else {
+      switch (loanType) {
+        case "requested_loans":
+          loansToExport = state.request_loans.data || [];
+          break;
+        case "approved_loans":
+          loansToExport = state.approved_loans.data || [];
+          break;
+        case "disbursed_loans":
+          loansToExport = state.disbursed_loans.data || [];
+          break;
+        case "finished_loans":
+          loansToExport = state.finished_loans.data || [];
+          break;
+        case "loan_repayment":
+          loansToExport = state.paid_loans.data || [];
+          break;
+        case "due_loans_repayment":
+        default:
+          loansToExport = state.due_loans.data || [];
+          exportType = "due_loans_repayment";
+          break;
+      }
+    }
+
+    if (!loansToExport || loansToExport.length === 0) {
+      ctx.patchState({ loading: false });
+      this.notificationService.showError(
+        `No ${this.getLoanTypeDisplayName(exportType)} data available to export`
+      );
+      return;
+    }
+
+    return this.loanExcelService
+      .exportLoansToExcel(loansToExport, exportType)
+      .pipe(
+        tap(() => {
+          ctx.patchState({ loading: false });
+        }),
+        catchError((err) => {
+          ctx.patchState({ loading: false });
+          console.error("Error exporting loans:", err);
+          return throwError(() => err);
+        })
+      );
+  }
+
+  private getLoanTypeDisplayName(loanType: string): string {
+    const displayNames: { [key: string]: string } = {
+      requested_loans: "requested loans",
+      approved_loans: "approved loans",
+      disbursed_loans: "disbursed loans",
+      finished_loans: "finished loans",
+      loan_repayment: "loan repayment",
+      due_loans_repayment: "due loan repayment",
+      loans: "loans",
+    };
+    return displayNames[loanType] || "loans";
   }
 }

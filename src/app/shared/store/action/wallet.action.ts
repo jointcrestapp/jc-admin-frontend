@@ -15,3 +15,8 @@ export class EditTransaction {
   static readonly type = "[Wallet] Edit";
   constructor(public id: number) {}
 }
+
+export class ExportTransactions {
+  static readonly type = "[Wallet] Export";
+  constructor(public customData?: any[]) {}
+}

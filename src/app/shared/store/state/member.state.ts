@@ -13,7 +13,6 @@ import {
   ImportMember,
   ExportMember,
   SetLoadingState,
-  GetStatistics,
   GetBanks,
   GetBankCode,
   GetBankKYC,
@@ -26,6 +25,7 @@ import {
 } from "../action/member.action";
 import { MemberService } from "../../../core/services/member.service";
 import { NotificationService } from "../../services/notification.service";
+import { ExcelService } from "../../../core/services/excel.service";
 
 export interface MemberStateModel {
   member: {
@@ -80,7 +80,8 @@ export interface MemberStateModel {
 export class MemberState {
   constructor(
     private memberService: MemberService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private excelService: ExcelService
   ) {}
 
   @Selector()
@@ -369,9 +370,7 @@ export class MemberState {
 
     return this.memberService.getMembers({}).pipe(
       tap((results: any) => {
-        console.log("Result ::::::", results);
         const member = results.data.find((u: any) => u.id == id);
-        console.log("Result ::::::", member);
         ctx.patchState({
           ...state,
           selectedMember: member || null,
@@ -396,6 +395,7 @@ export class MemberState {
           });
         },
         error: (err) => {
+          console.log("Error >>>>>>>>>>>>>", err);
           ctx.patchState({ loading: false });
           throw new Error(err?.error?.message);
         },
@@ -625,8 +625,75 @@ export class MemberState {
   }
 
   @Action(ExportMember)
-  export(ctx: StateContext<MemberStateModel>, action: ExportMember) {
-    // Export User Logic Here
+  export(
+    ctx: StateContext<MemberStateModel>,
+    { memberType, customData }: ExportMember
+  ) {
+    const state = ctx.getState();
+    ctx.patchState({ loading: true });
+
+    let membersToExport: any[] = [];
+    let exportType = memberType;
+
+    if (customData && customData.length > 0) {
+      membersToExport = customData;
+      exportType = "custom_selection";
+    } else {
+      switch (memberType) {
+        case "pending_members":
+          membersToExport = state.pending_members || [];
+          break;
+        case "exited_members":
+          membersToExport = state.exited_members || [];
+          break;
+        case "account_closure_request":
+          membersToExport = state.account_closure_request || [];
+          break;
+        case "agents":
+          membersToExport = state.agents.data || [];
+          break;
+        case "all_members":
+        default:
+          membersToExport = state.member.data || [];
+          exportType = "all_members";
+          break;
+      }
+    }
+
+    if (!membersToExport || membersToExport.length === 0) {
+      ctx.patchState({ loading: false });
+      this.notificationService.showError(
+        `No ${this.getMemberTypeDisplayName(
+          exportType
+        )} data available to export`
+      );
+      return;
+    }
+
+    return this.excelService
+      .exportMembersToExcel(membersToExport, exportType)
+      .pipe(
+        tap(() => {
+          ctx.patchState({ loading: false });
+        }),
+        catchError((err) => {
+          ctx.patchState({ loading: false });
+          console.error("Error exporting members:", err);
+          return throwError(() => err);
+        })
+      );
+  }
+
+  private getMemberTypeDisplayName(memberType: string): string {
+    const displayNames: { [key: string]: string } = {
+      all_members: "all members",
+      pending_members: "pending members",
+      exited_members: "exited members",
+      account_closure_request: "account closure requests",
+      agents: "agents",
+      custom_selection: "selected members",
+    };
+    return displayNames[memberType] || "members";
   }
 
   @Action(CreateMemberAddress)

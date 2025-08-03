@@ -44,3 +44,8 @@ export class GenerateSavingsTemplate {
   static readonly type = "[Savings] Generate";
   constructor(public payload?: Params) {}
 }
+
+export class ExportSavings {
+  static readonly type = "[Member] Export";
+  constructor(public customData?: any[]) {}
+}

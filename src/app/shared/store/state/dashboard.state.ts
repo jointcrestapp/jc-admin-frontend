@@ -5,12 +5,14 @@ import {
   GetStatisticsCount,
   GetRevenueChart,
   SetLoadingState,
+  GetNotifications,
 } from "../action/dashboard.action";
 import {
   StatisticsCount,
   RevenueChart,
 } from "./../../interface/dashboard.interface";
 import { DashboardService } from "../../../core/services/dashboard.service";
+import { Notification } from "../../interface/notification.interface";
 
 export interface DashboardStateModel {
   statistics: StatisticsCount | null;
@@ -19,6 +21,10 @@ export interface DashboardStateModel {
   recent_savings?: any[];
   recent_thrifts?: any[];
   recent_txns?: any[];
+  notification?: {
+    data: Notification[];
+    total: 0;
+  };
 }
 
 @State<DashboardStateModel>({
@@ -30,6 +36,10 @@ export interface DashboardStateModel {
     recent_savings: [],
     recent_thrifts: [],
     recent_txns: [],
+    notification: {
+      data: [],
+      total: 0,
+    },
   },
 })
 @Injectable()
@@ -66,6 +76,11 @@ export class DashboardState {
     return state.revenueChart;
   }
 
+  @Selector()
+  static notification(state: DashboardStateModel) {
+    return state.notification.data;
+  }
+
   @Action(SetLoadingState)
   setLoading(
     ctx: StateContext<DashboardStateModel>,
@@ -92,6 +107,32 @@ export class DashboardState {
       catchError((err) => {
         ctx.patchState({ loading: false });
         console.error("Error fetching statistics:", err);
+        return throwError(() => err);
+      })
+    );
+  }
+
+  @Action(GetNotifications)
+  getNotifications(
+    ctx: StateContext<DashboardStateModel>,
+    action: GetNotifications
+  ) {
+    return this.dashboardService.getNotifications(action.payload).pipe(
+      tap((result: any) => {
+        console.log("Response >>>>>>>>>>>>>>>>", result);
+        ctx.patchState({
+          notification: {
+            data: result.data,
+            total: result?.meta?.total
+              ? result?.meta?.total
+              : result.data.length,
+          },
+          loading: false,
+        });
+      }),
+      catchError((err) => {
+        ctx.patchState({ loading: false });
+        console.error("Error fetching notifications:", err);
         return throwError(() => err);
       })
     );

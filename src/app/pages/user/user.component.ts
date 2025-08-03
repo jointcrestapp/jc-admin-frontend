@@ -1,4 +1,13 @@
-import { Component, inject, OnDestroy, OnInit, ViewChild } from "@angular/core";
+import {
+  Component,
+  Inject,
+  inject,
+  OnDestroy,
+  OnInit,
+  PLATFORM_ID,
+  Renderer2,
+  ViewChild,
+} from "@angular/core";
 import { Router, RouterModule } from "@angular/router";
 import { TranslateModule } from "@ngx-translate/core";
 import { PageWrapperComponent } from "../../shared/components/page-wrapper/page-wrapper.component";
@@ -21,16 +30,23 @@ import {
   UpdateUserStatus,
 } from "../../shared/store/action/user.action";
 import { HasPermissionDirective } from "../../shared/directive/has-permission.directive";
-import { CommonModule } from "@angular/common";
+import { CommonModule, DOCUMENT, isPlatformBrowser } from "@angular/common";
 import { UserService } from "src/app/core/services/user.service";
 import { appConfig } from "src/app/core/config/config";
 import { NotificationService } from "src/app/shared/services/notification.service";
+import {
+  Select2Data,
+  Select2Module,
+  Select2Option,
+  Select2UpdateEvent,
+} from "ng-select2-component";
 
 @Component({
   selector: "app-user",
   imports: [
     RouterModule,
     TranslateModule,
+    Select2Module,
     HasPermissionDirective,
     PageWrapperComponent,
     TableComponent,
@@ -50,6 +66,29 @@ export class UserComponent implements OnInit, OnDestroy {
   @ViewChild("csvModal") CSVModal: ImportCsvModalComponent;
 
   @ViewChild(TableComponent) confirmAction: TableComponent; // Get reference to the modal component in the table component
+
+  public memberStatus: Select2Data = [
+    {
+      value: "0",
+      label: "Inactive",
+    },
+    {
+      value: "1",
+      label: "Active",
+    },
+  ];
+
+  public filter: Params = {
+    search: "",
+    field: "",
+    status: "",
+    sort: "", // current Sorting Order
+    page: 1, // current page number
+    paginate: 15, // Display per page,
+  };
+
+  public open: boolean = true;
+  public isBrowser: boolean;
 
   public tableConfig: TableConfig = {
     columns: [
@@ -109,8 +148,13 @@ export class UserComponent implements OnInit, OnDestroy {
   constructor(
     private notificationService: NotificationService,
     private userService: UserService,
+    @Inject(DOCUMENT) private document: Document,
+    @Inject(PLATFORM_ID) private platformId: object,
+    private renderer: Renderer2,
     public router: Router
-  ) {}
+  ) {
+    this.isBrowser = isPlatformBrowser(platformId);
+  }
 
   ngOnInit() {
     this.getUsers();
@@ -129,9 +173,9 @@ export class UserComponent implements OnInit, OnDestroy {
   }
 
   onTableChange(data?: Params) {
-    console.log("Params :::", data);
+    this.filter = { ...this.filter, ...data };
     // this.getUsers(); // handle filter/pagination later
-    this.store.dispatch(new GetUsers(data));
+    this.store.dispatch(new GetUsers(this.filter));
   }
 
   onActionClicked(action: TableClickedAction) {
@@ -147,6 +191,29 @@ export class UserComponent implements OnInit, OnDestroy {
   }
   view(data: any) {
     this.router.navigateByUrl(`/user/detail/${data.id}`);
+  }
+
+  applyFilter(data: Select2UpdateEvent) {
+    this.filter["status"] = data && data.value ? data.value : null;
+    if (!this.filter["status"]) {
+      delete this.filter["status"];
+    }
+    this.onTableChange(this.filter);
+  }
+
+  filters(data: any, key: string) {
+    console.log("Filters ::::", {
+      data,
+      key,
+    });
+    this.renderer.addClass(this.document.body, "loader-none");
+    console.log(data && data.value);
+    if (data && data.value) {
+      this.filter[key] = data.value;
+    } else {
+      this.filter[key] = [];
+    }
+    this.onTableChange(this.filter);
   }
 
   status(data: any) {
@@ -211,6 +278,19 @@ export class UserComponent implements OnInit, OnDestroy {
   }
 
   export() {
-    this.store.dispatch(new ExportUser());
+    this.store
+      .dispatch(new ExportUser())
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res: any) => {
+          console.log("Export completed successfully:", res);
+        },
+        error: (err) => {
+          console.error("Export failed:", err);
+          this.notificationService.showError(
+            err?.message || "Failed to export admins"
+          );
+        },
+      });
   }
 }

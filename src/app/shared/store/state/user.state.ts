@@ -18,6 +18,7 @@ import {
 } from "../action/user.action";
 import { UserService } from "../../../core/services/user.service";
 import { NotificationService } from "../../services/notification.service";
+import { UserExcelService } from "src/app/core/services/user-export.service";
 
 /* export class UserStateModel {
   user = {
@@ -60,7 +61,8 @@ export interface UserStateModel {
 export class UserState {
   constructor(
     private userService: UserService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private userExcelService: UserExcelService
   ) {}
 
   @Selector()
@@ -284,8 +286,34 @@ export class UserState {
   }
 
   @Action(ExportUser)
-  export(ctx: StateContext<UserStateModel>, action: ExportUser) {
-    // Export User Logic Here
+  export(ctx: StateContext<UserStateModel>, { customData }: ExportUser) {
+    const state = ctx.getState();
+    ctx.patchState({ loading: true });
+
+    let membersToExport: any[] = [];
+
+    if (customData && customData.length > 0) {
+      membersToExport = customData;
+    } else {
+      membersToExport = state.user;
+    }
+
+    if (!membersToExport || membersToExport.length === 0) {
+      ctx.patchState({ loading: false });
+      this.notificationService.showError(`No Admin data available to export`);
+      return;
+    }
+
+    return this.userExcelService.exportAdminsToExcel(membersToExport).pipe(
+      tap(() => {
+        ctx.patchState({ loading: false });
+      }),
+      catchError((err) => {
+        ctx.patchState({ loading: false });
+        console.error("Error exporting admins:", err);
+        return throwError(() => err);
+      })
+    );
   }
 
   @Action(CreateUserAddress)

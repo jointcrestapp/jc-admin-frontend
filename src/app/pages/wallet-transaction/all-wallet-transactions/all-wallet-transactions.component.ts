@@ -35,7 +35,10 @@ import { TableComponent } from "../../../shared/components/ui/table/table.compon
 import { HasPermissionDirective } from "../../../shared/directive/has-permission.directive";
 import { CurrencySymbolPipe } from "../../../shared/pipe/currency-symbol.pipe";
 import { WalletState } from "src/app/shared/store/state/wallet.state";
-import { GetUserTransaction } from "src/app/shared/store/action/wallet.action";
+import {
+  ExportTransactions,
+  GetUserTransaction,
+} from "src/app/shared/store/action/wallet.action";
 import { CountryState } from "src/app/shared/store/state/country.state";
 import { NotificationService } from "src/app/shared/services/notification.service";
 
@@ -295,7 +298,20 @@ export class AllWalletTransactionsComponent {
   }
 
   export() {
-    this.store.dispatch(new ExportProduct(this.filter));
+    this.store
+      .dispatch(new ExportTransactions())
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res: any) => {
+          console.log("Export completed successfully:", res);
+        },
+        error: (err) => {
+          console.error("Export failed:", err);
+          this.notificationService.showError(
+            err?.message || "Failed to export transactions"
+          );
+        },
+      });
   }
 
   openFilter() {

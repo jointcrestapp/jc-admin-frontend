@@ -145,6 +145,19 @@ export class AllProductsComponent {
     this.store.dispatch(new GetProducts(this.filter));
   }
 
+  navigateToAddProducts() {
+    // Store the current tab info before navigation
+    sessionStorage.setItem("categoriesActiveTab", "products");
+
+    // Navigate to add-loan-type page with return information
+    this.router.navigate(["/configurations/product/products/add-products"], {
+      queryParams: {
+        returnTab: "products",
+        returnUrl: "/configurations/categories",
+      },
+    });
+  }
+
   onActionClicked(action: TableClickedAction) {
     if (action.actionToPerform == "edit") this.edit(action.data);
     else if (action.actionToPerform == "delete") this.delete(action.data);

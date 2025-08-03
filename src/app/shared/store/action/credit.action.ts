@@ -53,3 +53,17 @@ export class EditCredit {
   static readonly type = "[Credit] Edit";
   constructor(public id: number) {}
 }
+
+export class ExportCredits {
+  static readonly type = "[Cedit] Export";
+  constructor(
+    public creditType:
+      | "requested_credit_sales"
+      | "approved_credit_sales"
+      | "disbursed_credit_sales"
+      | "ordered_products"
+      | "repayments"
+      | "custom_selection" = "requested_credit_sales",
+    public customData?: any[]
+  ) {}
+}

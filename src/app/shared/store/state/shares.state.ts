@@ -17,11 +17,13 @@ import {
   DeleteShares,
   AddBatchShares,
   GenerateSharesTemplate,
+  ExportShares,
 } from "../action/shares.action";
 import { SharesService } from "../../../core/services/shares.service";
 import { CountryService } from "../../services/country.service";
 import { NotificationService } from "../../services/notification.service";
 import { ExcelService } from "src/app/core/services/excel.service";
+import { SharesExcelService } from "src/app/core/services/shares-export.service";
 
 export interface SharesStateModel {
   shares: {
@@ -52,7 +54,9 @@ export interface SharesStateModel {
 export class SharesState {
   constructor(
     private sharesService: SharesService,
-    private excelService: ExcelService
+    private excelService: ExcelService,
+    private notificationService: NotificationService,
+    private sharesExcelService: SharesExcelService
   ) {}
 
   @Selector()
@@ -276,6 +280,37 @@ export class SharesState {
       catchError((err) => {
         ctx.patchState({ loading: false });
         console.error("Error in generating batch savings:", err);
+        return throwError(() => err);
+      })
+    );
+  }
+
+  @Action(ExportShares)
+  export(ctx: StateContext<SharesStateModel>, { customData }: ExportShares) {
+    const state = ctx.getState();
+    ctx.patchState({ loading: true });
+
+    let sharesToExport: any[] = [];
+
+    if (customData && customData.length > 0) {
+      sharesToExport = customData;
+    } else {
+      sharesToExport = state.shares.data;
+    }
+
+    if (!sharesToExport || sharesToExport.length === 0) {
+      ctx.patchState({ loading: false });
+      this.notificationService.showError(`No shares data available to export`);
+      return;
+    }
+
+    return this.sharesExcelService.exportSharesToExcel(sharesToExport).pipe(
+      tap(() => {
+        ctx.patchState({ loading: false });
+      }),
+      catchError((err) => {
+        ctx.patchState({ loading: false });
+        console.error("Error exporting shares:", err);
         return throwError(() => err);
       })
     );

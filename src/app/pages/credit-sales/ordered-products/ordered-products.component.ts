@@ -37,6 +37,7 @@ import { CurrencySymbolPipe } from "../../../shared/pipe/currency-symbol.pipe";
 import {
   ApproveCreditSalesStatus,
   DeleteCreditSales,
+  ExportCredits,
   OrderedProducts,
 } from "src/app/shared/store/action/credit.action";
 import { CountryState } from "src/app/shared/store/state/country.state";
@@ -179,7 +180,7 @@ export class OrderedProductsComponent {
       },
       {
         title: "Status",
-        dataField: "status",
+        dataField: "credit_status",
         type: "transition",
       },
     ],
@@ -233,7 +234,7 @@ export class OrderedProductsComponent {
     });
     this.ordered_products$.pipe(takeUntil(this.destroy$)).subscribe((rcs) => {
       let ordered_products = rcs?.data?.filter((element: any) => {
-        element.status =
+        element.credit_status =
           element.status == "3"
             ? `<div class="status-delivered"><span>Completed</span></div>`
             : "-";
@@ -360,7 +361,20 @@ export class OrderedProductsComponent {
   }
 
   export() {
-    this.store.dispatch(new ExportProduct(this.filter));
+    this.store
+      .dispatch(new ExportCredits("ordered_products"))
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res: any) => {
+          console.log("Export completed successfully:", res);
+        },
+        error: (err) => {
+          console.error("Export failed:", err);
+          this.notificationService.showError(
+            err?.message || "Failed to export ordered products"
+          );
+        },
+      });
   }
 
   openFilter() {

@@ -139,6 +139,19 @@ export class AllSharesTypeComponent {
     // else if (action.actionToPerform == "delete") this.delete(action.data);
   }
 
+  navigateToAddSharesType() {
+    // Store the current tab info before navigation
+    sessionStorage.setItem("categoriesActiveTab", "shares_type");
+
+    // Navigate to add-loan-type page with return information
+    this.router.navigate(["/configurations/share-type/add-share-type"], {
+      queryParams: {
+        returnTab: "shares_type",
+        returnUrl: "/configurations/categories",
+      },
+    });
+  }
+
   edit(data: any) {
     this.router.navigateByUrl(
       `/configurations/share-type/edit-share-type/${data.id}`

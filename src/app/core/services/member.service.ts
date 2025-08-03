@@ -138,4 +138,8 @@ export class MemberService extends BaseApiService {
       params: payload,
     });
   }
+
+  exportMembers(filter?: any): Observable<any> {
+    return this.get(`${environment.apiURL}/export_members`, filter);
+  }
 }

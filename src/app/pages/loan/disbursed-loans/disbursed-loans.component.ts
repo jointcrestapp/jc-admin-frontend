@@ -37,6 +37,7 @@ import { HasPermissionDirective } from "../../../shared/directive/has-permission
 import { CurrencySymbolPipe } from "../../../shared/pipe/currency-symbol.pipe";
 import {
   DeleteLoan,
+  ExportLoans,
   GetDisbursedLoan,
 } from "src/app/shared/store/action/loan.action";
 import { CountryState } from "src/app/shared/store/state/country.state";
@@ -186,7 +187,7 @@ export class DisbursedLoansComponent {
       },
       {
         title: "Status",
-        dataField: "status",
+        dataField: "loan_status",
       },
       {
         title: "Loan Type",
@@ -230,7 +231,7 @@ export class DisbursedLoansComponent {
     this.getLoan();
     this.loans$.pipe(takeUntil(this.destroy$)).subscribe((loan) => {
       let loans = loan?.data?.filter((element: any) => {
-        element.status =
+        element.loan_status =
           element.status == "2"
             ? `<div class="status-approved"><span>Disbursed</span></div>`
             : "-";
@@ -341,7 +342,20 @@ export class DisbursedLoansComponent {
   }
 
   export() {
-    this.store.dispatch(new ExportProduct(this.filter));
+    this.store
+      .dispatch(new ExportLoans("disbursed_loans"))
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res: any) => {
+          console.log("Export completed successfully:", res);
+        },
+        error: (err) => {
+          console.error("Export failed:", err);
+          this.notificationService.showError(
+            err?.message || "Failed to export requested loans"
+          );
+        },
+      });
   }
 
   openFilter() {

@@ -133,6 +133,19 @@ export class AllSavingTypesComponent {
     this.store.dispatch(new GetSavingsTypes(this.filter));
   }
 
+  navigateToAddSavingsType() {
+    // Store the current tab info before navigation
+    sessionStorage.setItem("categoriesActiveTab", "savings_type");
+
+    // Navigate to add-loan-type page with return information
+    this.router.navigate(["/configurations/savings-type/add-savings-type"], {
+      queryParams: {
+        returnTab: "savings_type",
+        returnUrl: "/configurations/categories",
+      },
+    });
+  }
+
   onActionClicked(action: TableClickedAction) {
     if (action.actionToPerform == "edit") this.edit(action.data);
     else if (action.actionToPerform == "is_activated") this.status(action.data);

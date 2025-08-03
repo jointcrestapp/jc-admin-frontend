@@ -144,6 +144,19 @@ export class AllVendorsComponent {
     else if (action.actionToPerform == "delete") this.delete(action.data);
   }
 
+  navigateToAddVendor() {
+    // Store the current tab info before navigation
+    sessionStorage.setItem("categoriesActiveTab", "vendors");
+
+    // Navigate to add-loan-type page with return information
+    this.router.navigate(["/configurations/product/vendors/add-vendor"], {
+      queryParams: {
+        returnTab: "vendors",
+        returnUrl: "/configurations/categories",
+      },
+    });
+  }
+
   edit(data: any) {
     this.router.navigateByUrl(
       `/configurations/product/vendors/edit-vendor/${data.id}`

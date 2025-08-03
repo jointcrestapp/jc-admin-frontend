@@ -98,3 +98,18 @@ export class GenerateLoanTemplate {
   static readonly type = "[Loan] Generate";
   constructor(public payload?: Params) {}
 }
+
+export class ExportLoans {
+  static readonly type = "[Loan] Export";
+  constructor(
+    public loanType:
+      | "requested_loans"
+      | "approved_loans"
+      | "disbursed_loans"
+      | "finished_loans"
+      | "loan_repayment"
+      | "due_loans_repayment"
+      | "custom_selection" = "requested_loans",
+    public customData?: any[]
+  ) {}
+}

@@ -44,3 +44,8 @@ export class GenerateSharesTemplate {
   static readonly type = "[Shares] Generate";
   constructor(public payload?: Params) {}
 }
+
+export class ExportShares {
+  static readonly type = "[Shares] Export";
+  constructor(public customData?: any[]) {}
+}

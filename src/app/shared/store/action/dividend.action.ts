@@ -19,3 +19,8 @@ export class GetFilteredMembers {
   static readonly type = "[Dividend] Get Filtered Members";
   constructor(public payload?: Params) {}
 }
+
+export class ExportDividends {
+  static readonly type = "[Dividend] Export";
+  constructor(public customData?: any[]) {}
+}

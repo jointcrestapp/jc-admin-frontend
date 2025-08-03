@@ -6,9 +6,11 @@ import {
   GetDividends,
   SetLoadingState,
   CreateDividend,
+  ExportDividends,
 } from "../action/dividend.action";
 import { DividendService } from "src/app/core/services/dividend.service";
 import { NotificationService } from "../../services/notification.service";
+import { DividendExcelService } from "src/app/core/services/dividend-export.service";
 
 export interface DividendStateModel {
   dividend: {
@@ -39,7 +41,8 @@ export class DividendState {
   constructor(
     private store: Store,
     private notificationService: NotificationService,
-    private dividendService: DividendService
+    private dividendService: DividendService,
+    private dividendExcelService: DividendExcelService
   ) {}
 
   @Selector()
@@ -133,5 +136,43 @@ export class DividendState {
       finalize(() => ctx.patchState({ loading: false })),
       map((res: any) => res) // ✅ this returns the real API response to your component
     );
+  }
+
+  @Action(ExportDividends)
+  export(
+    ctx: StateContext<DividendStateModel>,
+    { customData }: ExportDividends
+  ) {
+    const state = ctx.getState();
+    ctx.patchState({ loading: true });
+
+    let dividendsToExport: any[] = [];
+
+    if (customData && customData.length > 0) {
+      dividendsToExport = customData;
+    } else {
+      dividendsToExport = state.dividend.data;
+    }
+
+    if (!dividendsToExport || dividendsToExport.length === 0) {
+      ctx.patchState({ loading: false });
+      this.notificationService.showError(
+        `No Dividend Historry data available to export`
+      );
+      return;
+    }
+
+    return this.dividendExcelService
+      .exportDividendToExcel(dividendsToExport)
+      .pipe(
+        tap(() => {
+          ctx.patchState({ loading: false });
+        }),
+        catchError((err) => {
+          ctx.patchState({ loading: false });
+          console.error("Error exporting dividends:", err);
+          return throwError(() => err);
+        })
+      );
   }
 }

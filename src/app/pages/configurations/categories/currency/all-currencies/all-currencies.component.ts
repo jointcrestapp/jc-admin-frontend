@@ -141,6 +141,7 @@ export class AllCurrenciesComponent {
       `/configurations/currency/edit-currency/${data.id}`
     );
   }
+  z;
 
   delete(data: Product) {
     this.store

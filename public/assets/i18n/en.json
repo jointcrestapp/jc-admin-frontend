@@ -1097,6 +1097,7 @@
   "dashboard": "Dashboard",
   "members": "Members",
   "add_member": "Add Member",
+  "edit_member": "Edit Member",
   "all_members": "All Members",
   "pending_members": "Pending Members",
   "account_closure": "Account Closure Request",
@@ -1105,6 +1106,7 @@
   "savings": "Savings",
   "all_savings": "All Savings",
   "add_single_savings": "Add Single Savings",
+  "edit_single_savings": "Edit Single Savings",
   "add_batch_savings": "Add Batch Savings",
   "loan": "Loan",
   "add_single_loan": "Add Single Loan",
@@ -1439,5 +1441,7 @@
   "share_approval_level_is_required": "share approval level is required",
   "total_wallet_amount": "Total Wallet Amount",
   "total_savings_amount": "Total Savings Amount",
-  "total_members": "Total Members"
+  "total_members": "Total Members",
+  "add_savings": "Add Savings",
+  "update_savings": "Update Savings"
 }

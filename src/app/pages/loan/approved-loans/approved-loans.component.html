@@ -41,7 +41,7 @@
 
   <div class="d-flex flex-wrap gap-3" button *hasPermission="'loan.create'">
     <a
-      [routerLink]="['/shares/add-batch-shares']"
+      (click)="export()"
       class="align-items-center btn btn-theme d-flex rounded"
     >
       <i class="ri-download-2-line"></i> {{ "export" | translate }}
@@ -63,7 +63,7 @@
     @if(open){
     <div advanceFilter class="show-box mb-4 d-block product-category-option">
       <div class="row g-sm-4 g-3">
-        <div class="col-xl-4 col-lg-6 col-md-3 col-sm-6">
+        <!-- <div class="col-xl-4 col-lg-6 col-md-3 col-sm-6">
           @if(isBrowser) {
           <select2
             class="custom-select"
@@ -75,7 +75,7 @@
           >
           </select2>
           }
-        </div>
+        </div> -->
         <div class="col-xl-4 col-lg-6 col-md-3 col-sm-6">
           @if(isBrowser) {
           <select2
@@ -89,7 +89,7 @@
           </select2>
           }
         </div>
-        <div class="col-xl-2 col-lg-6 col-md-3 col-sm-6">
+        <div class="col-xl-4 col-lg-6 col-md-3 col-sm-6">
           @if(isBrowser) {
           <select2
             class="custom-select"
@@ -102,7 +102,7 @@
           </select2>
           }
         </div>
-        <div class="col-xl-2 col-lg-6 col-md-3 col-sm-6">
+        <div class="col-xl-4 col-lg-6 col-md-3 col-sm-6">
           @if(isBrowser) {
           <select2
             class="custom-select"

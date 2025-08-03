@@ -143,6 +143,22 @@ export class AllProductPlansComponent {
     this.store.dispatch(new GetProductPlans(this.filter));
   }
 
+  navigateToAddProductPan() {
+    // Store the current tab info before navigation
+    sessionStorage.setItem("categoriesActiveTab", "product_plan");
+
+    // Navigate to add-loan-type page with return information
+    this.router.navigate(
+      ["/configurations/product/product-plan/add-product-plan"],
+      {
+        queryParams: {
+          returnTab: "product_plan",
+          returnUrl: "/configurations/categories",
+        },
+      }
+    );
+  }
+
   onActionClicked(action: TableClickedAction) {
     if (action.actionToPerform == "edit") this.edit(action.data);
     else if (action.actionToPerform == "delete") this.delete(action.data);

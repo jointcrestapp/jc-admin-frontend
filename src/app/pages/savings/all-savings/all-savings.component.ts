@@ -39,7 +39,6 @@ import {
   ApproveProductStatus,
   DeleteAllProduct,
   Download,
-  ExportProduct,
   ReplicateProduct,
   UpdateProductStatus,
 } from "../../../shared/store/action/product.action";
@@ -52,6 +51,7 @@ import { SavingsState } from "src/app/shared/store/state/savings.state";
 import {
   GetSavings,
   DeleteSaving,
+  ExportSavings,
 } from "src/app/shared/store/action/savings.action";
 import { CountryState } from "src/app/shared/store/state/country.state";
 import { appConfig } from "src/app/core/config/config";
@@ -407,7 +407,20 @@ export class AllSavingsComponent {
   }
 
   export() {
-    this.store.dispatch(new ExportProduct(this.filter));
+    this.store
+      .dispatch(new ExportSavings(this.tableConfig.data))
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res: any) => {
+          console.log("Export completed successfully:", res);
+        },
+        error: (err) => {
+          console.error("Export failed:", err);
+          this.notificationService.showError(
+            err?.message || "Failed to export savings"
+          );
+        },
+      });
   }
 
   openFilter() {
