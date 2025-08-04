@@ -1,24 +1,21 @@
 import { Injectable, EventEmitter } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { environment } from './../../../environments/environment.development';
 import { Router } from '@angular/router';
 import { Store } from '@ngxs/store';
 import { CryptoService } from './crypto.service'; // assuming path
 import { appConfig } from '../config/config';
 import { BaseApiService } from './base-api-service';
-import { Logout } from 'src/app/shared/store/action/auth.action';
-import { LoginSuccess } from 'src/app/shared/store/action/user.action';
 import { NotificationService } from 'src/app/shared/services/notification.service';
+import { AuthState } from 'src/app/shared/store/state/auth.state';
 
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService extends BaseApiService {
-  onLoggedOut: EventEmitter<boolean> = new EventEmitter();
-  onLoggedIn: EventEmitter<boolean> = new EventEmitter();
 
   constructor(
     http: HttpClient,
@@ -27,50 +24,26 @@ export class AuthService extends BaseApiService {
     private router: Router,
     private store: Store,
   ) {
-    super(http, crypto);
+      super(http, crypto);
   }
 
   signUp(data: any): Observable<any> {
-    return this.http.post(`${environment.apiURL}/signup`, data);
+    return this.post(`${environment.apiURL}/signup`, data);
   }
 
-  login(data: any): Observable<any> {
-    return this.http.post(`${environment.apiURL}/login`, data).pipe(
-      map((response: any) => {
-        const { access, data: user } = response;
-        if (access && user) {
-          this.store.dispatch(new LoginSuccess({ token: access, user }));
-          this.onLoggedIn.emit(true);
-        }
-        return response;
-      })
-    );
-  }
+login(data:any): Observable<any> {
+  return this.post(`${environment.apiURL}/login`, data);
+}
 
-  logOutRequest(data: any): Observable<any> {
-    return this.http.post(`${environment.apiURL}/logout`, data).pipe(
-      map((response: any) => {
-        if (response.status === appConfig.statusCode.ok) {
-          this.logoutUser();
-        } else {
-          this.notificationService.showError(response.message);
-        }
-        return response;
-      })
-    );
-  }
+logOutRequest(data: any): Observable<any> {
+  return this.post(`${environment.apiURL}/logout`, data);
+}
 
-  logoutUser() {
-    this.store.dispatch(new Logout());
-    this.onLoggedOut.emit(true);
-    this.router.navigate(['login']);
-  }
-
-  getToken(): string | null {
-    return this.store.selectSnapshot((state: any) => state.user.token);
-  }
-
-  isTokenExpired(): boolean {
+getToken(): string | null {
+  return this.store.selectSnapshot(AuthState.token);
+}
+  
+isTokenExpired(): boolean {
     const token = this.getToken();
     if (token) {
       const decoded: any = this.crypto.decodeJWT(token);
@@ -78,5 +51,28 @@ export class AuthService extends BaseApiService {
       return decoded.exp <= currentTime;
     }
     return true;
+}
+  
+  savePasswordResetOTP(data: any): Observable<any> {
+    return this.post(environment.apiURL+ '/send_password_reset_otp', data)
   }
+  verifyPasswordResetOTP(data: any): Observable<any> {
+    return this.post(environment.apiURL+ '/verify_password_reset_otp', data)
+  }
+  
+  resetUserPassword(data: any): Observable<any> {
+    return this.post(environment.apiURL+ '/reset_user_password', data)
+  }
+
+
+
+  
+  
+  
+
+
+  
+
+  
+  
 }

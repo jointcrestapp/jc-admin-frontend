@@ -8,7 +8,8 @@ import { Values } from '../../../../interface/setting.interface';
     selector: 'app-mode',
     imports: [],
     templateUrl: './mode.component.html',
-    styleUrl: './mode.component.scss'
+  styleUrl: './mode.component.scss',
+  standalone:true
 })
 export class ModeComponent {
 

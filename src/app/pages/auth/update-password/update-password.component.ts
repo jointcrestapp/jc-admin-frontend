@@ -10,6 +10,7 @@ import { UpdatePassword } from '../../../shared/store/action/auth.action';
 import { Observable } from 'rxjs';
 import { Values } from 'src/app/shared/interface/setting.interface';
 import { SettingState } from 'src/app/shared/store/state/setting.state';
+import { CustomValidators } from 'src/app/shared/validator/password-match';
 
 @Component({
     selector: 'app-update-password',
@@ -17,7 +18,8 @@ import { SettingState } from 'src/app/shared/store/state/setting.state';
         CommonModule, AlertComponent, ButtonComponent, AsyncPipe
     ],
     templateUrl: './update-password.component.html',
-    styleUrl: './update-password.component.scss'
+  styleUrl: './update-password.component.scss',
+    standalone:true
 })
 export class UpdatePasswordComponent {
 
@@ -25,7 +27,7 @@ export class UpdatePasswordComponent {
 
   public form: FormGroup;
   public email: string;
-  public token: number;
+  public token: string;
   public show: boolean = false;
 
   constructor(
@@ -39,6 +41,9 @@ export class UpdatePasswordComponent {
     this.form = this.formBuilder.group({
       newPassword: new FormControl('', [Validators.required]),
       confirmPassword: new FormControl('', [Validators.required])
+    },
+    {
+      validator : CustomValidators.MatchValidator('newPassword', 'confirmPassword')
     });
   }
 
@@ -46,22 +51,23 @@ export class UpdatePasswordComponent {
     this.show = !this.show;
   }
 
+   get passwordMatchError() {
+    return (
+      this.form.getError('mismatch') &&
+      this.form.get('confirmPassword')?.touched
+    );
+  }
+
   submit() {
     this.form.markAllAsTouched();
     if(this.form.valid) {
       this.store.dispatch(
-          new UpdatePassword({
-            email: this.email,
-            token: Number(this.token),
-            password: this.form.value.newPassword,
-            password_confirmation: this.form.value.confirmPassword,
-          })
-      ).subscribe(
-        {
-          complete: () => {
-            this.router.navigateByUrl('/auth/login');
-          }
-        }
+        new UpdatePassword({
+          email: this.email,
+          token: this.token,
+          password: this.form.value.newPassword,
+          password_confirmation: this.form.value.confirmPassword,
+        })
       );
     }
   }

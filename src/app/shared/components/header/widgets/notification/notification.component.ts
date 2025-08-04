@@ -15,6 +15,7 @@ import { DashboardState } from "src/app/shared/store/state/dashboard.state";
   imports: [CommonModule, TranslateModule, RouterModule, SummaryPipe],
   templateUrl: "./notification.component.html",
   styleUrl: "./notification.component.scss",
+  standalone:true
 })
 export class NotificationComponent {
   notification$: Observable<Notification[]> = inject(Store).select(

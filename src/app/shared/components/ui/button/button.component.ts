@@ -8,7 +8,8 @@ import { CommonModule } from '@angular/common';
     selector: 'app-button',
     imports: [CommonModule],
     templateUrl: './button.component.html',
-    styleUrl: './button.component.scss'
+  styleUrl: './button.component.scss',
+  standalone:true
 })
 export class ButtonComponent {
 

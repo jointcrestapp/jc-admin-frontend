@@ -10,6 +10,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { AlertComponent } from '../../../shared/components/ui/alert/alert.component';
 import { ButtonComponent } from '../../../shared/components/ui/button/button.component';
 import { AsyncPipe } from '@angular/common';
+import { appConfig } from 'src/app/core/config/config';
 
 @Component({
     selector: 'app-forgot-password',
@@ -17,7 +18,8 @@ import { AsyncPipe } from '@angular/common';
         AlertComponent, ButtonComponent, AsyncPipe
     ],
     templateUrl: './forgot-password.component.html',
-    styleUrl: './forgot-password.component.scss'
+  styleUrl: './forgot-password.component.scss',
+  standalone:true
 })
 export class ForgotPasswordComponent {
 
@@ -29,18 +31,14 @@ export class ForgotPasswordComponent {
     public router: Router,
     public formBuilder: FormBuilder ) {
     this.form = this.formBuilder.group({
-      email: ["", [Validators.required, Validators.email]],
+      email: ["", [Validators.required, Validators.pattern(appConfig.pattern.EMAIL)]]
     });
   }
 
   submit() {
     this.form.markAllAsTouched();
     if(this.form.valid) {
-      this.store.dispatch(new ForgotPassWord(this.form.value)).subscribe({
-        complete: () => {
-          this.router.navigateByUrl('/auth/otp');
-        }
-      });
+      this.store.dispatch(new ForgotPassWord(this.form.value))
     }
   }
 

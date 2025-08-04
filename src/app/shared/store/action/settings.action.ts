@@ -28,3 +28,5 @@ export class CreatePaymentGatewayConfiguration {
   static readonly type = "[Settings] Create Payment Gateway Configuration";
   constructor(public payload: any) {}
 }
+
+

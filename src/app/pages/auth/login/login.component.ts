@@ -5,18 +5,21 @@ import { SettingState } from '../../../shared/store/state/setting.state';
 import { Observable } from 'rxjs';
 import { Values } from '../../../shared/interface/setting.interface';
 import { Router, RouterModule } from '@angular/router';
-import { Login } from '../../../shared/store/action/auth.action';
+import { AuthClear, Login } from '../../../shared/store/action/auth.action';
 import { TranslateModule } from '@ngx-translate/core';
 import { AlertComponent } from '../../../shared/components/ui/alert/alert.component';
 import { ButtonComponent } from '../../../shared/components/ui/button/button.component';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
     selector: 'app-login',
     imports: [TranslateModule, FormsModule, ReactiveFormsModule,
-      RouterModule, AlertComponent, ButtonComponent
+        RouterModule, AlertComponent, ButtonComponent, AsyncPipe
     ],
     templateUrl: './login.component.html',
-    styleUrl: './login.component.scss'
+  styleUrl: './login.component.scss',
+    standalone:true
+    
 })
 export class LoginComponent {
 
@@ -29,6 +32,7 @@ export class LoginComponent {
     private router: Router,
     private formBuilder: FormBuilder
   ) {
+    this.store.dispatch(new AuthClear());
     this.form = this.formBuilder.group({
       email: new FormControl('', [Validators.required, Validators.email]),
       password: new FormControl('', [Validators.required]),
@@ -37,14 +41,11 @@ export class LoginComponent {
 
   submit() {
     this.form.markAllAsTouched();
-    if(this.form.valid) {
-      this.store.dispatch(new Login(this.form.value)).subscribe({
-          complete: () => {
-            this.router.navigateByUrl('/dashboard');
-          },
-          
-        }
-      );
+    if (this.form.valid) {
+      
+      this.store.dispatch(new Login(this.form.value));
+    } else { 
+        console.log('invalid');
     }
   }
 

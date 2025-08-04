@@ -44,7 +44,7 @@ export const appConfig = {
     USERNAME: /[a-zA-Z0-9_]{3,15}$/gi,
     NAME: /^[a-zA-Z]+([ '-][a-zA-Z]+)*$/,
     CITY: /^[a-zA-Z]+([ '-][a-zA-Z]+)*$/,
-    EMAIL: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+    EMAIL:/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
     POSTAL_CODE:
       /(^\d{5}(-\d{4})?$)|(^[ABCEGHJKLMNPRSTVXY]{1}\d{1}[A-Z]{1} *\d{1}[A-Z]{1}\d{1}$)/, // /(^\d{5}$)|(^\d{5}-\d{4}$)/,
     SUB_DOMAIN: /^[/a-z/A-Z][a-zA-Z0-9-]*[^/-/./0-9]$/,
@@ -150,4 +150,9 @@ export const appConfig = {
     INACTIVE: 0,
   },
   loadTimer: 7000,
+  INACTIVITY_TIMEOUT: {
+    TEN_MINS: 10 * 60,
+    TWENTY_MINS: 20 * 60,
+    TEN_SECS: 10
+  } 
 };

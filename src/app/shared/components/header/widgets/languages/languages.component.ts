@@ -13,7 +13,8 @@ export interface Language {
     selector: 'app-languages',
     imports: [ButtonComponent],
     templateUrl: './languages.component.html',
-    styleUrl: './languages.component.scss'
+  styleUrl: './languages.component.scss',
+  standalone:true
 })
 export class LanguagesComponent {
 

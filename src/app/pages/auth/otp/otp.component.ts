@@ -1,12 +1,12 @@
 import { Component, inject } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngxs/store';
 import { VerifyEmailOtp } from '../../../shared/store/action/auth.action';
 import { TranslateModule } from '@ngx-translate/core';
 import { AlertComponent } from '../../../shared/components/ui/alert/alert.component';
 import { ButtonComponent } from '../../../shared/components/ui/button/button.component';
-import { Observable } from 'rxjs';
+import { Observable, switchMap } from 'rxjs';
 import { Values } from 'src/app/shared/interface/setting.interface';
 import { SettingState } from 'src/app/shared/store/state/setting.state';
 import { AsyncPipe } from '@angular/common';
@@ -17,7 +17,8 @@ import { AsyncPipe } from '@angular/common';
         AlertComponent, ButtonComponent, AsyncPipe
     ],
     templateUrl: './otp.component.html',
-    styleUrl: './otp.component.scss'
+  styleUrl: './otp.component.scss',
+    standalone: true
 })
 export class OtpComponent {
 
@@ -26,17 +27,24 @@ export class OtpComponent {
   public form: FormGroup;
   public email: string;
   public loading: boolean;
-
+  public token: string;
   constructor(
     public router: Router,
+    public route: ActivatedRoute,
     public store: Store,
     public formBuilder: FormBuilder
   ) {
+    this.token = this.route.snapshot.paramMap.get('t')!;
+
     this.email = this.store.selectSnapshot(state => state.auth.email);
-    if(!this.email) this.router.navigateByUrl('/auth/login');
+    if(!this.email) this.router.navigateByUrl('/auth/login'); 
     this.form = this.formBuilder.group({
       otp: new FormControl('', [Validators.required, Validators.minLength(5)])
     });
+  }
+
+  login() { 
+      this.router.navigateByUrl('/auth/login');    
   }
 
   submit() {
@@ -44,14 +52,9 @@ export class OtpComponent {
     if(this.form.valid) {
       this.store.dispatch( new VerifyEmailOtp({
         email: this.email,
-        token: this.form.value.otp
-      })).subscribe(
-        {
-          complete: () => {
-            this.router.navigateByUrl('/auth/update-password');
-          }
-        }
-      );
+        otp: this.form.value.otp,
+        token:this.token
+      }))
     }
   }
 

@@ -14,3 +14,7 @@ export class DeleteNotification {
   static readonly type = "[Notification] Delete";
   constructor(public id: string) {}
 }
+export class NotificationClear {
+  static readonly type = "[Notification] Clear";
+  constructor() {}
+}

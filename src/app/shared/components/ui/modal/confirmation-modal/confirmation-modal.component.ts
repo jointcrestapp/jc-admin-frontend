@@ -8,7 +8,8 @@ import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
     selector: 'app-confirmation-modal',
     imports: [TranslateModule, ButtonComponent],
     templateUrl: './confirmation-modal.component.html',
-    styleUrl: './confirmation-modal.component.scss'
+  styleUrl: './confirmation-modal.component.scss',
+  standalone:true
 })
 export class ConfirmationModalComponent {
 

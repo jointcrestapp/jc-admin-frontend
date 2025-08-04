@@ -8,7 +8,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     selector: 'app-quick-view',
     imports: [TranslateModule, RouterModule, HasPermissionDirective, NgbModule],
     templateUrl: './quick-view.component.html',
-    styleUrl: './quick-view.component.scss'
+  styleUrl: './quick-view.component.scss',
+  standalone:true
 })
 export class QuickViewComponent {
 

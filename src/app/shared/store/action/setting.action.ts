@@ -22,3 +22,9 @@ export class UpdateAppSettingOption {
    static readonly type = "[App Setting] Update";
    constructor(public payload: AppSetting){}
 }
+
+
+export class SettingClear {
+   static readonly type = "[Setting] Clear";
+   constructor() { }
+}

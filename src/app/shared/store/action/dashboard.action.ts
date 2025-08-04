@@ -18,3 +18,9 @@ export class GetNotifications {
 export class GetRevenueChart {
   static readonly type = "[Dashboard] Revenue Get";
 }
+
+
+export class DashboardClear {
+  static readonly type = "[Dashboard] Clear";
+  constructor() {}
+}

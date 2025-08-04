@@ -18,12 +18,13 @@ export interface AuthUserForgotModel {
 
 export interface VerifyEmailOtpModel {
   email: string;
-  token: number;
+  otp: number;
+  token: string;
 }
 
 export interface UpdatePasswordModel {
   password: string;
   password_confirmation: string;
   email: string;
-  token: number;
+  token: string;
 }

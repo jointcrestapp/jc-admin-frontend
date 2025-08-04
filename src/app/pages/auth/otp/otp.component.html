@@ -22,6 +22,10 @@
                   <app-button [class]="'btn btn-theme w-100 justify-content-center'" [id]="'otp_btn'">
                      {{ 'validate' | translate }}
                   </app-button>
+                  <br><br>
+                  <app-button (click)="login()"  [class]="'btn btn-theme  w-100 justify-content-center'">
+                     Login
+                  </app-button>
                </div>
             </form>
          </div>

@@ -33,7 +33,7 @@ export function apiOperators<T>({
         count: retryCount,
         delay: (error, retryAttempt) => {
           if (logRetries) {
-            console.warn(`Retry attempt [${retryAttempt}] after failure:`, error?.message || error);
+            console.warn(`🔁 Retry attempt [${retryAttempt}] after failure:`, error?.message || error);
           }
           return timer(retryDelayMs);
         }
@@ -41,14 +41,14 @@ export function apiOperators<T>({
       catchError((error) => {
         if (logErrors) {
           if (error?.name === 'TimeoutError') {
-            console.error('Request timed out');
+            console.error('⏱️ Request timed out');
           } else {
-            console.error('API call failed:', error);
+            console.error('❌ API call failed:', error);
           }
         }
         return throwError(() => error);
       }),
-      finalize(() => console.log('Request complete'))
+      finalize(() => console.log('✅ Request complete'))
     );
 
     if (enableReplay) {

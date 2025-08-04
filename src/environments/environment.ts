@@ -1,11 +1,9 @@
 let baseApiUrl = 'https://jointcrest.org/api/v1';
 let SERVER_URL = 'https://jointcrest.org';
-let devUrl = 'https://jointcrest.org';
-
 
 export const environment = {
   production: true,
-  SITE_URL: devUrl,
+  SITE_URL: SERVER_URL,
   apiURL : baseApiUrl,
   USER_PROFILE_PIC: `${SERVER_URL}/ProfileImages/`,
   //PHOTOS: `${SERVER_URL}/app-backend/public/dist/images/`,
@@ -13,6 +11,6 @@ export const environment = {
   IV: '1234567890123456', // 16 bytes
   skipEncryption: true, // Flag to skip encryption in development mode
   PHOTOS: `${SERVER_URL}/images/`,
-  URL: 'https://jointcrest.org/assets/data', // Change only the domain part, keeping "/api/admin" intact
-  storageURL: 'https://jointcrest.org/assets', // Change only the laravel primary domain
+  URL: SERVER_URL+'/assets/data', 
+  storageURL: SERVER_URL+'/assets', 
 };

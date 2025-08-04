@@ -1,6 +1,16 @@
 import { Stores } from "../../interface/store.interface";
 import { AccountUser, AccountUserUpdatePassword } from "./../../interface/account.interface";
 
+
+export class SetUserInfo {
+  static readonly type = '[Account] Set User Info';
+  constructor(public payload: any) {}
+}
+
+export class GetPermissionsOnly {
+  static readonly type = "[Account] Permission Get";
+}
+
 export class GetUserDetails {
   static readonly type = "[Account] User Get";
 }
