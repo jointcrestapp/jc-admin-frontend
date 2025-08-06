@@ -52,7 +52,7 @@ export interface WithdrawalStateModel {
 @Injectable()
 export class WithdrawalState {
   constructor(
-    private store: Store,
+    
     private notificationService: NotificationService,
     private withdrawalService: WithdrawalService
   ) {}

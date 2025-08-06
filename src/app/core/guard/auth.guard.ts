@@ -58,8 +58,8 @@ export class AuthGuard implements CanActivate, CanActivateChild {
   }
 
   private checkAuthStatus(): Observable<boolean> {
-    return this.store.select(state => !!state.auth?.access_token).pipe(
-      map(access_token => !!access_token), // Convert to boolean
+    return this.store.select(state => !!state.auth?.token).pipe(
+      map(token => !!token), // Convert to boolean
       catchError(() => of(false)) // Handle errors, e.g., when access_token is not available
     );
   }

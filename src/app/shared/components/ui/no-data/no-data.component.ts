@@ -5,7 +5,8 @@ import { TranslateModule } from '@ngx-translate/core';
     selector: 'app-no-data',
     imports: [TranslateModule],
     templateUrl: './no-data.component.html',
-    styleUrl: './no-data.component.scss'
+  styleUrl: './no-data.component.scss',
+  standalone:true
 })
 export class NoDataComponent {
 

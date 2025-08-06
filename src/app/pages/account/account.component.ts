@@ -30,7 +30,8 @@ import { CustomValidators } from '../../shared/validator/password-match';
         ButtonComponent
     ],
     templateUrl: './account.component.html',
-    styleUrl: './account.component.scss'
+  styleUrl: './account.component.scss',
+    standalone:true
 })
 export class AccountComponent {
 
@@ -52,7 +53,7 @@ export class AccountComponent {
   constructor(private store: Store, private formBuilder: FormBuilder, @Inject(PLATFORM_ID) private platformId: Object) {
     this.isBrowser = isPlatformBrowser(platformId);
     this.user$.subscribe(user => {
-
+      //console.log('user::',user);
       this.profileForm = this.formBuilder.group({
         name: new FormControl(user?.name, [Validators.required]),
         email: new FormControl(user?.email, [Validators.required, Validators.email]),

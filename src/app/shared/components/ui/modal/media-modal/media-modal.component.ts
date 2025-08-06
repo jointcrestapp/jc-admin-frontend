@@ -17,7 +17,8 @@ import { HasPermissionDirective } from '../../../../directive/has-permission.dir
         NgxDropzoneModule, MediaBoxComponent, HasPermissionDirective
     ],
     templateUrl: './media-modal.component.html',
-    styleUrl: './media-modal.component.scss'
+  styleUrl: './media-modal.component.scss',
+    standalone:true
 })
 export class MediaModalComponent {
 

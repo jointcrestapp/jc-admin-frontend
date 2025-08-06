@@ -13,13 +13,12 @@ import { GetCountries } from './shared/store/action/country.action';
 import { GetSettingOption } from './shared/store/action/setting.action';
 import { GetStates } from './shared/store/action/state.action';
 import { SettingState } from './shared/store/state/setting.state';
-import { InactivityService } from '../../../jointcrest-app/src/app/core/services/inactivity.service';
-import { ConsoleToggleService } from '../../../jointcrest-app/src/app/core/services/console-toggle.service';
 import { AuthService } from './core/services/auth.service';
 import { NetworkService } from './core/services/network.service';
 import { AccountState } from './shared/store/state/account.state';
 import { NotificationService } from './shared/services/notification.service';
-
+import { InactivityService } from './core/services/inactivity.service';
+import { ConsoleToggleService } from './core/services/console-toggle.service';
 @Component({
     selector: 'app-root',
     imports: [CommonModule, RouterOutlet, LoadingBarRouterModule],

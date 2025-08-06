@@ -16,7 +16,7 @@ export class AuthService {
 
   email = computed(() => this.initialState().email);
   token =  computed(() => this.initialState().token);
-  access_token = computed(() => this.initialState().access_token);
+  /* access_token = computed(() => this.initialState().access_token); */
   permissions = computed(() => this.initialState().permissions);
 
   constructor(private http: HttpClient) {}

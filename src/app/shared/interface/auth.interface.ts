@@ -7,7 +7,7 @@ export interface AuthUserStateModel {
 
 export interface AuthModel {
   email: string;
-  token: string | number;
+  token: string | string;
   access_token: string | null;
   permissions: Permission[];
 }

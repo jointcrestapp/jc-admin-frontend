@@ -7,11 +7,7 @@
     "start:network": "ng serve --host 0.0.0.0 --port 4200 --disable-host-check",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test",
-    "dev:ssr": "ng build --watch & ng run jointcrest-admin:server --watch & nodemon dist/jointcrest-admin/server/server.mjs",
-    "serve:ssr": "node dist/jointcrest-admin/server/server.mjs",
-    "build:ssr": "ng build && ng run jointcrest-admin:server",
-    "prerender": "ng run jointcrest-admin:prerender"
+    "test": "ng test"
   },
   "private": true,
   "dependencies": {
@@ -33,8 +29,8 @@
     "@ngx-loading-bar/router": "^6.0.2",
     "@ngx-translate/core": "^15.0.0",
     "@ngx-translate/http-loader": "^8.0.0",
-    "@ngxs/store": "~3.8.1",
-    "@ngxs/storage-plugin": "~3.8.1",
+    "@ngxs/storage-plugin": "^19.0.0",
+    "@ngxs/store": "^19.0.0",
     "@popperjs/core": "^2.11.8",
     "apexcharts": "^3.50.0",
     "bootstrap": "^5.3.3",

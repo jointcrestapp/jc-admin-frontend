@@ -85,8 +85,9 @@ login(ctx: StateContext<AuthStateModel>, { payload }: Login) {
       
       if (response.status == appConfig.statusCode.found) {
         const { token, expiry, data: user } = response;
-        user.role_name = user.role === 1 ? 'Super Admin' : user.role === 2 ? 'Admin' : '';
+        user.role_name = user.role.id === 1 ? 'Super Admin' : user.role.id === 2 ? 'Admin' : '';
         user.name = user.fname + ' ' + user.lname;
+        console.log('Data::',user);
           // Patch state with login details
         ctx.patchState({
             id:user.id,
@@ -99,7 +100,8 @@ login(ctx: StateContext<AuthStateModel>, { payload }: Login) {
           this.store.dispatch(new SetToken({ token, expiry }));
 
           // Dispatch other required actions post-login
-          this.store.dispatch([
+        this.store.dispatch([
+
             new SetUserInfo(user), // Set real user data from login
             new GetPermissionsOnly(), // Only permissions from self.json
             new GetBadges(),

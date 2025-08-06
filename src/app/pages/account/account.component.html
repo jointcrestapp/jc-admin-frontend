@@ -8,11 +8,11 @@
           <form class="theme-form theme-form-2 mega-form" [formGroup]="profileForm" (ngSubmit)="profileFormSubmit();">
             <div class="row">
 
-              <app-form-fields [label]="'avatar'" [for]="'image'" [required]="false">
+<!--               <app-form-fields [label]="'avatar'" [for]="'image'" [required]="false">
                 <app-image-upload [multipleImage]="false" [accept]="[mediaConfig.image]" [image]="(user$ | async)?.profile_image" (selectedFiles)="selectedFiles($event)" [helpText]="'*Upload image size 100x100px recommended'">
                 </app-image-upload>
               </app-form-fields>
-
+ -->
               <app-form-fields [label]="'name' | translate" [for]="'name'" [required]="true">
                 <input class="form-control" type="text" placeholder="{{ 'enter_full_name' | translate }}" name="name" formControlName="name">
 

@@ -8,7 +8,8 @@ import { environment } from "../../../../../environments/environment.development
     selector: 'app-image-upload',
     imports: [MediaModalComponent, CommonModule],
     templateUrl: './image-upload.component.html',
-    styleUrl: './image-upload.component.scss'
+  styleUrl: './image-upload.component.scss',
+    standalone:true
 })
 export class ImageUploadComponent {
 

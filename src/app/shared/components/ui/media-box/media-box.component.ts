@@ -19,7 +19,8 @@ import { NoDataComponent } from '../no-data/no-data.component';
         LoaderComponent, DeleteModalComponent, PaginationComponent, NoDataComponent
     ],
     templateUrl: './media-box.component.html',
-    styleUrl: './media-box.component.scss'
+  styleUrl: './media-box.component.scss',
+    standalone:true
 })
 export class MediaBoxComponent {
 

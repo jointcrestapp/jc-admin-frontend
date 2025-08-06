@@ -78,7 +78,7 @@ export class DashboardState {
 
   @Selector()
   static notification(state: DashboardStateModel) {
-    return state.notification.data;
+    return state?.notification?.data;
   }
 
   @Action(SetLoadingState)

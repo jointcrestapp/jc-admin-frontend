@@ -150,9 +150,10 @@ export const appConfig = {
     INACTIVE: 0,
   },
   loadTimer: 7000,
-  INACTIVITY_TIMEOUT: {
-    TEN_MINS: 10 * 60,
-    TWENTY_MINS: 20 * 60,
-    TEN_SECS: 10
-  } 
+  INACTIVITY_TIMER: {
+    "10MINS": 10 * 60 * 1000,
+    "1MIN": 1 * 60 * 1000,
+    "5MINS": 5 * 60 * 1000,
+    "30SECS": 30 * 1000,
+  }
 };
