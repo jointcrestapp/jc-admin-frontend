@@ -53,6 +53,7 @@ import { PaginationComponent } from "../pagination/pagination.component";
   ],
   templateUrl: "./table.component.html",
   styleUrl: "./table.component.scss",
+  standalone:true
 })
 export class TableComponent {
   loadingStatus$: Observable<boolean> = inject(Store).select(

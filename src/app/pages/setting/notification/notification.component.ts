@@ -7,5 +7,6 @@ import { FormNotificationComponent } from "../form-notification/form-notificatio
   imports: [PageWrapperComponent, FormNotificationComponent],
   templateUrl: "./notification.component.html",
   styleUrl: "./notification.component.scss",
+  standalone:true
 })
 export class NotificationComponent {}

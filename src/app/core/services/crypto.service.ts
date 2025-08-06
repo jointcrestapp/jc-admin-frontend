@@ -1,14 +1,15 @@
 import { Injectable } from '@angular/core';
 import * as CryptoJS from 'crypto-js';
-import { environment } from 'src/environments/environment.development';
+
 import { jwtDecode } from 'jwt-decode';
+import { environment } from 'src/environments/environment.development';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CryptoService {
-  private SECRET_KEY = environment.KEY;
-  private IV = environment.IV
+  private SECRET_KEY = environment.API_CRYPTO_KEY;
+  private IV = environment.API_CRYPTO_IV
 
   constructor() {}
 

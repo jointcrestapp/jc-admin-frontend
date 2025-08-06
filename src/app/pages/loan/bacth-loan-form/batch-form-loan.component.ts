@@ -94,6 +94,7 @@ function convertToNgbDate(date: NgbDateStruct): NgbDate {
   ],
   templateUrl: "./batch-form-loan.component.html",
   styleUrl: "./batch-form-loan.component.scss",
+  standalone:true
 })
 export class BatchFormLoanComponent {
   public searchResult: boolean = false;

@@ -7,7 +7,8 @@ import { ModalDismissReasons, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-boo
     selector: 'app-delete-modal',
     imports: [TranslateModule, ButtonComponent],
     templateUrl: './delete-modal.component.html',
-    styleUrl: './delete-modal.component.scss'
+  styleUrl: './delete-modal.component.scss',
+    standalone:true
 })
 export class DeleteModalComponent {
 

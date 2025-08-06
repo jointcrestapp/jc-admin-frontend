@@ -7,8 +7,9 @@ export const environment = {
   apiURL : baseApiUrl,
   USER_PROFILE_PIC: `${SERVER_URL}/ProfileImages/`,
   //PHOTOS: `${SERVER_URL}/app-backend/public/dist/images/`,
-  KEY : '12345678901234567890123456789012', // 32 bytes
-  IV: '1234567890123456', // 16 bytes
+  API_CRYPTO_KEY : '12345678901234567890123456789012', // 32 bytes
+  API_CRYPTO_IV: '1234567890123456', // 16 bytes
+  disableConsole:false,
   skipEncryption: true, // Flag to skip encryption in development mode
   PHOTOS: `${SERVER_URL}/images/`,
   URL: SERVER_URL+'/assets/data', 

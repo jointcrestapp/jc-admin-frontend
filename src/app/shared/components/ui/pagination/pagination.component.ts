@@ -6,7 +6,8 @@ import { Paginate } from '../../../interface/paginate.interface';
     selector: 'app-pagination',
     imports: [CommonModule],
     templateUrl: './pagination.component.html',
-    styleUrl: './pagination.component.scss'
+  styleUrl: './pagination.component.scss',
+    standalone:true
 })
 export class PaginationComponent {
 

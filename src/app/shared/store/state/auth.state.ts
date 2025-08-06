@@ -44,24 +44,6 @@ export class AuthState {
     private notify: NotificationService,
     private notificationService: NotificationService,
     private authService: AuthService) { }
-  
-  setAutoLogout(seconds: number) {
-    clearTimeout(this.inactivityTimer);
-    
-    this.inactivityTimer = setTimeout(() => {
-      this.store.dispatch(new Logout());
-      }, seconds * 1000);
-  }
-
-  monitorUserActivity() {
-    const resetTimer = () => {
-      this.setAutoLogout(appConfig.INACTIVITY_TIMEOUT.TEN_MINS); // reset 20 min timer
-    };
-
-    ['click', 'mousemove', 'keydown', 'scroll'].forEach((event) => {
-      window.addEventListener(event, resetTimer);
-    });
-  }
 
   @Selector()
   static accessToken(state: AuthStateModel) {
@@ -126,8 +108,6 @@ login(ctx: StateContext<AuthStateModel>, { payload }: Login) {
             new LoginSuccess({ token, expiry, user })
           ]);
 
-          this.setAutoLogout(appConfig.INACTIVITY_TIMEOUT.TEN_MINS); 
-          this.monitorUserActivity();
           this.router.navigate(['/dashboard']); 
       } else { 
           this.notificationService.showError(response?.message);    

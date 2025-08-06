@@ -13,12 +13,19 @@ import { GetCountries } from './shared/store/action/country.action';
 import { GetSettingOption } from './shared/store/action/setting.action';
 import { GetStates } from './shared/store/action/state.action';
 import { SettingState } from './shared/store/state/setting.state';
+import { InactivityService } from '../../../jointcrest-app/src/app/core/services/inactivity.service';
+import { ConsoleToggleService } from '../../../jointcrest-app/src/app/core/services/console-toggle.service';
+import { AuthService } from './core/services/auth.service';
+import { NetworkService } from './core/services/network.service';
+import { AccountState } from './shared/store/state/account.state';
+import { NotificationService } from './shared/services/notification.service';
 
 @Component({
     selector: 'app-root',
     imports: [CommonModule, RouterOutlet, LoadingBarRouterModule],
     templateUrl: './app.component.html',
-    styleUrl: './app.component.scss'
+  styleUrl: './app.component.scss',
+    standalone: true
 })
 export class AppComponent {
 
@@ -26,11 +33,33 @@ export class AppComponent {
 
   public favIcon: HTMLLinkElement | null;
 
+  private lastStatus: boolean | null = null;
+
+  user$: Observable<any> = inject(Store).select(AccountState.user);
+
   constructor(config: NgbNavConfig,
     @Inject(DOCUMENT) document: Document,
     private actions: Actions, private router: Router,
     private titleService: Title, private store: Store,
+    private network: NetworkService,
+    private authService: AuthService,
+    private inactivityService: InactivityService,
+    private consoleToggleService: ConsoleToggleService,
+    private notify: NotificationService,
     private translate: TranslateService) {
+    
+     // Initialize network detection
+     this.networkDetector();
+     //check if token is expired
+     this.authService.isTokenExpired();
+     // disable console in prod
+     this.consoleToggleService.disableConsole();
+     //check inactivity session timeout
+     if (this.user$) {
+       this.inactivityService.initListener();
+     }
+    
+    
     this.translate.use('en');
     this.store.dispatch(new GetCountries());
     this.store.dispatch(new GetStates());
@@ -63,4 +92,18 @@ export class AppComponent {
       this.router.navigate(['/auth/login']);
     });
   }
+
+
+  networkDetector() { 
+    this.network.connectionChanges.subscribe(isOnline => {
+      if (this.lastStatus !== null && this.lastStatus !== isOnline) {
+        if (isOnline) {
+          this.notify.showSuccess('Back online');
+        } else {
+          this.notify.showError('⚠️ You’re offline');
+        }
+      }
+      this.lastStatus = isOnline;
+    });
+} 
 }

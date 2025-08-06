@@ -7,5 +7,6 @@ import { BatchFormLoanComponent } from "../bacth-loan-form/batch-form-loan.compo
   imports: [PageWrapperComponent, BatchFormLoanComponent],
   templateUrl: "./add-batch-loan.component.html",
   styleUrl: "./add-batch-loan.component.scss",
+  standalone:true
 })
 export class AddBatchLoanComponent {}

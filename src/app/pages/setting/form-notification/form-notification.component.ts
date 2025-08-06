@@ -65,6 +65,7 @@ import { NotificationService } from "src/app/shared/services/notification.servic
   ],
   templateUrl: "./form-notification.component.html",
   styleUrl: "./form-notification.component.scss",
+  standalone:true
 })
 export class FormNotificationComponent {
   public store = inject(Store);

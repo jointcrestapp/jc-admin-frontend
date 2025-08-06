@@ -5,7 +5,9 @@ import { TranslateModule } from '@ngx-translate/core';
     selector: 'app-loader',
     imports: [TranslateModule],
     templateUrl: './loader.component.html',
-    styleUrl: './loader.component.scss'
+  styleUrl: './loader.component.scss',
+    standalone:true
+    
 })
 export class LoaderComponent {
 

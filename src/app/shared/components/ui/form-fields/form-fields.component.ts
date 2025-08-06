@@ -5,7 +5,8 @@ import { TranslateModule } from '@ngx-translate/core';
     selector: 'app-form-fields',
     imports: [TranslateModule],
     templateUrl: './form-fields.component.html',
-    styleUrl: './form-fields.component.scss'
+  styleUrl: './form-fields.component.scss',
+    standalone:true
 })
 export class FormFieldsComponent {
 

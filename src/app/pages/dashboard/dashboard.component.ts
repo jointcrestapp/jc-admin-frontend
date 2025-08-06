@@ -113,6 +113,7 @@ export type ChartOptions = {
   providers: [CurrencySymbolPipe],
   templateUrl: "./dashboard.component.html",
   styleUrl: "./dashboard.component.scss",
+  standalone:true
 })
 export class DashboardComponent {
   statistics$: Observable<any | null> = inject(Store).select(

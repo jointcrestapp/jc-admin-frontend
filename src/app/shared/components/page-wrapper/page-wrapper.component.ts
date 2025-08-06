@@ -10,7 +10,8 @@ import { LoaderComponent } from '../loader/loader.component';
     selector: 'app-page-wrapper',
     imports: [CommonModule, TranslateModule, LoaderComponent],
     templateUrl: './page-wrapper.component.html',
-    styleUrl: './page-wrapper.component.scss'
+  styleUrl: './page-wrapper.component.scss',
+    standalone:true
 })
 export class PageWrapperComponent {
 
