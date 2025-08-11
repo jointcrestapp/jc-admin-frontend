@@ -1443,5 +1443,8 @@
   "total_savings_amount": "Total Savings Amount",
   "total_members": "Total Members",
   "add_savings": "Add Savings",
-  "update_savings": "Update Savings"
+  "update_savings": "Update Savings",
+  "total_repayment_count": "Total Repayments",
+  "total_repayment_amount": "Total Repayment Amount",
+  "total_due_amount": "Total Due Amount"
 }
