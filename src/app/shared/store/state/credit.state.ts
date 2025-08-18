@@ -20,6 +20,7 @@ import {
   OrderedProducts,
   RequestedCreditSales,
   SetLoadingState,
+  PaidCreditSalesHistory,
 } from "../action/credit.action";
 import { CreditService } from "../../../core/services/credit.service";
 import { NotificationService } from "../../services/notification.service";
@@ -27,6 +28,10 @@ import { CreditExcelService } from "src/app/core/services/credit-export.service"
 
 export interface CreditStateModel {
   request_credit_sales: {
+    data: any[];
+    total: any | null;
+  };
+  paid_credit_sales: {
     data: any[];
     total: any | null;
   };
@@ -67,6 +72,10 @@ export interface CreditStateModel {
       data: [],
       total: 0,
     },
+    paid_credit_sales: {
+      data: [],
+      total: 0,
+    },
     order_credit_sales: {
       data: [],
       total: null,
@@ -102,6 +111,11 @@ export class CreditState {
   @Selector()
   static request_credit_sales(state: CreditStateModel) {
     return state.request_credit_sales;
+  }
+
+  @Selector()
+  static paid_credit_sales(state: CreditStateModel) {
+    return state.paid_credit_sales;
   }
 
   @Selector()
@@ -209,6 +223,35 @@ export class CreditState {
       catchError((err) => {
         ctx.patchState({ loading: false });
         console.error("Error fetching requested credit sales:", err);
+        return throwError(() => err);
+      })
+    );
+  }
+
+  @Action(PaidCreditSalesHistory)
+  paidCreditSales(
+    ctx: StateContext<CreditStateModel>,
+    { payload }: PaidCreditSalesHistory
+  ) {
+    ctx.patchState({ loading: true });
+
+    return this.creditService.paidCreditSalesHistory(payload).pipe(
+      tap((result: any) => {
+        ctx.patchState({
+          paid_credit_sales: {
+            data: result?.data,
+            total:
+              result?.pagination?.total ||
+              result?.total ||
+              result?.data?.length,
+          },
+          statistics: result?.counts,
+          loading: false,
+        });
+      }),
+      catchError((err) => {
+        ctx.patchState({ loading: false });
+        console.error("Error fetching credit sales repayment:", err);
         return throwError(() => err);
       })
     );
@@ -433,6 +476,9 @@ export class CreditState {
       switch (creditType) {
         case "requested_credit_sales":
           creditsToExport = state.request_credit_sales.data || [];
+          break;
+        case "paid_credit_sales":
+          creditsToExport = state.paid_credit_sales.data || [];
           break;
         case "approved_credit_sales":
           creditsToExport = state.approved_credit_sales.data || [];

@@ -19,6 +19,11 @@ export class RequestedCreditSales {
   constructor(public payload?: Params) {}
 }
 
+export class PaidCreditSalesHistory {
+  static readonly type = "[Credit] Paid Credit Sales History";
+  constructor(public payload?: Params) {}
+}
+
 export class ApproveCreditSalesStatus {
   static readonly type = "[Credit] Approve Credit Sales Status";
   constructor(public payload: any, public id: number) {}
@@ -59,6 +64,7 @@ export class ExportCredits {
   constructor(
     public creditType:
       | "requested_credit_sales"
+      | "paid_credit_sales"
       | "approved_credit_sales"
       | "disbursed_credit_sales"
       | "ordered_products"

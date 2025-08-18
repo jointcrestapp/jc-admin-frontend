@@ -24,6 +24,13 @@ export class CreditService extends BaseApiService {
     return this.get(`${environment.apiURL}/requested_credit_sales`, filter);
   }
 
+  paidCreditSalesHistory(filter: any): Observable<any> {
+    return this.get(
+      `${environment.apiURL}/credit_sales_repayment_history`,
+      filter
+    );
+  }
+
   approveCreditSalesStatus(data: any, id: number): Observable<any> {
     return this.patch(
       `${environment.apiURL}/approve_credit_sales_status/${id}`,
