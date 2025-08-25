@@ -7,28 +7,24 @@ export class SetUserInfo {
   constructor(public payload: any) {}
 }
 
+
 export class GetPermissionsOnly {
   static readonly type = "[Account] Permission Get";
 }
-
 export class GetUserDetails {
   static readonly type = "[Account] User Get";
 }
 
 export class UpdateUserProfile {
   static readonly type = "[Account] User Update";
-  constructor(public payload: AccountUser) {}
+  constructor(public payload: AccountUser, public id:number) {}
 }
 
 export class UpdateUserPassword {
   static readonly type = "[Account] User Update Password";
-  constructor(public payload: AccountUserUpdatePassword) {}
+  constructor(public payload: AccountUserUpdatePassword, public id:number) {}
 }
 
-export class updateStoreDetails {
-  static readonly type = "[Account] Update Store Profile";
-  constructor(public payload: Stores) {}
-}
 
 export class AccountClear {
   static readonly type = "[Account] Clear";

@@ -73,6 +73,7 @@ import { NotificationService } from "src/app/shared/services/notification.servic
   ],
   templateUrl: "./all-savings.component.html",
   styleUrl: "./all-savings.component.scss",
+  standalone:true
 })
 export class AllSavingsComponent {
   private destroy$ = new Subject<void>();
@@ -124,7 +125,7 @@ export class AllSavingsComponent {
     },
     {
       value: 2,
-      label: "Feburary",
+      label: "February",
     },
     {
       value: 3,
@@ -252,7 +253,7 @@ export class AllSavingsComponent {
         permission: "savings.destroy",
       },
     ],
-    data: [] as Product[],
+    data: [] as any,
     total: 0,
   };
 
@@ -342,8 +343,8 @@ export class AllSavingsComponent {
   }
 
   onActionClicked(action: TableClickedAction) {
-    if (action.actionToPerform == "edit") this.edit(action.data);
-    else if (action.actionToPerform == "is_approved") this.approve(action.data);
+    //if (action.actionToPerform == "edit") this.edit(action.data);
+    if (action.actionToPerform == "is_approved") this.approve(action.data);
     else if (action.actionToPerform == "status") this.status(action.data);
     else if (action.actionToPerform == "delete") this.delete(action.data);
     else if (action.actionToPerform == "deleteAll") this.deleteAll(action.data);

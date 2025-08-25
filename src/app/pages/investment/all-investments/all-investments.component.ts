@@ -46,6 +46,7 @@ import { CountryState } from "src/app/shared/store/state/country.state";
   ],
   templateUrl: "./all-investments.component.html",
   styleUrl: "./all-investments.component.scss",
+  standalone: true
 })
 export class AllInvestmentsComponent {
   private destroy$ = new Subject<void>();
@@ -64,7 +65,7 @@ export class AllInvestmentsComponent {
     },
     {
       value: 2,
-      label: "Feburary",
+      label: "February",
     },
     {
       value: 3,

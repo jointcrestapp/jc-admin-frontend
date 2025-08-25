@@ -19,7 +19,8 @@ import { SidebarState } from '../../store/state/sidebar.state';
     selector: 'app-sidebar',
     imports: [CommonModule, RouterModule, TranslateModule, HasPermissionDirective],
     templateUrl: './sidebar.component.html',
-    styleUrl: './sidebar.component.scss'
+  styleUrl: './sidebar.component.scss',
+    standalone:true
 })
 export class SidebarComponent {
 

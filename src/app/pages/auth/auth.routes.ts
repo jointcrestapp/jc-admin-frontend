@@ -19,7 +19,7 @@ export const auth: Routes = [
     component: ForgotPasswordComponent,
   },
   {
-    path: "otp",
+    path: "otp/:t",
     component: OtpComponent,
   },
   {

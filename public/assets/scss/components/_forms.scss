@@ -629,11 +629,11 @@
 
         input {
             padding-left: 15px;
-            letter-spacing: 41px;
+            letter-spacing: 60px; /* adjust so digits sit inside each box */
             border: 0;
             background-image: linear-gradient(to left, rgb(189, 189, 189) 70%, rgba(255, 255, 255, 0) 0%);
             background-position: bottom;
-            background-size: 50px 1px;
+            background-size: 75px 1px; /* 300px total / 4 boxes = 75px */
             background-repeat: repeat-x;
             background-position-x: 35px;
             width: 300px;

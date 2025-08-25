@@ -66,7 +66,7 @@ export class DetailsComponent {
           this.txnDetails = txn;
           this.txnDetails.status =
             this.txnDetails.status === 0 ? "Requested" : "Completed";
-          this.txnDetails.transaction_id = `SAV-${new Date().getFullYear()}-${
+          this.txnDetails.transaction_id = `TX-${new Date().getFullYear()}-${
             txn.id
           }`;
         }
@@ -75,7 +75,7 @@ export class DetailsComponent {
 
   // Default dummy data
   @Input() savings: any = {
-    transaction_id: "SAV-2023-05678",
+    transaction_id: "TX-2023-05678",
     amount: 5000.0,
     interest_rate: 3.5,
     created_at: new Date(),

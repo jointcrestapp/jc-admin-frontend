@@ -61,6 +61,7 @@ import {
 import { appConfig } from "src/app/core/config/config";
 import { NotificationService } from "src/app/shared/services/notification.service";
 import { LoanState } from "src/app/shared/store/state/loan.state";
+import { GLOBALF } from "src/app/core/utils/my_library";
 
 function convertToNgbDate(date: NgbDateStruct): NgbDate {
   return new NgbDate(date.year, date.month, date.day);
@@ -82,6 +83,7 @@ function convertToNgbDate(date: NgbDateStruct): NgbDate {
   ],
   templateUrl: "./form-loan.component.html",
   styleUrl: "./form-loan.component.scss",
+  standalone:true
 })
 export class FormLoanComponent {
   public searchResult: boolean = false;
@@ -149,7 +151,7 @@ export class FormLoanComponent {
     },
     {
       value: 2,
-      label: "Feburary",
+      label: "February",
     },
     {
       value: 3,
@@ -465,6 +467,10 @@ export class FormLoanComponent {
           );
         },
       });
+  }
+
+  onAmountInput(event: Event, controlName: string) {
+    GLOBALF.handleAmountInput(event, this.form, controlName);
   }
 
   ngOnDestroy() {

@@ -11,7 +11,8 @@ import { ButtonComponent } from '../../button/button.component';
     selector: 'app-digital-download-modal',
     imports: [TranslateModule, Select2Module, ButtonComponent],
     templateUrl: './digital-download-modal.component.html',
-    styleUrl: './digital-download-modal.component.scss'
+  styleUrl: './digital-download-modal.component.scss',
+    standalone:true
 })
 export class DigitalDownloadModalComponent {
 

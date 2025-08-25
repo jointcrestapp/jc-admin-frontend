@@ -68,6 +68,7 @@ import {
 } from "src/app/shared/store/action/savings.action";
 import { appConfig } from "src/app/core/config/config";
 import { NotificationService } from "src/app/shared/services/notification.service";
+import { GLOBALF } from "src/app/core/utils/my_library";
 
 function convertToNgbDate(date: NgbDateStruct): NgbDate {
   return new NgbDate(date.year, date.month, date.day);
@@ -89,6 +90,7 @@ function convertToNgbDate(date: NgbDateStruct): NgbDate {
   ],
   templateUrl: "./form-savings.component.html",
   styleUrl: "./form-savings.component.scss",
+  standalone:true
 })
 export class FormSavingsComponent {
   public searchResult: boolean = false;
@@ -145,7 +147,7 @@ export class FormSavingsComponent {
     },
     {
       value: 2,
-      label: "Feburary",
+      label: "February",
     },
     {
       value: 3,
@@ -218,15 +220,22 @@ export class FormSavingsComponent {
     @Inject(DOCUMENT) private document: Document
   ) {
     this.isBrowser = isPlatformBrowser(platformId);
+    let currentMonth = GLOBALF.getCurrentMonth();
+    let currentYear = GLOBALF.getCurrentYear();
+    
+
     this.form = this.formBuilder.group({
       user_id: new FormControl("", [Validators.required]),
       savings_type: new FormControl("Savings", [Validators.required]),
       amount: new FormControl("", [Validators.required]),
-      month: new FormControl("", [Validators.required]),
-      year: new FormControl("", [Validators.required]),
+      month: new FormControl(currentMonth, [Validators.required]),
+      year: new FormControl(currentYear, [Validators.required]),
       transferred_from: new FormControl("", [Validators.required]),
       narration: new FormControl(""),
     });
+
+    this.form.get('month')?.disable();
+    this.form.get('year')?.disable();
   }
 
   generateYearOptions(
@@ -309,6 +318,7 @@ export class FormSavingsComponent {
   }
 
   ngOnInit() {
+
     this.years = this.generateYearOptions();
     if (this.isBrowser) {
       this.editor = new Editor();
@@ -410,6 +420,11 @@ export class FormSavingsComponent {
           );
         },
       });
+  }
+
+
+  onAmountInput(event: Event, controlName: string) {
+    GLOBALF.handleAmountInput(event, this.form, controlName);
   }
 
   ngOnDestroy() {

@@ -602,23 +602,17 @@
                     </div>
                   </div>
                 </app-form-fields>
-                <app-form-fields
-                  [label]="'Reg. Fee'"
-                  [for]="'registration_fee'"
-                  [required]="true"
-                >
-                  <input
-                    class="form-control"
-                    type="text"
-                    placeholder="{{ 'enter_registration_fee' | translate }}"
-                    name="registration_fee"
-                    formControlName="registration_fee"
-                  />
-                  <div
-                    *ngIf="
-                      form.get('cooperativeDetails.registration_fee')?.touched
-                    "
-                  >
+                <app-form-fields [label]="'Registration Fee'" [for]="'registration_fee'">
+                  <div class="input-group">
+                    <span class="input-group-text">₦</span>
+                    <input
+                      class="form-control"
+                      type="text"
+                      placeholder="{{ 'enter_registration_fee' | translate }}"
+                      (input)="onAmountInput($event,'registration_fee')"
+                    />
+                  </div>
+                  <div *ngIf="form.get('cooperativeDetails.registration_fee')?.touched">
                     <div
                       *ngIf="form.get('cooperativeDetails.registration_fee')?.errors?.['required']"
                       class="invalid-feedback"
@@ -627,22 +621,18 @@
                     </div>
                   </div>
                 </app-form-fields>
-                <app-form-fields
-                  [label]="'Savings Amount'"
-                  [for]="'savings_amount'"
-                >
-                  <input
-                    class="form-control"
-                    type="text"
-                    placeholder="{{ 'enter_savings_amount' | translate }}"
-                    name="savings_amount"
-                    formControlName="savings_amount"
-                  />
-                  <div
-                    *ngIf="
-                      form.get('cooperativeDetails.savings_amount')?.touched
-                    "
-                  >
+                
+                <app-form-fields [label]="'Savings Amount'" [for]="'savings_amount'">
+                  <div class="input-group">
+                    <span class="input-group-text">₦</span>
+                    <input
+                      class="form-control"
+                      type="text"
+                      placeholder="{{ 'enter_savings_amount' | translate }}"
+                      (input)="onAmountInput($event,'savings_amount')"
+                    />
+                  </div>
+                  <div *ngIf="form.get('cooperativeDetails.savings_amount')?.touched">
                     <div
                       *ngIf="form.get('cooperativeDetails.savings_amount')?.errors?.['required']"
                       class="invalid-feedback"
@@ -651,6 +641,8 @@
                     </div>
                   </div>
                 </app-form-fields>
+                
+                
               </div>
             </ng-template>
           </li>
@@ -701,6 +693,7 @@
                     placeholder="{{ 'enter_bank_code' | translate }}"
                     name="bankCode"
                     formControlName="bankCode"
+                    readonly
                   />
                 </app-form-fields>
                 <app-form-fields
@@ -713,6 +706,8 @@
                     type="text"
                     placeholder="{{ 'enter_account_number' | translate }}"
                     name="accountNumber"
+                    maxlength="10"
+                    (keypress)="numberOnly($event)"
                     formControlName="accountNumber"
                   />
                   <div *ngIf="form.get('bankDetails.accountNumber')?.touched">
@@ -735,6 +730,7 @@
                     placeholder="{{ 'enter_account_name' | translate }}"
                     name="accountName"
                     formControlName="accountName"
+                    readonly
                   />
                   <div *ngIf="form.get('bankDetails.accountName')?.touched">
                     <div

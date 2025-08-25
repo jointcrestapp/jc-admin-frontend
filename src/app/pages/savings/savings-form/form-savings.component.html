@@ -1,3 +1,8 @@
+<!-- Tip Card -->
+<div class="alert alert-warning mt-2" role="alert">
+  <strong>Note:</strong> Once a savings record is saved, it cannot be edited.
+  Please review the entered amount carefully before submission.
+</div>
 <form
   class="theme-form theme-form-2 mega-form"
   [formGroup]="form"
@@ -49,26 +54,30 @@
     </div>
   </app-form-fields>
   <app-form-fields
-    [labelClass]="'form-label-title col-sm-3 mb-0'"
-    [gridClass]="'col-sm-9'"
-    [label]="'Amount'"
-    [for]="'amount'"
-    [required]="true"
-  >
+  [labelClass]="'form-label-title col-sm-3 mb-0'"
+  [gridClass]="'col-sm-9'"
+  [label]="'Amount'"
+  [for]="'amount'"
+  [required]="true"
+>
+  <div class="input-group">
+    <span class="input-group-text">₦</span>
     <input
       class="form-control"
       id="amount"
       type="text"
       placeholder="{{ 'enter_amount' | translate }}"
-      formControlName="amount"
+      (input)="onAmountInput($event,'amount')"
     />
-    @if(form.controls['amount'].touched &&
+  </div>
+  @if(form.controls['amount'].touched &&
     form.controls['amount'].errors?.['required']){
     <div class="invalid-feedback">
       {{ "amount_is_required" | translate }}
     </div>
-    }
-  </app-form-fields>
+  }
+</app-form-fields>
+
   <app-form-fields
     [labelClass]="'form-label-title col-sm-3 mb-0'"
     [gridClass]="'col-sm-9'"
@@ -102,6 +111,7 @@
   >
     @if(isBrowser) {
     <select2
+      
       class="custom-select"
       [placeholder]="'month' | translate"
       [data]="months?.length ? months : []"

@@ -1,2 +1,38 @@
 /* You can add global styles to this file, and also import other style files */
 @import "../public/assets/scss/app.scss";
+
+
+@media print {
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
+  }
+  
+  .logo {
+    max-width: 120px; /* adjust to your preferred size */
+    height: auto;
+  }
+  
+  @media print {
+    .logo {
+      max-width: 80px;
+      height: auto;
+    }
+  }
+  
+  .logo {
+    width: 80px !important;    /* fixed width */
+    height: auto !important;   /* keep aspect ratio */
+    display: block;
+    margin: 0 auto;            /* center horizontally */
+  }
+  
+  @media print {
+    .logo {
+      width: 60px !important;  /* even smaller in print */
+      height: auto !important;
+    }
+  }
+  

@@ -19,12 +19,14 @@ import { Editor } from "ngx-editor";
 import { mergeMap, of, Subject, switchMap, takeUntil } from "rxjs";
 import { EditSavings } from "src/app/shared/store/action/savings.action";
 import { SavingsState } from "src/app/shared/store/state/savings.state";
+import { LOGO_BASE64 } from "public/assets/images/base64/logo.base64";
 
 @Component({
   selector: "app-details",
   imports: [CommonModule, TranslateModule, CurrencySymbolPipe, DatePipe],
   templateUrl: "./details.component.html",
   styleUrl: "./details.component.scss",
+  standalone:true
 })
 export class DetailsComponent {
   @ViewChild("slipContent", { static: false }) slipContent!: ElementRef;
@@ -32,6 +34,7 @@ export class DetailsComponent {
   public editor: Editor;
   private destroy$ = new Subject<void>();
   public savingDetails: any;
+  logoBase64 = LOGO_BASE64;
 
   constructor(
     private store: Store,
@@ -106,10 +109,12 @@ export class DetailsComponent {
       window.print();
       return;
     }
+
     const printContents = this.slipContent.nativeElement.innerHTML;
     const popupWin = window.open("", "_blank", "width=800,height=600");
     if (popupWin) {
       popupWin.document.open();
+      
       popupWin.document.write(`
         <html>
           <head>
@@ -128,6 +133,7 @@ export class DetailsComponent {
     }
   }
 
+  
   closeSlip(): void {
     // This would be handled by the parent component
     this.location.back();

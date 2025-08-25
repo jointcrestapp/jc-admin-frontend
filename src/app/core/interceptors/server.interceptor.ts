@@ -14,6 +14,7 @@ export class ServerInterceptor implements HttpInterceptor {
       const mockResponse = new HttpResponse({ body: {}, status: 200 });
       return of(mockResponse);
     } else {
+      console.log('Not on server',req);
       // Pass the request to the next handler if not on the server
       return next.handle(req);
     }

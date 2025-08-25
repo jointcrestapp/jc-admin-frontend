@@ -66,6 +66,7 @@ import {
 } from "src/app/shared/store/action/savings.action";
 import { appConfig } from "src/app/core/config/config";
 import { NotificationService } from "src/app/shared/services/notification.service";
+import { GLOBALF } from "src/app/core/utils/my_library";
 
 function convertToNgbDate(date: NgbDateStruct): NgbDate {
   return new NgbDate(date.year, date.month, date.day);
@@ -87,6 +88,7 @@ function convertToNgbDate(date: NgbDateStruct): NgbDate {
   ],
   templateUrl: "./batch-form-savings.component.html",
   styleUrl: "./batch-form-savings.component.scss",
+  standalone:true
 })
 export class BatchFormSavingsComponent {
   public searchResult: boolean = false;
@@ -147,7 +149,7 @@ export class BatchFormSavingsComponent {
     },
     {
       value: 2,
-      label: "Feburary",
+      label: "February",
     },
     {
       value: 3,
@@ -218,6 +220,9 @@ export class BatchFormSavingsComponent {
     @Inject(DOCUMENT) private document: Document
   ) {
     this.isBrowser = isPlatformBrowser(platformId);
+    let currentMonth = GLOBALF.getCurrentMonth();
+    let currentYear = GLOBALF.getCurrentYear();
+        
     this.form = this.formBuilder.group({
       savings_type: new FormControl("Savings", [Validators.required]),
       month: new FormControl("", [Validators.required]),
@@ -225,6 +230,9 @@ export class BatchFormSavingsComponent {
       transferred_from: new FormControl("", [Validators.required]),
       narration: new FormControl(""),
     });
+
+    this.form.get('month')?.disable();
+    this.form.get('year')?.disable();
   }
 
   generateYearOptions(

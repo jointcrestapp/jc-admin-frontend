@@ -100,7 +100,7 @@ export class DueLoanPaymentComponent {
     },
     {
       value: 2,
-      label: "Feburary",
+      label: "February",
     },
     {
       value: 3,

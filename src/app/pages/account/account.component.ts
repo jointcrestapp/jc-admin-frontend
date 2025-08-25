@@ -1,4 +1,4 @@
-import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { AsyncPipe, CommonModule, isPlatformBrowser } from '@angular/common';
 import { Component, Inject, inject, PLATFORM_ID } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -15,19 +15,21 @@ import * as media from '../../shared/data/media-config';
 import { AccountUser } from "../../shared/interface/account.interface";
 import { Attachment } from '../../shared/interface/attachment.interface';
 import { Stores } from '../../shared/interface/store.interface';
-import { UpdateUserPassword, UpdateUserProfile, updateStoreDetails } from '../../shared/store/action/account.action';
+import { UpdateUserPassword, UpdateUserProfile } from '../../shared/store/action/account.action';
 import { AccountState } from '../../shared/store/state/account.state';
 import { CountryState } from '../../shared/store/state/country.state';
 import { StateState } from '../../shared/store/state/state.state';
 import { StoreState } from '../../shared/store/state/store.state';
 import { CustomValidators } from '../../shared/validator/password-match';
+import { appConfig } from 'src/app/core/config/config';
 
 @Component({
     selector: 'app-account',
     imports: [TranslateModule, FormsModule, ReactiveFormsModule,
         NgbModule, CommonModule, Select2Module,
-        PageWrapperComponent, FormFieldsComponent, ImageUploadComponent,
-        ButtonComponent
+        PageWrapperComponent, FormFieldsComponent, 
+      ButtonComponent,
+      AsyncPipe
     ],
     templateUrl: './account.component.html',
   styleUrl: './account.component.scss',
@@ -35,7 +37,7 @@ import { CustomValidators } from '../../shared/validator/password-match';
 })
 export class AccountComponent {
 
-  user$: Observable<AccountUser> = inject(Store).select(AccountState.user);
+  user$: Observable<any> = inject(Store).select(AccountState.user);
   store$: Observable<Stores> = inject(Store).select(StoreState.selectedStore) as Observable<Stores>;
   countries$: Observable<Select2Data> = inject(Store).select(CountryState.countries) as Observable<Select2Data>;
   roleName$: Observable<string> = inject(Store).select(AccountState.getRoleName) as Observable<string>;
@@ -49,40 +51,30 @@ export class AccountComponent {
   public flicker: boolean = false;
   public mediaConfig = media.mediaConfig;
   public isBrowser: boolean;
-
+  userId: any;
   constructor(private store: Store, private formBuilder: FormBuilder, @Inject(PLATFORM_ID) private platformId: Object) {
     this.isBrowser = isPlatformBrowser(platformId);
     this.user$.subscribe(user => {
-      //console.log('user::',user);
+      this.userId = user.id;
       this.profileForm = this.formBuilder.group({
-        name: new FormControl(user?.name, [Validators.required]),
-        email: new FormControl(user?.email, [Validators.required, Validators.email]),
-        phone: new FormControl(user?.phone, [Validators.required, Validators.pattern(/^[0-9]*$/)]),
-        country_code: new FormControl(user?.country_code, [Validators.required]),
-        profile_image_id: new FormControl(user?.profile_image_id),
+        fname: new FormControl(user?.first_name, [
+            Validators.required,
+            Validators.minLength(2),
+            Validators.maxLength(50),
+            Validators.pattern(appConfig.pattern.NAME)
+          ]), 
+        lname: new FormControl(user?.last_name, [
+            Validators.required,
+            Validators.minLength(2),
+            Validators.maxLength(50),
+            Validators.pattern(appConfig.pattern.NAME)
+          ]),
+        email: new FormControl(user?.email, [Validators.required, Validators.pattern(appConfig.pattern.EMAIL)]),
+        phone: new FormControl(user?.phone, [Validators.required, Validators.pattern(appConfig.pattern.SIMPLE_PHONE_NO)]),
+        dial_code: new FormControl(user?.dial_code, [Validators.required])
       });
 
       this.flicker = true;
-
-      if(user?.store) {
-        this.form = this.formBuilder.group({
-          store_name: new FormControl(user.store.store_name, [Validators.required]),
-          description: new FormControl(user.store.description, [Validators.required]),
-          country_id: new FormControl(user.store?.country_id, [Validators.required]),
-          state_id: new FormControl(user?.store?.state_id, [Validators.required]),
-          city: new FormControl(user?.store?.city, [Validators.required]),
-          address: new FormControl(user?.store?.address, [Validators.required]),
-          pincode: new FormControl(user?.store?.pincode, [Validators.required]),
-          store_logo_id: new FormControl(user?.store?.store_logo_id),
-          hide_vendor_email: new FormControl(user?.store?.hide_vendor_email),
-          hide_vendor_phone: new FormControl(user?.store?.hide_vendor_phone),
-          facebook: new FormControl(user?.store?.facebook),
-          instagram: new FormControl(user?.store?.instagram),
-          pinterest: new FormControl(user?.store?.pinterest),
-          youtube: new FormControl(user?.store?.youtube),
-          twitter: new FormControl(user?.store?.twitter),
-        })
-      }
 
       setTimeout( () => this.flicker = false, 200);
     });
@@ -95,22 +87,7 @@ export class AccountComponent {
   }
 
   ngOnInit() {
-    this.states$ = this.store
-    .select(StateState.states)
-    .pipe(map(filterFn => filterFn(null)));
-  }
-
-  countryChange(data: Select2UpdateEvent) {
-    if(data && data?.value) {
-      this.states$ = this.store
-          .select(StateState.states)
-          .pipe(map(filterFn => filterFn(+data?.value)));
-
-      if(data.component.focused)
-        this.form.controls['state_id'].setValue('');
-    } else {
-      this.form.controls['state_id'].setValue('');
-    }
+   
   }
 
   get passwordMatchError() {
@@ -121,27 +98,22 @@ export class AccountComponent {
   }
 
   selectCode(data: Select2UpdateEvent) {
-    this.profileForm.controls['country_code'].setValue(data?.value);
+    this.profileForm.controls['dial_code'].setValue(data?.value);
   }
 
-  selectedFiles(data: Attachment) {
-    if(!Array.isArray(data)) {
-      this.profileForm.controls['profile_image_id'].setValue(data ? data.id : '');
-    }
-  }
 
   profileFormSubmit() {
     this.profileForm.markAllAsTouched();
-    if(this.profileForm.valid) {
-      this.store.dispatch(new UpdateUserProfile(this.profileForm.value));
+    if (this.profileForm.valid) {
+
+      this.store.dispatch(new UpdateUserProfile(this.profileForm.value,this.userId));
     }
   }
 
   passwordFormSubmit() {
     this.passwordForm.markAllAsTouched();
     if(this.passwordForm.valid) {
-      this.store.dispatch(new UpdateUserPassword(this.passwordForm.value));
-      this.passwordForm.reset();
+      this.store.dispatch(new UpdateUserPassword(this.passwordForm.value, this.userId)).subscribe(()=> this.passwordForm.reset())
     }
   }
 
@@ -149,10 +121,6 @@ export class AccountComponent {
     if(!Array.isArray(data)) {
       this.form.controls['store_logo_id'].setValue(data ? data.id : '');
     }
-  }
-
-  updateStore(){
-    this.store.dispatch(new updateStoreDetails(this.form.value))
   }
 
 }

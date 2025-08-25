@@ -6,12 +6,12 @@
       </div>
       }@else {
       <div class="user-round">
-         <h4>{{ (user$ | async)?.name?.charAt(0)?.toString()?.toUpperCase() }}</h4>
+         <h4>{{ (user$ | async)?.name?.charAt(0)?.toString()?.toUpperCase()}}</h4>
       </div>
       }
       <div class="user-name-hide media-body">
-         <span>{{ (user$ | async)?.name }}</span>
-         <p class="mb-0 font-roboto">{{ (user$ | async)?.role?.name }}
+         <span>{{ (user$ | async)?.fname }}</span>
+         <p class="mb-0 font-roboto">{{ (user$ | async)?.role_name }}
             <i class="middle ri-arrow-down-s-line"></i>
          </p>
       </div>

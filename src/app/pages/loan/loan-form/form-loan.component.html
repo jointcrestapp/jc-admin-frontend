@@ -63,13 +63,17 @@
     [for]="'amount'"
     [required]="true"
   >
+  <div class="input-group">
+    <span class="input-group-text">₦</span>
     <input
       class="form-control"
       id="amount"
+      (input)="onAmountInput($event,'amount')"
       type="text"
       placeholder="{{ 'enter_amount' | translate }}"
       formControlName="amount"
     />
+    </div>
     @if(form.controls['amount'].touched &&
     form.controls['amount'].errors?.['required']){
     <div class="invalid-feedback">

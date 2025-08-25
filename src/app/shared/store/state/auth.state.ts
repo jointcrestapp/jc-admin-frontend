@@ -205,7 +205,7 @@ logout(ctx: StateContext<AuthStateModel>) {
   const logData = {
     action: 'logout',
     user_id: user?.id,
-    user_role_id: user?.role,
+    user_role_id: user?.role?.id,
     email: state.email,
     access_token: state.token
   };

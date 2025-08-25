@@ -6,7 +6,8 @@ import { FormMemberComponent } from '../form-member/form-member.component';
   selector: 'app-add-member',
   imports: [PageWrapperComponent, FormMemberComponent],
   templateUrl: './add-member.component.html',
-  styleUrl: './add-member.component.scss'
+  styleUrl: './add-member.component.scss',
+  standalone:true,
 })
 export class AddMemberComponent {
 

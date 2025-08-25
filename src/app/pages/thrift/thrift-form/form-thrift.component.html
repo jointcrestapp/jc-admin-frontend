@@ -140,7 +140,11 @@
     }
   </app-form-fields>
   <app-form-fields [labelClass]="'form-label-title col-sm-3 mb-0'" [gridClass]="'col-sm-9'" [label]="'Amount'" [for]="'amount'" [required]="true">
-    <input class="form-control" id="amount" type="text" placeholder="{{ 'enter_amount' | translate }}" formControlName="amount">
+    <div class="input-group">
+      <span class="input-group-text">₦</span>
+    <input class="form-control" id="amount" 
+    (input)="onAmountInput($event,'amount')"type="text" placeholder="{{ 'enter_amount' | translate }}" formControlName="amount">
+  </div>
     @if(form.controls['amount'].touched && form.controls['amount'].errors?.['required']){
       <div class="invalid-feedback">
         {{ 'amount_is_required' | translate }}

@@ -2,23 +2,38 @@
    <div class="container w-100">
       <div class="row">
          <div class="col-xl-5 col-lg-6 m-auto">
-            <app-alert></app-alert>
+            <!-- <app-alert></app-alert> -->
             <form [formGroup]="form" (ngSubmit)="submit();">
                <div class="log-in-box">
+                  <div class="back-icon mb-3">
+                     <div class="back-icon mb-3" (click)="goBack()">
+                        ←
+                      </div>
+                   </div>
+                   
                   <div class="log-in-title">
-                    <img [src]="(setting$ | async)?.general?.dark_logo_image?.original_url" class="img-fluid logo-img" alt="">
-                     <h3 class="text-content">{{ 'please_enter_the_one_time_password_to_verify_your_account' | translate }}</h3>
+                     <img src="jc-logo-tp.png" class="img-fluid logo-img" alt="">
+                     <h3 class="text-content">{{   'please_enter_the_one_time_password_to_verify_your_account' | translate }}
+                     </h3>
                      <h5 class="text-content">
                         {{ 'a_code_has_been_sent_to' | translate }} <span>{{ email }}</span>
                      </h5>
                   </div>
-                  <div id="otp" class="row d-flex row-cols-6 g-2 mb-5 m-auto">
+                  <div id="otp" class="row-cols-4 g-2 mb-5 m-auto">
                      <div class="outer-otp">
-                        <div class="inner-otp">
-                           <input type="text" formControlName="otp" maxlength="5" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" onKeyPress="if(this.value.length==5) return false;" />
-                        </div>
+                       <div class="inner-otp">
+                         <input 
+                           type="text" 
+                           formControlName="otp" 
+                           maxlength="4"
+                           oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0,4);" 
+                           onkeypress="return this.value.length < 4 && /[0-9]/.test(event.key)"
+                         />
+                       </div>
                      </div>
-                  </div>
+                   </div>
+                   
+                   
                   <app-button [class]="'btn btn-theme w-100 justify-content-center'" [id]="'otp_btn'">
                      {{ 'validate' | translate }}
                   </app-button>

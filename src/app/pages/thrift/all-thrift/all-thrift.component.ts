@@ -78,6 +78,7 @@ import { NotificationService } from "src/app/shared/services/notification.servic
   ],
   templateUrl: "./all-thrift.component.html",
   styleUrl: "./all-thrift.component.scss",
+  standalone:true
 })
 export class AllThriftComponent {
   private destroy$ = new Subject<void>();
@@ -133,7 +134,7 @@ export class AllThriftComponent {
     },
     {
       value: 2,
-      label: "Feburary",
+      label: "February",
     },
     {
       value: 3,

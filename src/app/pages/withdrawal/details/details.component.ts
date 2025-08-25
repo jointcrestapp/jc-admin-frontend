@@ -19,12 +19,14 @@ import { Editor } from "ngx-editor";
 import { mergeMap, of, Subject, switchMap, takeUntil } from "rxjs";
 import { EditSavings } from "src/app/shared/store/action/savings.action";
 import { SavingsState } from "src/app/shared/store/state/savings.state";
+import { LOGO_BASE64 } from "public/assets/images/base64/logo.base64";
 
 @Component({
   selector: "app-details",
   imports: [CommonModule, TranslateModule, CurrencySymbolPipe, DatePipe],
   templateUrl: "./details.component.html",
   styleUrl: "./details.component.scss",
+  standalone: true
 })
 export class DetailsComponent {
   @ViewChild("slipContent", { static: false }) slipContent!: ElementRef;
@@ -32,7 +34,7 @@ export class DetailsComponent {
   public editor: Editor;
   private destroy$ = new Subject<void>();
   public savingDetails: any;
-
+logoBase64 = LOGO_BASE64;
   constructor(
     private store: Store,
     private route: ActivatedRoute,
@@ -69,7 +71,7 @@ export class DetailsComponent {
           this.savingDetails = saving;
           this.savingDetails.status =
             this.savingDetails.status === 0 ? "Pending" : "Completed";
-          this.savingDetails.transaction_id = `SAV-${new Date().getFullYear()}-${
+          this.savingDetails.transaction_id = `WD-${new Date().getFullYear()}-${
             saving.id
           }`;
         }
@@ -78,7 +80,7 @@ export class DetailsComponent {
 
   // Default dummy data
   @Input() savings: any = {
-    transaction_id: "SAV-2023-05678",
+    transaction_id: "WD-2023-05678",
     amount: 5000.0,
     interest_rate: 3.5,
     created_at: new Date(),

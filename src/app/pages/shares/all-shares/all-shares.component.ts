@@ -104,7 +104,7 @@ export class AllSharesComponent {
     },
     {
       value: 2,
-      label: "Feburary",
+      label: "February",
     },
     {
       value: 3,

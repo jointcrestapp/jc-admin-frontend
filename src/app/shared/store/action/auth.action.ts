@@ -5,6 +5,7 @@ import {
   VerifyEmailOtpModel 
 } from "../../interface/auth.interface";
 
+
 export class LoginSuccess {
   static readonly type = '[Auth] Login Success';
   constructor(public payload: {
@@ -13,6 +14,7 @@ export class LoginSuccess {
     user: any; // adjust type if you have a User interface
   }) {}
 }
+
 export class Login {
   static readonly type = "[Auth] Login";
   constructor(public payload: AuthUserStateModel) {}
@@ -20,7 +22,7 @@ export class Login {
 
 export class ForgotPassWord {
   static readonly type = '[Auth] Forgot Password';
-  constructor(public payload: { email: string }) { }
+  constructor(public payload: { email: string }) {}
 }
 
 export class ForgotPasswordSuccess {
@@ -48,6 +50,7 @@ export class VerifyEmailOtpFailed {
   constructor(public payload: any) {}
 }
 
+
 export class UpdatePassword {
   static readonly type = "[Auth] UpdatePassword";
   constructor(public payload: UpdatePasswordModel) {}
@@ -55,6 +58,7 @@ export class UpdatePassword {
 
 export class Logout {
   static readonly type = "[Auth] Logout";
+  
 }
 
 export class AuthClear {

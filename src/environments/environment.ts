@@ -1,5 +1,5 @@
-let baseApiUrl = 'https://jointcrest.org/api/v1';
-let SERVER_URL = 'https://jointcrest.org';
+let baseApiUrl = 'https://jointcrest.africa/api/v1';
+let SERVER_URL = 'https://jointcrest.africa';
 
 export const environment = {
   production: true,

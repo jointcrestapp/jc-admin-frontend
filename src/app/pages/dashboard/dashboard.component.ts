@@ -623,7 +623,7 @@ export class DashboardComponent {
   }
 
   recentSavingsView(data: any) {
-    this.router.navigateByUrl(`/savings/edit-savings/${data.id}`);
+    this.router.navigateByUrl(`/savings`);
   }
 
   // For Products
@@ -667,10 +667,10 @@ export class DashboardComponent {
   }
 
   recentThriftEdit(data: any) {
-    this.router.navigateByUrl(`/thrift/edit-thrift/${data.id}`);
+    this.router.navigateByUrl(`/thrift`);
   }
   recentTxnEdit(data: any) {
-    this.router.navigateByUrl(`/thrift/edit-thrift/${data.id}`);
+    this.router.navigateByUrl(`/thrift`);
   }
 
   // For Seller

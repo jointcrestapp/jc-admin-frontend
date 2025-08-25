@@ -21,6 +21,7 @@ import { LoanState } from 'src/app/shared/store/state/loan.state';
 import { ThriftsState } from 'src/app/shared/store/state/thrift.state';
 import { GetThriftsCategories, GetThriftsTiers, GetFilteredMembers, SetLoadingState, GetActiveThriftForUser, CreateThrifts, EditThrifts, UpdateThrifts } from 'src/app/shared/store/action/thrift.action';
 import { currency } from 'src/app/shared/data/currency';
+import { GLOBALF } from 'src/app/core/utils/my_library';
 
 function convertToNgbDate(date: NgbDateStruct): NgbDate {
   return new NgbDate(date.year, date.month, date.day);
@@ -99,7 +100,7 @@ export class FormThriftComponent {
     },
     {
       value: 2,
-      label: "Feburary"
+      label: "February"
     },
     {
       value: 3,
@@ -475,7 +476,9 @@ export class FormThriftComponent {
       }
     })
   }
-
+  onAmountInput(event: Event, controlName: string) {
+    GLOBALF.handleAmountInput(event, this.form, controlName);
+  }
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();

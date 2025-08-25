@@ -100,7 +100,7 @@ export class RequestedLoansComponent {
     },
     {
       value: 2,
-      label: "Feburary",
+      label: "February",
     },
     {
       value: 3,

@@ -43,7 +43,7 @@ export class UpdatePasswordComponent {
       confirmPassword: new FormControl('', [Validators.required])
     },
     {
-      validator : CustomValidators.MatchValidator('newPassword', 'confirmPassword')
+      validators : CustomValidators.MatchValidator('newPassword', 'confirmPassword')
     });
   }
 
@@ -71,5 +71,10 @@ export class UpdatePasswordComponent {
       );
     }
   }
+
+  goBack(){ 
+    this.router.navigateByUrl('/auth/forgot-password');
+  }
+
 
 }

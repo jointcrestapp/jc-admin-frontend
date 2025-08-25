@@ -24,12 +24,14 @@ import {
   EditLoan,
 } from "src/app/shared/store/action/loan.action";
 import { LoanState } from "src/app/shared/store/state/loan.state";
+import { LOGO_BASE64 } from "public/assets/images/base64/logo.base64";
 
 @Component({
   selector: "app-details",
   imports: [CommonModule, TranslateModule, CurrencySymbolPipe, DatePipe],
   templateUrl: "./details.component.html",
   styleUrl: "./details.component.scss",
+  standalone:true
 })
 export class DetailsComponent {
   @ViewChild("slipContent", { static: false }) slipContent!: ElementRef;
@@ -38,6 +40,7 @@ export class DetailsComponent {
   private destroy$ = new Subject<void>();
   public loanDetails: any;
   loan_type: any;
+  logoBase64 = LOGO_BASE64;
 
   constructor(
     private store: Store,
@@ -91,7 +94,7 @@ export class DetailsComponent {
           this.loanDetails = loan;
           this.loanDetails.status =
             this.loanDetails.status === 0 ? "Pending" : "Completed";
-          this.loanDetails.transaction_id = `SAV-${new Date().getFullYear()}-${
+          this.loanDetails.transaction_id = `LN-${new Date().getFullYear()}-${
             loan.id
           }`;
         }
@@ -100,7 +103,7 @@ export class DetailsComponent {
 
   // Default dummy data
   @Input() savings: any = {
-    transaction_id: "SAV-2023-05678",
+    transaction_id: "LN-2023-05678",
     amount: 5000.0,
     interest_rate: 3.5,
     created_at: new Date(),

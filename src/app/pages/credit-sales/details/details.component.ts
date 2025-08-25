@@ -25,6 +25,7 @@ import { CreditState } from "src/app/shared/store/state/credit.state";
   imports: [CommonModule, TranslateModule, CurrencySymbolPipe, DatePipe],
   templateUrl: "./details.component.html",
   styleUrl: "./details.component.scss",
+  standalone:true
 })
 export class DetailsComponent {
   @ViewChild("slipContent", { static: false }) slipContent!: ElementRef;
@@ -69,7 +70,7 @@ export class DetailsComponent {
           this.creditSalesDetails = credit;
           this.creditSalesDetails.status =
             this.creditSalesDetails.status === 0 ? "Requested" : "Completed";
-          this.creditSalesDetails.transaction_id = `SAV-${new Date().getFullYear()}-${
+          this.creditSalesDetails.transaction_id = `CS-${new Date().getFullYear()}-${
             credit.id
           }`;
         }
@@ -77,8 +78,8 @@ export class DetailsComponent {
   }
 
   // Default dummy data
-  @Input() savings: any = {
-    transaction_id: "SAV-2023-05678",
+  @Input() CSings: any = {
+    transaction_id: "CS-2023-05678",
     amount: 5000.0,
     interest_rate: 3.5,
     created_at: new Date(),

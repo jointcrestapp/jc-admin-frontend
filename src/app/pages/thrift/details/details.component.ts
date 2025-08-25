@@ -1,19 +1,22 @@
-import { Component, Input } from '@angular/core';
+import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { DatePipe } from '@angular/common';
 import { CurrencySymbolPipe } from '../../../shared/pipe/currency-symbol.pipe';
+import { LOGO_BASE64 } from 'public/assets/images/base64/logo.base64';
 
 @Component({
     selector: 'app-details',
     imports: [CommonModule, TranslateModule, CurrencySymbolPipe, DatePipe],
     templateUrl: './details.component.html',
-    styleUrl: './details.component.scss'
+  styleUrl: './details.component.scss',
+    standalone:true
 })
 export class DetailsComponent {
+  @ViewChild("slipContent", { static: false }) slipContent!: ElementRef;
   // Default dummy data
   @Input() savings: any = {
-    transaction_id: 'SAV-2023-05678',
+    transaction_id: 'TR-2023-05678',
     amount: 5000.00,
     interest_rate: 3.5,
     created_at: new Date(),
@@ -33,6 +36,7 @@ export class DetailsComponent {
     state: 'NY',
     postal_code: '10001'
   };
+  logoBase64 = LOGO_BASE64;
 
   printSlip() {
     window.print();

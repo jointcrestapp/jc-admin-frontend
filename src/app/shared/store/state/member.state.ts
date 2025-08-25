@@ -327,11 +327,24 @@ export class MemberState {
 
     return this.memberService.getKYC(payload).pipe(
       tap((result: any) => {
-        ctx.patchState({
-          account_details: result,
-          response: result,
-          loading: false,
-        });
+        
+        if (result.status === 200) {
+          
+          // ✅ valid result
+          ctx.patchState({
+            account_details: result,
+            response: result,
+            loading: false,
+          });
+        } else {
+            // invalid result
+          ctx.patchState({
+            account_details: null,
+            response: null,
+            loading: false,
+          });
+          this.notificationService.showError(result?.message || "Account name not found. Please check the account details and try again.");
+        }
       }),
       catchError((err) => {
         ctx.patchState({ loading: false });
@@ -410,6 +423,11 @@ export class MemberState {
     return this.memberService.getNigerianBanks().pipe(
       tap((results: any) => {
         // console.log("Nigeria Banks ::::::", results);
+        ctx.patchState({
+          account_details: null,
+          response: null,
+          loading: false,
+        });
         const state = ctx.getState();
         const bank = results.find((bank: any) => bank?.name == id);
         ctx.patchState({
@@ -417,6 +435,7 @@ export class MemberState {
           logo: bank?.logo,
           bank_code: bank?.code,
         });
+        
       })
     );
   }

@@ -91,6 +91,7 @@ import { GLOBALF } from "src/app/core/utils/my_library";
   ],
   templateUrl: "./form-member.component.html",
   styleUrl: "./form-member.component.scss",
+  standalone:true
 })
 export class FormMemberComponent {
   public store = inject(Store);
@@ -199,9 +200,10 @@ export class FormMemberComponent {
         }),
         bankDetails: this.formBuilder.group({
           accountName: new FormControl("", [Validators.required]),
-          accountNumber: new FormControl("", [Validators.required]),
+          
           bankName: new FormControl("", [Validators.required]),
-          bankCode: new FormControl(""),
+          bankCode: [{ value: '', disabled: true }, Validators.required],
+          accountNumber: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
           bankLogo: new FormControl(""),
         }),
         nextOfKins: this.formBuilder.array([]),
@@ -217,7 +219,16 @@ export class FormMemberComponent {
       }
     );
   }
-
+  numberOnly(event: KeyboardEvent): boolean {
+    const charCode = event.which ? event.which : event.keyCode;
+    // Allow only digits (48–57 are 0–9)
+    if (charCode < 48 || charCode > 57) {
+      event.preventDefault();
+      return false;
+    }
+    return true;
+  }
+  
   get passwordMatchError() {
     return (
       this.form.getError("mismatch") &&
@@ -280,6 +291,7 @@ export class FormMemberComponent {
             }
 
             if (member?.bank_detail) {
+              console.log('Patching bank details:', member.bank_detail);
               patchData.bankDetails = {
                 accountName: member?.bank_detail?.accountName,
                 accountNumber: member?.bank_detail?.accountNumber,
@@ -329,6 +341,7 @@ export class FormMemberComponent {
           }
         });
     }
+
     // Listen for changes on 'fname' and capitalize the first letter
     this.form.controls["first_name"].valueChanges.subscribe((value) => {
       this.capitalizeFirstLetter("first_name", value);
@@ -383,22 +396,29 @@ export class FormMemberComponent {
         .subscribe((id) => {
           if (id) {
             console.log("Bank changed to:", id);
-            this.handleBankSelection(id);
-            this.form.get("bankDetails.bankCode")?.reset();
-            this.form.get("bankDetails.bankCode")?.markAsUntouched();
+
             this.form.get("bankDetails.accountNumber")?.reset();
             this.form.get("bankDetails.accountNumber")?.markAsUntouched();
             this.form.get("bankDetails.accountName")?.reset();
+            console.log('account name',this.form.get("bankDetails.accountName")?.value)
             this.form.get("bankDetails.accountName")?.markAsUntouched();
+            this.handleBankSelection(id);
+            /* this.form.get("bankDetails.bankCode")?.reset(); 
+            this.form.get("bankDetails.bankCode")?.markAsUntouched();
+            */
+            
           } else {
             // this.form.get("bankDetails.bankCode")?.reset();
-            // this.form.get("bankDetails.accountNumber")?.reset();
-            // this.form.get("bankDetails.accountName")?.reset();
+             this.form.get("bankDetails.accountNumber")?.reset();
+            this.form.get("bankDetails.accountNumber")?.markAsUntouched();
+             this.form.get("bankDetails.accountName")?.reset();
+            this.form.get("bankDetails.accountName")?.markAsUntouched();
           }
         });
     }
 
     if (this.type !== "edit") {
+      
       this.form
         .get("bankDetails.accountNumber")
         .valueChanges.pipe(takeUntil(this.destroy$))
@@ -415,6 +435,7 @@ export class FormMemberComponent {
                   this.account_details$
                     .pipe(takeUntil(this.destroy$))
                     .subscribe((accountDetails: any) => {
+                      
                       if (accountDetails) {
                         this.form
                           .get("bankDetails.accountName")
@@ -570,8 +591,24 @@ export class FormMemberComponent {
   }
 
   handleBankKYC(data: any) {
-    this.store.dispatch(new GetBankKYC(data));
-  }
+    if (!this.form.get("bankDetails.accountNumber")?.value) return false;
+      
+    this.store.dispatch(new GetBankKYC(data))
+      .subscribe({
+      next: () => {
+        this.store.selectOnce(state => state.member.account_details).subscribe(account => {
+          if (!account) {
+            this.form.get("bankDetails.accountName")?.reset();
+          }
+        });
+      },
+      error: () => {
+        //reset on error
+        this.form.get("bankDetails.accountName")?.reset();
+      }
+    });
+  } 
+  
 
   private logInvalidControl(
     controlName: string,
@@ -760,6 +797,12 @@ export class FormMemberComponent {
         },
       });
   }
+  
+ 
+  onAmountInput(event: Event, controlName: string) {
+    GLOBALF.handleAmountInput(event, this.form, controlName);
+  }
+  
 
   ngOnDestroy() {
     this.destroy$.next();

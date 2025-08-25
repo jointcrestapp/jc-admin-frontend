@@ -1,15 +1,14 @@
 <div class="container-fluid">
-   <footer class="footer">
-      <div class="row">
-         <div class="col-2"><a><i class="fa fa-home"></i> Help</a></div>
-         <div class="col-2"><a><i class="fa fa-home"></i> Settings</a></div>
-         <div class="col-2"><a><i class="fa fa-home"></i> Home</a></div>
-         <div class="col-2"><a><i class="fa fa-home"></i> Blog</a></div>
+   <footer class="footer text-center">
+     <!--  <div class="row">
+         <div class="col-2"><a><i class="fa fa-home"></i> Help</a></div> 
+         <div class="col-2"><a routerLink="/setting"><i class="fa fa-home"></i> Settings</a></div>
+         <div class="col-2"><a routerLink="/dashboard"><i class="fa fa-home"></i> Home</a></div>
          <div class="col-2"><a><i class="fa fa-home"></i> Support</a></div>
-      </div>
+      </div> -->
       <div class="row">
          <div class="col-md-12 text-center">
-            <p class="mb-0">{{(setting$ | async )?.general?.copyright ?  (setting$ | async )?.general?.copyright : '© Pixelstrap'}}</p>
+            <p class="mb-0">{{(setting$ | async )?.general?.copyright ?  (setting$ | async )?.general?.copyright : ''}}</p>
          </div>
       </div>
    </footer>

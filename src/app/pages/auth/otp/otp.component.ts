@@ -28,6 +28,8 @@ export class OtpComponent {
   public email: string;
   public loading: boolean;
   public token: string;
+  otpBoxes = Array(4).fill('');
+  otpValues: string[] = ['', '', '', ''];
   constructor(
     public router: Router,
     public route: ActivatedRoute,
@@ -39,14 +41,16 @@ export class OtpComponent {
     this.email = this.store.selectSnapshot(state => state.auth.email);
     if(!this.email) this.router.navigateByUrl('/auth/login'); 
     this.form = this.formBuilder.group({
-      otp: new FormControl('', [Validators.required, Validators.minLength(5)])
+      otp: new FormControl('', [Validators.required, Validators.minLength(4)])
     });
   }
 
   login() { 
       this.router.navigateByUrl('/auth/login');    
   }
-
+  goBack(){ 
+    this.router.navigateByUrl('/auth/forgot-password');
+  }
   submit() {
     this.form.markAllAsTouched();
     if(this.form.valid) {
@@ -55,6 +59,23 @@ export class OtpComponent {
         otp: this.form.value.otp,
         token:this.token
       }))
+    }
+  }
+
+  onOtpInput(event: any, index: number) {
+    const value = event.target.value.replace(/[^0-9]/g, '');
+    this.otpValues[index] = value;
+  
+    if (value && index < 3) {
+      const nextInput = document.querySelectorAll<HTMLInputElement>('#otp input')[index + 1];
+      nextInput?.focus();
+    }
+  }
+  
+  onOtpKeyDown(event: KeyboardEvent, index: number) {
+    if (event.key === 'Backspace' && !this.otpValues[index] && index > 0) {
+      const prevInput = document.querySelectorAll<HTMLInputElement>('#otp input')[index - 1];
+      prevInput?.focus();
     }
   }
 

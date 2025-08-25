@@ -16,7 +16,8 @@ import { ButtonComponent } from '../../button/button.component';
         ButtonComponent
     ],
     templateUrl: './import-csv-modal.component.html',
-    styleUrl: './import-csv-modal.component.scss'
+  styleUrl: './import-csv-modal.component.scss',
+    standalone:true
 })
 export class ImportCsvModalComponent {
 

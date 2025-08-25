@@ -41,5 +41,8 @@ export class ForgotPasswordComponent {
       this.store.dispatch(new ForgotPassWord(this.form.value))
     }
   }
+  goBack(){ 
+    this.router.navigateByUrl('/auth/login');
+  }
 
 }

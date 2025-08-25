@@ -7,7 +7,8 @@ import { BatchFormSavingsComponent } from '../bacth-savings-form/batch-form-savi
   selector: 'app-add-batch-savings',
   imports: [PageWrapperComponent, BatchFormSavingsComponent],
   templateUrl: './add-batch-savings.component.html',
-  styleUrl: './add-batch-savings.component.scss'
+  styleUrl: './add-batch-savings.component.scss',
+  standalone:true
 })
 export class AddBatchSavingsComponent {
 

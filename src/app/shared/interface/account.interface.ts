@@ -6,6 +6,10 @@ import { Wallet } from "./wallet.interface";
 export interface AccountUser {
     id: number;
     name: string;
+    fname: string;
+    lname: string;
+    role_name: string;
+    dial_code: string;
     email: string;
     status: boolean;
     country_code: number;

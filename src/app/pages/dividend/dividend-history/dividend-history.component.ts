@@ -63,6 +63,7 @@ import { NotificationService } from "src/app/shared/services/notification.servic
   ],
   templateUrl: "./dividend-history.component.html",
   styleUrl: "./dividend-history.component.scss",
+  standalone:true
 })
 export class DividendHistoryComponent {
   private destroy$ = new Subject<void>();
@@ -90,7 +91,7 @@ export class DividendHistoryComponent {
     },
     {
       value: 2,
-      label: "Feburary",
+      label: "February",
     },
     {
       value: 3,

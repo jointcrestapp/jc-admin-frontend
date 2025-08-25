@@ -352,5 +352,31 @@ export const GLOBALF = {
     },
     firstLetterUpperCase(value: string): string {
         return value.charAt(0).toUpperCase() + value.slice(1);
+    },
+    // Get current month in digits (1-12)
+    getCurrentMonth() {
+        const date = new Date();
+        return date.getMonth() + 1; // getMonth() returns 0-11
+    },
+  
+  // Get current year in digits (e.g., 2025)
+    getCurrentYear() {
+        const date = new Date();
+        return date.getFullYear();
+    },
+
+    formatAmountDisplay(value: any): string {
+        if (value === null || value === undefined || value === '') return '';
+        const num = parseFloat(value);
+        if (isNaN(num)) return '';
+        return num.toLocaleString('en-NG', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    },
+    
+    handleAmountInput(event: Event, form: any, controlName: string) {
+        const input = event.target as HTMLInputElement;
+        const rawValue = input.value.replace(/,/g, '').replace(/[^\d.]/g, '');
+        form.get(controlName)?.setValue(rawValue ? parseFloat(rawValue) : null, { emitEvent: false });
+        input.value = this.formatAmountDisplay(rawValue);
     }
+  
 }

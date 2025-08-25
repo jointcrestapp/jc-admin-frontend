@@ -6,7 +6,8 @@ import { FormSavingsComponent } from '../savings-form/form-savings.component';
   selector: 'app-add-single-savings',
   imports: [PageWrapperComponent, FormSavingsComponent],
   templateUrl: './add-single-savings.component.html',
-  styleUrl: './add-single-savings.component.scss'
+  styleUrl: './add-single-savings.component.scss',
+  standalone:true
 })
 export class AddSingleSavingsComponent {
 
