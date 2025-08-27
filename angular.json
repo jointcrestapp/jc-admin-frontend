@@ -74,7 +74,7 @@
                   "with": "src/environments/environment.ts"
                 }
               ],
-              "outputPath": "dist/tarzan-hotels-admin",
+              "outputPath": "dist",
               "outputHashing": "all"
             },
             "development": {
