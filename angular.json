@@ -31,7 +31,7 @@
               "apexcharts",
               "xlsx"
             ],
-            "outputPath": "dist/jointcrest-admin",
+            "outputPath": "dist",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
