@@ -15,7 +15,7 @@ import { appConfig } from 'src/app/core/config/config';
 @Component({
     selector: 'app-forgot-password',
     imports: [TranslateModule, FormsModule, ReactiveFormsModule,
-        AlertComponent, ButtonComponent, AsyncPipe
+      ButtonComponent, AsyncPipe
     ],
     templateUrl: './forgot-password.component.html',
   styleUrl: './forgot-password.component.scss',

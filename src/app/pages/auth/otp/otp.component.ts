@@ -14,7 +14,7 @@ import { AsyncPipe } from '@angular/common';
 @Component({
     selector: 'app-otp',
     imports: [TranslateModule, FormsModule, ReactiveFormsModule,
-        AlertComponent, ButtonComponent, AsyncPipe
+         ButtonComponent
     ],
     templateUrl: './otp.component.html',
   styleUrl: './otp.component.scss',

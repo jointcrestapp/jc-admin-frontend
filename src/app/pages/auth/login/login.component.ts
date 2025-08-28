@@ -14,7 +14,7 @@ import { AsyncPipe } from '@angular/common';
 @Component({
     selector: 'app-login',
     imports: [TranslateModule, FormsModule, ReactiveFormsModule,
-        RouterModule, AlertComponent, ButtonComponent, AsyncPipe
+        RouterModule, ButtonComponent
     ],
     templateUrl: './login.component.html',
   styleUrl: './login.component.scss',

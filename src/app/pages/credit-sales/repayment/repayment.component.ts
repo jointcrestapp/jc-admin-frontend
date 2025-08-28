@@ -47,7 +47,6 @@ import { CreditState } from "src/app/shared/store/state/credit.state";
     CommonModule,
     TranslateModule,
     RouterModule,
-    HasPermissionDirective,
     Select2Module,
     PageWrapperComponent,
     TableComponent,
@@ -57,6 +56,7 @@ import { CreditState } from "src/app/shared/store/state/credit.state";
   ],
   templateUrl: "./repayment.component.html",
   styleUrl: "./repayment.component.scss",
+  standalone: true,
 })
 export class RepaymentComponent {
   private destroy$ = new Subject<void>();

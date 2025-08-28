@@ -22,9 +22,9 @@ import { HasPermissionDirective } from '../../directive/has-permission.directive
 @Component({
     selector: 'app-header',
     imports: [CommonModule, RouterModule, TranslateModule,
-        SearchComponent, QuickViewComponent, LanguagesComponent,
+        
         NotificationComponent, ModeComponent, ProfileComponent,
-        HasPermissionDirective
+        
     ],
     templateUrl: './header.component.html',
   styleUrl: './header.component.scss',

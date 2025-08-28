@@ -15,7 +15,7 @@ import { CustomValidators } from 'src/app/shared/validator/password-match';
 @Component({
     selector: 'app-update-password',
     imports: [TranslateModule, FormsModule, ReactiveFormsModule,
-        CommonModule, AlertComponent, ButtonComponent, AsyncPipe
+        CommonModule, ButtonComponent, AsyncPipe
     ],
     templateUrl: './update-password.component.html',
   styleUrl: './update-password.component.scss',
