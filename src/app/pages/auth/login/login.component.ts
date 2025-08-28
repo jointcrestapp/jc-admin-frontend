@@ -34,8 +34,8 @@ export class LoginComponent {
   ) {
     this.store.dispatch(new AuthClear());
     this.form = this.formBuilder.group({
-      email: new FormControl('olubusadea@gmail.com', [Validators.required, Validators.email]),
-      password: new FormControl('222222', [Validators.required]),
+      email: new FormControl('', [Validators.required, Validators.email]),
+      password: new FormControl('', [Validators.required]),
     });
   }
 

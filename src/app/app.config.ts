@@ -81,26 +81,11 @@ import { ReportState } from "./shared/store/state/reports.state";
 import { CreditState } from "./shared/store/state/credit.state";
 import { MiscellaneousState } from "./shared/store/state/miscellaneous.state";
 import { SettingsState } from "./shared/store/state/settings.state";
-import { Observable, forkJoin, map } from "rxjs";
-
 // AoT requires an exported function for factories
-
-export function HttpLoaderFactory(http: HttpClient): TranslateLoader {
-  return {
-    getTranslation: (lang: string): Observable<any> => {
-      return forkJoin([
-        http.get(`./assets/i18n/${lang}.json`),
-        http.get(`./assets/data/${lang}.json`),
-        http.get(`./assets/data/home/${lang}.json`),
-      ]).pipe(
-        map((responseObjects: any[]) =>
-          responseObjects.reduce((acc, obj) => ({ ...acc, ...obj }), {})
-        )
-      );
-    },
-  };
-  
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
 }
+
 export const appConfig: ApplicationConfig = {
   providers: [
     CurrencyPipe,
