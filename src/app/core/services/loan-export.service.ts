@@ -10,7 +10,7 @@ import {
   throwError,
   map,
 } from "rxjs";
-import * as XLSX from "xlsx";
+import * as XLSX from 'xlsx';
 
 @Injectable({ providedIn: "root" })
 export class LoanExcelService {

@@ -5,7 +5,6 @@
 
 # Node artifact files
 node_modules/
-.angular/
 
 # Compiled Java class files
 *.class
@@ -21,7 +20,7 @@ node_modules/
 
 # Maven
 target/
-dist/
+#dist/
 
 # JetBrains IDE
 .idea/
@@ -55,3 +54,4 @@ Thumbs.db
 #qodo
 .qodo/
 .qodo
+.vercel
