@@ -31,7 +31,7 @@
               "apexcharts",
               "xlsx"
             ],
-            "outputPath": "dist/browser",
+            "outputPath": "dist",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -74,7 +74,7 @@
                   "with": "src/environments/environment.ts"
                 }
               ],
-              "outputPath": "dist/browser",
+              "outputPath": "dist",
               "outputHashing": "all"
             },
             "development": {
