@@ -129,36 +129,36 @@
         },
         {
             "id": 15,
-            "name": "Marketplace",
-            "slug": "marketplace_one",
-            "image": "/images/themes/marketplace-1.png",
+            "name": "Jointcrest",
+            "slug": "Jointcrest_one",
+            "image": "/images/themes/Jointcrest-1.png",
             "status": 0,
             "created_at": "2024-06-20T07:06:59.000000Z",
             "updated_at": "2024-07-09T07:54:27.000000Z"
         },
         {
             "id": 16,
-            "name": "Marketplace 2",
-            "slug": "marketplace_two",
-            "image": "/images/themes/marketplace-2.png",
+            "name": "Jointcrest 2",
+            "slug": "Jointcrest_two",
+            "image": "/images/themes/Jointcrest-2.png",
             "status": 0,
             "created_at": "2024-06-20T07:06:59.000000Z",
             "updated_at": "2024-07-09T07:54:27.000000Z"
         },
         {
             "id": 17,
-            "name": "Marketplace 3",
-            "slug": "marketplace_three",
-            "image": "/images/themes/marketplace-3.png",
+            "name": "Jointcrest 3",
+            "slug": "Jointcrest_three",
+            "image": "/images/themes/Jointcrest-3.png",
             "status": 0,
             "created_at": "2024-06-20T07:06:59.000000Z",
             "updated_at": "2024-07-09T07:54:27.000000Z"
         },
         {
             "id": 18,
-            "name": "Marketplace 4",
-            "slug": "marketplace_four",
-            "image": "/images/themes/marketplace-4.png",
+            "name": "Jointcrest 4",
+            "slug": "Jointcrest_four",
+            "image": "/images/themes/Jointcrest-4.png",
             "status": 0,
             "created_at": "2024-06-20T07:06:59.000000Z",
             "updated_at": "2024-07-09T07:54:27.000000Z"

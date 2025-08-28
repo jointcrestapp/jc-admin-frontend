@@ -16,7 +16,7 @@
             "banners": [
                 {
                     "status": true,
-                    "image_url": "/images/theme/marketplace_three/marketplace_three_1.png",
+                    "image_url": "/images/theme/Jointcrest_three/Jointcrest_three_1.png",
                     "redirect_link": {
                         "link": "powerhouse-electronics",
                         "link_type": "collection"
@@ -28,7 +28,7 @@
             "status": true,
             "banner_1": {
                 "status": true,
-                "image_url": "/images/theme/marketplace_three/marketplace_three_2.png",
+                "image_url": "/images/theme/Jointcrest_three/Jointcrest_three_2.png",
                 "redirect_link": {
                     "link": "powerhouse-electronics",
                     "link_type": "collection"
@@ -36,7 +36,7 @@
             },
             "banner_2": {
                 "status": true,
-                "image_url": "/images/theme/marketplace_three/marketplace_three_4.png",
+                "image_url": "/images/theme/Jointcrest_three/Jointcrest_three_4.png",
                 "redirect_link": {
                     "link": "powerhouse-electronics",
                     "link_type": "collection"
@@ -44,7 +44,7 @@
             },
             "banner_3": {
                 "status": true,
-                "image_url": "/images/theme/marketplace_three/marketplace_three_3.png",
+                "image_url": "/images/theme/Jointcrest_three/Jointcrest_three_3.png",
                 "redirect_link": {
                     "link": "bag-emporium",
                     "link_type": "collection"
@@ -73,7 +73,7 @@
             "left_panel": {
                 "banner": {
                     "status": true,
-                    "image_url": "/images/theme/marketplace_three/marketplace_three_7.png",
+                    "image_url": "/images/theme/Jointcrest_three/Jointcrest_three_7.png",
                     "redirect_link": {
                         "link": "fashion",
                         "link_type": "collection",
@@ -104,7 +104,7 @@
                 "offer_banner": {
                     "banner_1": {
                         "status": true,
-                        "image_url": "/images/theme/marketplace_three/marketplace_three_6.png",
+                        "image_url": "/images/theme/Jointcrest_three/Jointcrest_three_6.png",
                         "redirect_link": {
                             "link": "fit-gear-central",
                             "link_type": "collection"
@@ -112,7 +112,7 @@
                     },
                     "banner_2": {
                         "status": true,
-                        "image_url": "/images/theme/marketplace_three/marketplace_three_5.png",
+                        "image_url": "/images/theme/Jointcrest_three/Jointcrest_three_5.png",
                         "redirect_link": {
                             "link": "powerhouse-electronics",
                             "link_type": "collection"
@@ -141,5 +141,5 @@
             }
         }
     },
-    "slug": "marketplace_three"
+    "slug": "Jointcrest_three"
 }

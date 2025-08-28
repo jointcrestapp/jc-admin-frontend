@@ -651,56 +651,56 @@ export interface ElectronicThreeContent {
   products_ids: number[];
 }
 
-// MarketplaceOne Interface
-export interface MarketplaceOne {
+// JointcrestOne Interface
+export interface JointcrestOne {
   id: number;
-  content: MarketplaceOneContent;
+  content: JointcrestOneContent;
   slug: string;
 }
 
-export interface MarketplaceOneContent {
+export interface JointcrestOneContent {
   home_banner: HomeBanner;
   offer_banner_1: FeaturedBannersFashionTwo;
   product_list_1: ProductList;
   offer_banner_2: HomeBannerFashionFive;
   services: Service;
   social_media: SocialMedia;
-  category_product: MarketPlaceOneSliderProduct;
+  category_product: JointcrestOneSliderProduct;
   brand: Brands;
   products_ids: number[];
 }
 
-export interface MarketPlaceOneSliderProduct {
+export interface JointcrestOneSliderProduct {
   status: boolean;
-  left_panel: MarketPlaceOneProductSlider;
-  right_panel: MarketPlaceOneRightPanel;
+  left_panel: JointcrestOneProductSlider;
+  right_panel: JointcrestOneRightPanel;
 }
 
-export interface MarketPlaceOneRightPanel {
+export interface JointcrestOneRightPanel {
   product_category: ProductTabSection;
   product_banner: FullWidthBanner;
 }
 
-export interface MarketPlaceOneProductSlider {
+export interface JointcrestOneProductSlider {
   title: string;
   product_ids: number[];
   status: boolean;
 }
 
-// MarketplaceTwo Interface
-export interface MarketplaceTwo {
+// JointcrestTwo Interface
+export interface JointcrestTwo {
   id: number;
-  content: MarketplaceTwoContent;
+  content: JointcrestTwoContent;
   slug: string;
 }
 
-export interface MarketplaceTwoContent {
+export interface JointcrestTwoContent {
   home_banner: HomeBanner;
   offer_banner_1: FeaturedBannersFashionTwo;
   products_list_1: ProductList;
   products_list_2: ProductList;
-  products_list_3: MarketPlaceOneProductSlider;
-  products_list_4: MarketPlaceOneProductSlider;
+  products_list_3: JointcrestOneProductSlider;
+  products_list_4: JointcrestOneProductSlider;
   offer_banner_2: ShoesBanner;
   slider_products: SliderProduct;
   services: Service;
@@ -712,70 +712,70 @@ export interface MarketplaceTwoContent {
 }
 
 
-// MarketplaceThree Interface
-export interface MarketplaceThree {
+// JointcrestThree Interface
+export interface JointcrestThree {
   id: number;
-  content: MarketplaceThreeContent;
+  content: JointcrestThreeContent;
   slug: string;
 }
 
-export interface MarketplaceThreeContent {
+export interface JointcrestThreeContent {
   home_banner: HomeBanner;
   offer_banner: FeaturedBannersFashionFour;
-  categories_products: MarketPlaceThreeCategoriesProducts;
+  categories_products: JointcrestThreeCategoriesProducts;
   featured_blogs: BlogSection;
   brand: Brands;
   products_ids: number[];
 }
 
-export interface MarketPlaceThreeCategoriesProducts {
+export interface JointcrestThreeCategoriesProducts {
   status: boolean;
-  left_panel: MarketPlaceThreeLeftContent;
-  right_panel: MarketPlaceThreeRightContent;
+  left_panel: JointcrestThreeLeftContent;
+  right_panel: JointcrestThreeRightContent;
 }
 
-export interface MarketPlaceThreeLeftContent {
+export interface JointcrestThreeLeftContent {
   categories: ProductCategoryFashionFour;
   products_list: SidebarProducts;
   banner: FeaturedBanner;
 }
 
-export interface MarketPlaceThreeRightContent {
+export interface JointcrestThreeRightContent {
   products_list: SidebarProducts;
   offer_banner: ShoesBanner;
   category_product: ProductTabSection;
 }
 
-// MarketplaceFour Interface
-export interface MarketplaceFour {
+// JointcrestFour Interface
+export interface JointcrestFour {
   id: number;
-  content: MarketplaceFourContent;
+  content: JointcrestFourContent;
   slug: string;
 }
 
-export interface MarketplaceFourContent {
+export interface JointcrestFourContent {
   home_banner: HomeBanner;
   services: Service;
   products_list_1: SidebarProducts;
-  product_banner_1: MarketplaceFourProductBanner;
+  product_banner_1: JointcrestFourProductBanner;
   slider_products: SliderProductFashionSix;
   products_list_2: SidebarProducts;
-  product_banner_2: MarketplaceFourBannerProduct;
-  product_banner_3: MarketplaceFourProductBanner;
+  product_banner_2: JointcrestFourBannerProduct;
+  product_banner_3: JointcrestFourProductBanner;
   products_list_3: SidebarProducts;
   social_media: SocialMedia;
   brand: Brands;
   products_ids: number[];
 }
 
-export interface MarketplaceFourBannerProduct {
+export interface JointcrestFourBannerProduct {
   status: boolean;
   left_panel: JewelryTwoProductBannerPanel;
   center_panel: FeaturedBannersFashionOne;
   right_panel: JewelryTwoProductBannerPanel;
 }
 
-export interface MarketplaceFourProductBanner {
+export interface JointcrestFourProductBanner {
   status?: boolean;
   left_panel: FullWidthBanner,
   right_panel: ProductsListRightContent;
@@ -903,7 +903,7 @@ export interface JewelryTwoContent {
   products_list_2: ProductList;
   banner: FeaturedBanner;
   services: Service;
-  product_banner: MarketplaceFourBannerProduct;
+  product_banner: JointcrestFourBannerProduct;
   social_media: SocialMedia;
   offer_banner_2: HomeBannerFashionFive;
   brand: Brands;
@@ -1177,7 +1177,7 @@ export interface ToolsContent {
   categories: JewelryCategoriesTwo;
   products_list_1: ProductList;
   products_list_2: ProductList;
-  category_product: MarketPlaceOneSliderProduct;
+  category_product: JointcrestOneSliderProduct;
   brand: Brands;
   products_ids: number[];
 }

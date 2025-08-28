@@ -15,7 +15,7 @@ import { LinkComponent } from '../../../../shared/components/ui/link/link.compon
 import { mediaConfig } from '../../../../shared/data/media-config';
 import { HasPermissionDirective } from '../../../../shared/directive/has-permission.directive';
 import { CategoryModel } from '../../../../shared/interface/category.interface';
-import { Banners, MarketplaceFour } from '../../../../shared/interface/theme.interface';
+import { Banners, JointcrestFour } from '../../../../shared/interface/theme.interface';
 import { GetBlogs } from '../../../../shared/store/action/blog.action';
 import { GetBrands } from '../../../../shared/store/action/brand.action';
 import { GetCategories } from '../../../../shared/store/action/category.action';
@@ -28,24 +28,24 @@ import { ProductState } from '../../../../shared/store/state/product.state';
 import { ThemeState } from '../../../../shared/store/state/theme.state';
 
 @Component({
-    selector: 'app-marketplace-4',
+    selector: 'app-Jointcrest-4',
     imports: [CommonModule, TranslateModule, FormsModule,
         ReactiveFormsModule, Select2Module, HasPermissionDirective,
         NgbModule, PageWrapperComponent, ButtonComponent,
         FormFieldsComponent, LinkComponent, ImageUploadComponent],
-    templateUrl: './marketplace-4.component.html',
-    styleUrl: './marketplace-4.component.scss'
+    templateUrl: './Jointcrest-4.component.html',
+    styleUrl: './Jointcrest-4.component.scss'
 })
-export class Marketplace4Component {
+export class Jointcrest4Component {
 
-  home_page$: Observable<MarketplaceFour> = inject(Store).select(ThemeState.homePage);
+  home_page$: Observable<JointcrestFour> = inject(Store).select(ThemeState.homePage);
   product$: Observable<Select2Data> = inject(Store).select(ProductState.products);
   category$: Observable<CategoryModel> = inject(Store).select(CategoryState.category) as Observable<CategoryModel>;
   blogs$: Observable<Select2Data> = inject(Store).select(BlogState.blogs);
   brand$: Observable<Select2Data> = inject(Store).select(BrandState.brands);
 
   public form: FormGroup;
-  public page_data: MarketplaceFour;
+  public page_data: JointcrestFour;
   public active = 'home_banner';
   public banner = 1;
   public bannerProduct = 1;
@@ -181,13 +181,13 @@ export class Marketplace4Component {
         }),
         products_ids: new FormControl([]),
       }),
-      slug: new FormControl('marketplace_four'),
+      slug: new FormControl('Jointcrest_four'),
     });
   }
 
   ngOnInit() {
     const blogs$ = this.store.dispatch(new GetBlogs({ status: 1 }));
-    const home_page$ = this.store.dispatch(new GetHomePage({ slug: "marketplace_four" }));
+    const home_page$ = this.store.dispatch(new GetHomePage({ slug: "Jointcrest_four" }));
     const categories$ = this.store.dispatch(new GetCategories({ status: 1, type: 'product' }));
     const brand$ = this.store.dispatch(new GetBrands({ status: 1 }));
 
@@ -483,7 +483,7 @@ export class Marketplace4Component {
   }
 
   // Merge Products Ids
-  concatDynamicProductKeys(obj: MarketplaceFour) {
+  concatDynamicProductKeys(obj: JointcrestFour) {
     const result: number[] = [];
     function traverse(obj: any) {
       for (const key in obj) {

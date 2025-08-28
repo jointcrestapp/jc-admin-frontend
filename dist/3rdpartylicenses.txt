@@ -119,11 +119,6 @@ License: "MIT"
 
 
 --------------------------------------------------------------------------------
-Package: @ngx-translate/http-loader
-License: "SEE LICENSE IN LICENSE"
-
-
---------------------------------------------------------------------------------
 Package: @ngxs/storage-plugin
 License: "MIT"
 

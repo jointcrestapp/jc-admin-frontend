@@ -29,10 +29,7 @@ import { Jewellery2Component } from "./jewellery/jewellery-2/jewellery-2.compone
 import { Jewellery3Component } from "./jewellery/jewellery-3/jewellery-3.component";
 import { KidsComponent } from "./kids/kids.component";
 import { MarijuanaComponent } from "./marijuana/marijuana.component";
-import { Marketplace1Component } from "./marketplace/marketplace-1/marketplace-1.component";
-import { Marketplace2Component } from "./marketplace/marketplace-2/marketplace-2.component";
-import { Marketplace3Component } from "./marketplace/marketplace-3/marketplace-3.component";
-import { Marketplace4Component } from "./marketplace/marketplace-4/marketplace-4.component";
+
 import { MedicalComponent } from "./medical/medical.component";
 import { NurseryComponent } from "./nursery/nursery.component";
 import { ParallaxComponent } from "./parallax/parallax.component";
@@ -108,22 +105,6 @@ export const themeRoutes: Routes = [
   {
     path: 'electronics_three',
     component: Electronics3Component
-  },
-  {
-    path: 'marketplace_one',
-    component: Marketplace1Component
-  },
-  {
-    path: 'marketplace_two',
-    component: Marketplace2Component
-  },
-  {
-    path: 'marketplace_three',
-    component: Marketplace3Component
-  },
-  {
-    path: 'marketplace_four',
-    component: Marketplace4Component
   },
   {
     path: 'vegetables_one',

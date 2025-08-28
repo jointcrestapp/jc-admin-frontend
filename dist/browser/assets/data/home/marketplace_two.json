@@ -16,25 +16,25 @@
                 {
                     "title": "free shipping",
                     "status": true,
-                    "image_url": "/images/theme/marketplace_two/service.png",
+                    "image_url": "/images/theme/Jointcrest_two/service.png",
                     "description": "Contrary to popular belief, Lorem Ipsum is not simply random text."
                 },
                 {
                     "title": "24 X 7 service",
                     "status": true,
-                    "image_url": "/images/theme/marketplace_two/service.png",
+                    "image_url": "/images/theme/Jointcrest_two/service.png",
                     "description": "Contrary to popular belief, Lorem Ipsum is not simply random text."
                 },
                 {
                     "title": "festival offer",
                     "status": true,
-                    "image_url": "/images/theme/marketplace_two/service.png",
+                    "image_url": "/images/theme/Jointcrest_two/service.png",
                     "description": "Contrary to popular belief, Lorem Ipsum is not simply random text."
                 },
                 {
                     "title": "online payment",
                     "status": true,
-                    "image_url": "/images/theme/marketplace_two/service.png",
+                    "image_url": "/images/theme/Jointcrest_two/service.png",
                     "description": "Contrary to popular belief, Lorem Ipsum is not simply random text."
                 }
             ]
@@ -43,7 +43,7 @@
             "banners": [
                 {
                     "status": true,
-                    "image_url": "/images/theme/marketplace_two/marketplace_two_1.png",
+                    "image_url": "/images/theme/Jointcrest_two/Jointcrest_two_1.png",
                     "redirect_link": {
                         "link": 89,
                         "link_type": "product"
@@ -97,7 +97,7 @@
             "status": true,
             "banner_1": {
                 "status": true,
-                "image_url": "/images/theme/marketplace_two/marketplace_two_5.png",
+                "image_url": "/images/theme/Jointcrest_two/Jointcrest_two_5.png",
                 "redirect_link": {
                     "link": "powerhouse-electronics",
                     "link_type": "collection"
@@ -105,7 +105,7 @@
             },
             "banner_2": {
                 "status": true,
-                "image_url": "/images/theme/marketplace_two/marketplace_two_4.png",
+                "image_url": "/images/theme/Jointcrest_two/Jointcrest_two_4.png",
                 "redirect_link": {
                     "link": "shoes",
                     "link_type": "collection"
@@ -113,7 +113,7 @@
             },
             "banner_3": {
                 "status": true,
-                "image_url": "/images/theme/marketplace_two/marketplace_two_3.png",
+                "image_url": "/images/theme/Jointcrest_two/Jointcrest_two_3.png",
                 "redirect_link": {
                     "link": 90,
                     "link_type": "product",
@@ -122,7 +122,7 @@
             },
             "banner_4": {
                 "status": true,
-                "image_url": "/images/theme/marketplace_two/marketplace_two_2.png",
+                "image_url": "/images/theme/Jointcrest_two/Jointcrest_two_2.png",
                 "redirect_link": {
                     "link": "powerhouse-electronics",
                     "link_type": "collection"
@@ -133,7 +133,7 @@
             "status": true,
             "banner_1": {
                 "status": true,
-                "image_url": "/images/theme/marketplace_two/marketplace_two_7.png",
+                "image_url": "/images/theme/Jointcrest_two/Jointcrest_two_7.png",
                 "redirect_link": {
                     "link": 88,
                     "link_type": "product",
@@ -142,7 +142,7 @@
             },
             "banner_2": {
                 "status": true,
-                "image_url": "/images/theme/marketplace_two/marketplace_two_6.png",
+                "image_url": "/images/theme/Jointcrest_two/Jointcrest_two_6.png",
                 "redirect_link": {
                     "link": "powerhouse-electronics",
                     "link_type": "collection"
@@ -151,7 +151,7 @@
         },
         "offer_banner_3": {
             "status": true,
-            "image_url": "/images/theme/marketplace_two/marketplace_two_8.png",
+            "image_url": "/images/theme/Jointcrest_two/Jointcrest_two_8.png",
             "redirect_link": {
                 "link": "fashion",
                 "link_type": "collection"
@@ -266,5 +266,5 @@
             }
         }
     },
-    "slug": "marketplace_two"
+    "slug": "Jointcrest_two"
 }

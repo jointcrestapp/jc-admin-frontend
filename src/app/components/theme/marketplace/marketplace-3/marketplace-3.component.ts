@@ -16,7 +16,7 @@ import { LinkComponent } from '../../../../shared/components/ui/link/link.compon
 import { mediaConfig } from '../../../../shared/data/media-config';
 import { HasPermissionDirective } from '../../../../shared/directive/has-permission.directive';
 import { CategoryModel } from '../../../../shared/interface/category.interface';
-import { Banners, MarketplaceThree } from '../../../../shared/interface/theme.interface';
+import { Banners, JointcrestThree } from '../../../../shared/interface/theme.interface';
 import { GetBlogs } from '../../../../shared/store/action/blog.action';
 import { GetBrands } from '../../../../shared/store/action/brand.action';
 import { GetCategories } from '../../../../shared/store/action/category.action';
@@ -29,26 +29,26 @@ import { ProductState } from '../../../../shared/store/state/product.state';
 import { ThemeState } from '../../../../shared/store/state/theme.state';
 
 @Component({
-    selector: 'app-marketplace-3',
+    selector: 'app-Jointcrest-3',
     imports: [CommonModule, TranslateModule, FormsModule,
         ReactiveFormsModule, Select2Module, HasPermissionDirective,
         NgbModule, PageWrapperComponent, ButtonComponent,
         FormFieldsComponent, LinkComponent, ImageUploadComponent,
         AdvanceDropdownComponent],
-    templateUrl: './marketplace-3.component.html',
-    styleUrl: './marketplace-3.component.scss'
+    templateUrl: './Jointcrest-3.component.html',
+    styleUrl: './Jointcrest-3.component.scss'
 })
 
-export class Marketplace3Component {
+export class Jointcrest3Component {
 
-  home_page$: Observable<MarketplaceThree> = inject(Store).select(ThemeState.homePage);
+  home_page$: Observable<JointcrestThree> = inject(Store).select(ThemeState.homePage);
   product$: Observable<Select2Data> = inject(Store).select(ProductState.products);
   category$: Observable<CategoryModel> = inject(Store).select(CategoryState.category) as Observable<CategoryModel>;
   blogs$: Observable<Select2Data> = inject(Store).select(BlogState.blogs);
   brand$: Observable<Select2Data> = inject(Store).select(BrandState.brands);
 
   public form: FormGroup;
-  public page_data: MarketplaceThree;
+  public page_data: JointcrestThree;
   public active = 'home_banner';
   public banner = 1;
   public banner2 = 1;
@@ -174,13 +174,13 @@ export class Marketplace3Component {
         }),
         products_ids: new FormControl([]),
       }),
-      slug: new FormControl('marketplace_three'),
+      slug: new FormControl('Jointcrest_three'),
     });
   }
 
   ngOnInit() {
     const blogs$ = this.store.dispatch(new GetBlogs({ status: 1 }));
-    const home_page$ = this.store.dispatch(new GetHomePage({ slug: "marketplace_three" }));
+    const home_page$ = this.store.dispatch(new GetHomePage({ slug: "Jointcrest_three" }));
     const categories$ = this.store.dispatch(new GetCategories({ status: 1, type: 'product' }));
     const brand$ = this.store.dispatch(new GetBrands({ status: 1 }));
 
@@ -389,7 +389,7 @@ export class Marketplace3Component {
     this.homeBannersArray.at(index).get('image_url')?.setValue(url ? url : null);
   }
   // Merge Products Ids
-  concatDynamicProductKeys(obj: MarketplaceThree) {
+  concatDynamicProductKeys(obj: JointcrestThree) {
     const result: number[] = [];
     function traverse(obj: any) {
       for (const key in obj) {
