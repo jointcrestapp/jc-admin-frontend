@@ -253,19 +253,31 @@ export class WithdrawalState {
     );
   }
 
-  @Action(WithdrawRequest)
-  createRequest(
-    ctx: StateContext<WithdrawalStateModel>,
-    action: WithdrawRequest
-  ) {
-    // Create Withdrawal Logic Here
-  }
 
-  @Action(UpdateWithdrawStatus)
-  updateWithdrawStatus(
-    ctx: StateContext<WithdrawalStateModel>,
-    { id, status }: UpdateWithdrawStatus
-  ) {
-    // Update Withdrawal Status Logic Here
-  }
+@Action(UpdateWithdrawStatus)
+updateWithdrawStatus(
+  ctx: StateContext<WithdrawalStateModel>,
+  { id, payload }: UpdateWithdrawStatus
+) {
+  return this.withdrawalService.updateWithdrawalStatus(id, payload).pipe(
+    tap((res: any) => {
+      const state = ctx.getState();
+
+      // updated array
+      const updatedData = state.pendingWithdrawal.data.map((s: any) =>
+        s.id === id ? { ...s, ...payload } : s
+      );
+
+      ctx.patchState({
+        pendingWithdrawal: {
+          ...state.pendingWithdrawal,
+          data: updatedData
+        },
+        loading: false,
+        response: res
+      });
+    })
+  );
+}
+
 }

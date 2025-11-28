@@ -36,6 +36,8 @@ import { ConfirmationModalComponent } from "../modal/confirmation-modal/confirma
 import { AddCreditSalesModalComponent } from "../modal/add-credit-sales-modal/add-credit-sales-modal.component";
 import { DeleteModalComponent } from "../modal/delete-modal/delete-modal.component";
 import { PaginationComponent } from "../pagination/pagination.component";
+import { RejectModalComponent } from "../modal/reject-modal/reject-modal.component";
+import { ApprovalModalComponent } from "../modal/approval-modal/approval-modal.component";
 
 @Component({
   selector: "app-table",
@@ -49,6 +51,8 @@ import { PaginationComponent } from "../pagination/pagination.component";
     PaginationComponent,
     DeleteModalComponent,
     ConfirmationModalComponent,
+    RejectModalComponent,
+    ApprovalModalComponent,
     AddCreditSalesModalComponent,
   ],
   templateUrl: "./table.component.html",
@@ -80,6 +84,12 @@ export class TableComponent {
 
   @ViewChild("deleteModal") DeleteModal: DeleteModalComponent;
   @ViewChild("confirmationModal") ConfirmationModal: ConfirmationModalComponent;
+  @ViewChild("approvalModal") ApprovalModal!: ApprovalModalComponent;
+  @ViewChild("rejectModal") RejectModal!: RejectModalComponent;
+
+private pendingAction: TableClickedAction | null = null;
+
+  
   @ViewChild("addCreditSalesModal")
   AddCreditSalesModal: AddCreditSalesModalComponent;
 
@@ -204,6 +214,29 @@ export class TableComponent {
 
   onActionClicked(actionType: string, rowData: any, value?: number) {
     this.renderer.addClass(this.document.body, "loader-none");
+    console.log('actionType::', actionType);
+    console.log('rowData::', rowData);
+    console.log('value::', value);
+    this.pendingAction = {
+      actionToPerform: actionType,
+      data: rowData
+    };
+
+    // VERIFY → opens confirmation modal
+     if (actionType === 'verify') {
+      this.ApprovalModal.openModal('verify', rowData);
+      return;
+    } 
+
+    // REJECT → opens reject modal
+    if (actionType === 'reject') {
+      this.RejectModal.openModal('reject', rowData);
+      return;
+    }
+
+    // default actions
+    this.action.emit(this.pendingAction);
+
     if (this.hasPermission([actionType])) {
       rowData[actionType] = value;
       this.action.emit({ actionToPerform: actionType, data: rowData });
@@ -212,6 +245,16 @@ export class TableComponent {
       this.action.emit({ actionToPerform: actionType, data: rowData });
     }
   }
+onVerified(event: TableClickedAction) {
+  this.action.emit(event);
+}
+
+onRejected(event: { action: string; data: any; reason: string }) {
+  this.action.emit({
+    actionToPerform: event.action,
+    data: { ...event.data, rejection_reason: event.reason }
+  });
+}
 
   onRowClicked(rowData: any): void {
     if (this.hasPermission(["edit", "view"])) {
@@ -254,6 +297,34 @@ export class TableComponent {
       if (this.selected.includes(data?.id)) {
         const permission = this.tableConfig?.rowActions?.find(
           (action) => action.actionToPerform == "delete"
+        )?.permission as string;
+        if (permission && this.permissions?.includes(permission)) {
+          status = true;
+        }
+      }
+    });
+    return status;
+  }
+  get rejectButtonStatus() {
+    let status = false;
+    this.tableConfig?.data?.filter((data: any) => {
+      if (this.selected.includes(data?.id)) {
+        const permission = this.tableConfig?.rowActions?.find(
+          (action) => action.actionToPerform == "reject"
+        )?.permission as string;
+        if (permission && this.permissions?.includes(permission)) {
+          status = true;
+        }
+      }
+    });
+    return status;
+  }
+  get verifyButtonStatus() {
+    let status = false;
+    this.tableConfig?.data?.filter((data: any) => {
+      if (this.selected.includes(data?.id)) {
+        const permission = this.tableConfig?.rowActions?.find(
+          (action) => action.actionToPerform == "verify"
         )?.permission as string;
         if (permission && this.permissions?.includes(permission)) {
           status = true;

@@ -142,4 +142,21 @@ export class MemberService extends BaseApiService {
   exportMembers(filter?: any): Observable<any> {
     return this.get(`${environment.apiURL}/export_members`, filter);
   }
+
+  //KYC
+   getKYCSubmissions(params?: any) {
+    return this.http.get(`${environment.apiURL}/kyc`, { params });
+  }
+
+  getOneKYC(id: number) {
+    return this.http.get(`${environment.apiURL}/kyc/${id}`);
+  }
+
+  updateKYCStatus(id: number, payload: any) {
+    return this.http.put(`${environment.apiURL}/kyc/${id}`, payload);
+  }
+
+  deleteKYC(id: number) {
+    return this.http.delete(`${environment.apiURL}/kyc/${id}`);
+  }
 }

@@ -1,0 +1,23 @@
+<ng-template #kycPreviewModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">KYC Document Preview</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+  </div>
+
+  <div class="modal-body text-center">
+    <div class="image-container">
+      <img
+        [src]="imageUrl"
+        class="preview-image"
+        [ngStyle]="{ transform: 'scale(' + zoom + ')' }"
+        alt="KYC Document"
+      />
+    </div>
+  </div>
+
+  <div class="modal-footer justify-content-center">
+    <button class="btn btn-secondary" (click)="zoomOut()">-</button>
+    <button class="btn btn-primary" (click)="zoomIn()">+</button>
+    <button class="btn btn-danger" (click)="modal.close()">Close</button>
+  </div>
+</ng-template>

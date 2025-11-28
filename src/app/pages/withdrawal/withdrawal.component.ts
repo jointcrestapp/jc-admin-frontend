@@ -182,7 +182,7 @@ export class WithdrawalComponent {
         sort_direction: "desc",
       },
     ],
-    rowActions: [
+  /*   rowActions: [
       { label: "View", actionToPerform: "view", icon: "ri-printer-line" },
       {
         label: "Edit",
@@ -196,7 +196,7 @@ export class WithdrawalComponent {
         icon: "ri-delete-bin-line",
         permission: "withdrawal.destroy",
       },
-    ],
+    ], */
     data: [] as any[],
     total: 0,
   };

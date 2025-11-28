@@ -1,0 +1,14 @@
+<app-page-wrapper [title]="'KYC Submissions'" [gridClass]="'col-sm-12'">
+  <app-table
+    [tableConfig]="tableConfig"
+    [hasCheckbox]="true"
+    [hasDuplicate]="true"
+    [searchInput]="true"
+    [dateRange]="true"
+
+    (tableChanged)="onTableChange($event)"
+    (rowClicked)="openLightbox($event)"
+    (action)="onActionClicked($event)"
+  ></app-table>
+</app-page-wrapper>
+

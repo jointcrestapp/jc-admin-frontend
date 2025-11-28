@@ -50,6 +50,7 @@ import { Select2Module, Select2UpdateEvent } from "ng-select2-component";
   ],
   templateUrl: "./exited-members.component.html",
   styleUrl: "./exited-members.component.scss",
+  standalone:true
 })
 export class ExitedMembersComponent {
   private destroy$ = new Subject<void>();

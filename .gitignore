@@ -55,3 +55,5 @@ Thumbs.db
 .qodo/
 .qodo
 .vercel
+
+.early.coverage

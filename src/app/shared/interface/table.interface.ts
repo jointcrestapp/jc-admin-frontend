@@ -1,3 +1,5 @@
+import { TemplateRef } from "@angular/core";
+
 export interface TableConfig {
     columns?: TableColumn[];
     rowActions?: TableAction[];
@@ -16,7 +18,8 @@ export interface TableColumn {
     canAllow?: string[];
     date_format?: string;
     class?: string;
-    placeholder?: string; 
+    placeholder?: string;
+    template?: TemplateRef<any>; 
 }
 
 export interface TableAction {

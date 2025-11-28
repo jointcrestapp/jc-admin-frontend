@@ -48,6 +48,7 @@ import { Select2Module, Select2UpdateEvent } from "ng-select2-component";
   ],
   templateUrl: "./pending-members.component.html",
   styleUrl: "./pending-members.component.scss",
+  standalone:true
 })
 export class PendingMembersComponent {
   private destroy$ = new Subject<void>();

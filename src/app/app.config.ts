@@ -81,6 +81,7 @@ import { ReportState } from "./shared/store/state/reports.state";
 import { CreditState } from "./shared/store/state/credit.state";
 import { MiscellaneousState } from "./shared/store/state/miscellaneous.state";
 import { SettingsState } from "./shared/store/state/settings.state";
+import { KYCState } from "./shared/store/state/kyc.state";
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
@@ -184,6 +185,7 @@ export const appConfig: ApplicationConfig = {
         CreditState,
         MiscellaneousState,
         SettingsState,
+        KYCState
       ]),
       NgxsModule.forFeature([AuthState, StoreState]),
       NgxsStoragePluginModule.forRoot({

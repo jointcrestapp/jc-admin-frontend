@@ -57,7 +57,7 @@ export const appConfig = {
   },
   email: {
     abuse_email: "no-reply@radarhostapp.com",
-    copyright: new Date().getFullYear() + " Copyright Afronet",
+    copyright: new Date().getFullYear() + " Copyright JointCrest",
     logo_url: "/public/images/logo.png",
   },
   roles: {
@@ -155,5 +155,17 @@ export const appConfig = {
     "1MIN": 1 * 60 * 1000,
     "5MINS": 5 * 60 * 1000,
     "30SECS": 30 * 1000,
+  },
+  kyc_status: {
+    PENDING:'PENDING',
+    VERIFIED: 'VERIFIED',
+    UNVERIFIED: 'UNVERIFIED',
+    REJECTED: 'REJECTED',
+  },
+  withdrawalStatus: { 
+    PENDING: 0,
+    IN_PROGRESS: 1,
+    COMPLETED: 2,
+    DECLINED: 3
   }
 };

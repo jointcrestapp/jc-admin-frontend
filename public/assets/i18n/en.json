@@ -1102,6 +1102,7 @@
   "pending_members": "Pending Members",
   "account_closure": "Account Closure Request",
   "exited_members": "Exited Members",
+  "kyc_submissions":"KYC Submissions",
   "subscription": "Subscription",
   "savings": "Savings",
   "all_savings": "All Savings",
@@ -1137,6 +1138,7 @@
   "withdrawal": "Withdrawal",
   "add_withdrawal": "Add Withdrawal",
   "pending_withdrawal": "Pending Withdrawal",
+  
   "batch_withdrawal": "Batch Withdrawal",
   "dividend": "Dividend",
   "dividend_history": "Dividend History",

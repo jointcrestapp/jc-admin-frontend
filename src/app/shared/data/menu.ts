@@ -59,6 +59,14 @@ export const menu: Sidebar[] = [
         level: 2,
         permission: ["user.index"],
       },
+      {
+        parent_id: 2,
+        title: "kyc submissions",
+        path: "/registration/kyc-submissions",
+        type: "link",
+        level: 2,
+        permission: ["user.index"],
+      }
     ],
   },
   {
@@ -318,14 +326,14 @@ export const menu: Sidebar[] = [
         level: 2,
         permission: ["credit.index"],
       },
-      {
+      /* {
         parent_id: 26,
         title: "add batch repayment",
         path: "/credit-sales/add-batch-repayment",
         type: "link",
         level: 2,
         permission: ["credit.create"],
-      },
+      }, */
     ],
   },
   {
@@ -367,14 +375,14 @@ export const menu: Sidebar[] = [
         level: 2,
         permission: ["withdrawal.index"],
       },
-      {
+     /*  {
         parent_id: 27,
         title: "batch withdrawal",
         path: "/withdrawal/batch-withdrawal",
         type: "link",
         level: 2,
         permission: ["withdrawal.create"],
-      },
+      }, */
     ],
   },
   {
@@ -506,14 +514,14 @@ export const menu: Sidebar[] = [
         level: 2,
         permission: ["reporting.index", "reporting.create"],
       },
-      {
+     /*  {
         parent_id: 32,
         title: "statement",
         path: "/reporting/statement",
         type: "link",
         level: 2,
         permission: ["reporting.index", "reporting.create"],
-      },
+      }, */
     ],
   },
   {
@@ -601,14 +609,14 @@ export const menu: Sidebar[] = [
     level: 1,
     acl_permission: ["trail.index", "trail.create", "trail.edit"],
     children: [
-      {
+    /*   {
         parent_id: 36,
         title: "users activities",
         path: "/user-trail/user-activities",
         type: "link",
         level: 2,
         permission: ["trail.index", "trail.create"],
-      },
+      }, */
       {
         parent_id: 36,
         title: "users login",
@@ -629,7 +637,7 @@ export const menu: Sidebar[] = [
     level: 1,
     permission: ["setting.index"],
   },
-  {
+  /* {
     id: 38,
     title: "user manager",
     active: false,
@@ -663,7 +671,7 @@ export const menu: Sidebar[] = [
         permission: ["role.index"],
       },
     ],
-  },
+  }, */
   {
     id: 39,
     title: "configurations",
@@ -681,14 +689,14 @@ export const menu: Sidebar[] = [
         level: 2,
         permission: ["configurations.index", "configurations.create"],
       },
-      {
+     /*  {
         parent_id: 39,
         title: "users role",
         path: "/configurations/users-role",
         type: "link",
         level: 2,
         permission: ["configurations.index", "configurations.create"],
-      },
+      }, */
       // {
       //   parent_id: 39,
       //   title: "loan type",

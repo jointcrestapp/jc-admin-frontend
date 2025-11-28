@@ -16,8 +16,8 @@ export class GetPendingWithdraw {
 }
 
 export class UpdateWithdrawStatus {
-  static readonly type = "[Withdraw] Update";
-  constructor(public id: number, public status: boolean) {}
+  static readonly type = "[Withdraw] Status Update";
+  constructor(public id: number, public payload: any) {}
 }
 
 export class WithdrawRequest {

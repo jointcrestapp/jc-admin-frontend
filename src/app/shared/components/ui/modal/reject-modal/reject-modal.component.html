@@ -1,0 +1,32 @@
+<ng-template #rejectModal let-modal>
+  <div class="modal-body">
+
+    <i class="ri-error-warning-line icon-box wo-bg text-danger"></i>
+
+    <h5 class="modal-title">Reject</h5>
+
+    <p>Are you sure you want to reject this request?</p>
+
+    <textarea
+      class="form-control mt-3"
+      rows="4"
+      [(ngModel)]="reason"
+      placeholder="Enter Rejection Reason"
+    ></textarea>
+
+    <div class="button-box mt-4">
+      <app-button
+        [class]="'btn-md fw-bold btn btn-outline'"
+        (click)="modal.dismiss('Cancel')">
+        {{ 'cancel' | translate }}
+      </app-button>
+
+      <app-button
+        [class]="'btn-theme btn-md fw-bold btn btn-danger'"
+        (click)="submit()">
+        Reject
+      </app-button>
+    </div>
+
+  </div>
+</ng-template>

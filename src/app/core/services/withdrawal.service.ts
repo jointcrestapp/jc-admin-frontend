@@ -31,28 +31,21 @@ export class WithdrawalService extends BaseApiService {
     return this.post(`${environment.apiURL}/add_withdrawal_request`, data);
   }
 
-  // getSavingsById(id: string) : Observable<any> {
-  //   return this.get(`${environment.apiURL}/get_savings_by_id/${id}`);
-  // }
-
-  // getFilteredMember(filter: any) : Observable<any> {
-  //   return this.get(`${environment.apiURL}/get_filtered_members`, filter);
-  // }
-
   updateWithdrawalRequest(data: any, id: number): Observable<any> {
     return this.put(
       `${environment.apiURL}/update_withdrawal_request/${id}`,
       data
     );
   }
-  // updateUserSavingsStatus(data: any) : Observable<any> {
-  //   return this.post(`${environment.apiURL}/update_savings_status`, data);
-  // }
 
-  // deleteSavings(id:number) : Observable<any> {
-  //   return this.delete(`${environment.apiURL}/delete_saving/${id}`);
-  // }
+  updateWithdrawalStatus(id: number,data: any): Observable<any> {
+    return this.put(
+      `${environment.apiURL}/update_withdrawal_status/${id}`,
+      data
+    );
+  }
 
+ 
   // searchForSavings(data: any): Observable<any> {
   //   return this.http.post(environment.apiURL+ '/search_for_savings', data)
   // }

@@ -38,12 +38,14 @@ import { CurrencySymbolPipe } from "../../../shared/pipe/currency-symbol.pipe";
 import {
   GetPendingWithdraw,
   GetWithdrawRequest,
+  UpdateWithdrawStatus,
 } from "src/app/shared/store/action/withdrawal.action";
 import { CountryState } from "src/app/shared/store/state/country.state";
 import { appConfig } from "src/app/core/config/config";
 import { NotificationService } from "src/app/shared/services/notification.service";
 import { WithdrawalState } from "src/app/shared/store/state/withdrawal.state";
-
+import { AuthState } from "src/app/shared/store/state/auth.state";
+declare var bootstrap: any;
 @Component({
   selector: "app-pending-withdrawals",
   imports: [
@@ -158,6 +160,7 @@ export class PendingWithdrawalsComponent {
   public url: string;
   public open: boolean = true;
   public isBrowser: boolean;
+  currentUserId = this.store.selectSnapshot(AuthState.id);
 
   public tableConfig: TableConfig = {
     columns: [
@@ -186,19 +189,34 @@ export class PendingWithdrawalsComponent {
       },
     ],
     rowActions: [
-      { label: "View", actionToPerform: "view", icon: "ri-printer-line" },
+      /* { label: "View", actionToPerform: "view", icon: "ri-printer-line" }, */
       {
-        label: "Edit",
-        actionToPerform: "edit",
-        icon: "ri-pencil-line",
-        permission: "withdrawal.edit",
+        label: 'Verify',
+            actionToPerform: 'verify',
+            icon: 'ri-check-line',
+            permission: "withdrawal.edit",
+            conditional: {
+              field: 'status',
+              condition: '==',
+              value: 'Pending'
+            }
       },
+       {
+            label: 'Reject',
+            actionToPerform: 'reject',
+            icon: 'ri-close-line',
+            conditional: {
+              field: 'status',
+              condition: '==',
+              value: 'Pending'
+            }
+          }/* ,
       {
         label: "Delete",
         actionToPerform: "delete",
         icon: "ri-delete-bin-line",
         permission: "withdrawal.destroy",
-      },
+      }, */
     ],
     data: [] as any[],
     total: 0,
@@ -244,6 +262,7 @@ export class PendingWithdrawalsComponent {
         const pending_withdrawals = pending_withdrawal.data?.map(
           (item: any) => ({
             ...item,
+            
             withdraw_from: item.withdraw_from == 1 ? "Wallet" : "Savings",
             status: this.getStatusLabel(item.status),
           })
@@ -286,14 +305,65 @@ export class PendingWithdrawalsComponent {
 
   onActionClicked(action: TableClickedAction) {
     if (action.actionToPerform == "edit") this.edit(action.data);
-    else if (action.actionToPerform == "is_approved") this.approve(action.data);
-    else if (action.actionToPerform == "status") this.status(action.data);
+   // else if (action.actionToPerform == "is_approved") this.approve(action.data);
+   // else if (action.actionToPerform == "status") this.status(action.data);
     else if (action.actionToPerform == "delete") this.delete(action.data);
     else if (action.actionToPerform == "deleteAll") this.deleteAll(action.data);
     else if (action.actionToPerform == "duplicate") this.duplicate(action.data);
     else if (action.actionToPerform == "download") this.download(action.data);
     else if (action.actionToPerform == "view") this.view(action.data);
+    else if (action.actionToPerform == "reject") this.reject(action.data);
+    else if (action.actionToPerform == "verify") this.verify(action.data);
   }
+
+  reject(data: any) {
+      console.log('dta;;',data);
+      if (!data.rejection_reason.trim()) return;
+  
+      this.store.dispatch(new UpdateWithdrawStatus(data.id, {
+        status: appConfig.withdrawalStatus.DECLINED,
+        rejected_by: this.currentUserId,
+        rejection_reason: data.rejection_reason
+      })).subscribe({
+        next: (res: any) => {
+          const response = res?.withdrawal?.response; 
+          
+          if (response.status === appConfig.statusCode.ok) {
+            this.notificationService.showSuccess(response.message);
+          }else { 
+            this.notificationService.showError(response.message);
+          }     
+          this.ngOnInit();
+          const modalEl = document.getElementById('rejectionModal');
+          if (modalEl) bootstrap.Modal.getInstance(modalEl)?.hide();
+          },
+          error: (err) => {
+            this.notificationService.showError(err?.message || 'Failed to reject document!');
+          }
+      
+      });
+  }
+  
+  verify(data: any) {
+      
+      this.store.dispatch(new UpdateWithdrawStatus(data.id, { status: appConfig.withdrawalStatus.COMPLETED, verified_by: this.currentUserId }))
+      .pipe(
+          takeUntil(this.destroy$)
+        ).subscribe({
+          next: (res: any) => {
+            const response = res?.withdrawal?.response;
+            if (response.status === appConfig.statusCode.ok) {
+                this.notificationService.showSuccess(response.message);
+            } else { 
+              this.notificationService.showError(response.message);
+            } 
+            this.ngOnInit();
+          },
+          error: (err) => {
+            this.notificationService.showError(err?.message || 'Failed to update room status');
+          }
+        });
+    }
 
   edit(data: any) {
     this.router.navigateByUrl(`/withdrawal/edit-withdrawal/${data.id}`);
@@ -303,13 +373,13 @@ export class PendingWithdrawalsComponent {
     this.router.navigateByUrl(`/withdrawal/details/${data.id}`);
   }
 
-  approve(data: Product) {
+  /* approve(data: Product) {
     this.store.dispatch(new ApproveProductStatus(data.id, data.is_approved));
-  }
+  } */
 
-  status(data: Product) {
+  /* status(data: Product) {
     this.store.dispatch(new UpdateProductStatus(data.id, data.status));
-  }
+  } */
 
   delete(data: Product) {
     // this.store.dispatch(new DeleteThrifts(data.id)).pipe(

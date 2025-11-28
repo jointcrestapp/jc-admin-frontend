@@ -7,6 +7,7 @@ export const environment = {
   SITE_URL: SERVER_URL,
   apiURL : baseApiUrl,
   USER_PROFILE_PIC: `${SERVER_URL}/ProfileImages/`,
+  KYC_PHOTOS: `${SERVER_URL}/kyc/`,
   //PHOTOS: `${SERVER_URL}/app-backend/public/dist/images/`,
   API_CRYPTO_KEY : '12345678901234567890123456789012', // 32 bytes
   API_CRYPTO_IV: '1234567890123456', // 16 bytes
