@@ -116,6 +116,25 @@
           </select2>
           }
         </div>
+           @if(open){
+            <div advanceFilter class="show-box mb-4 d-block product-category-option">
+              <div class="row g-sm-4 g-3">
+                <div class="col-xl-4 col-lg-6 col-md-3 col-sm-6">
+                  @if(isBrowser) {
+                  <select2
+                    class="custom-select"
+                    [placeholder]="'select_status' | translate"
+                    [data]="subStatus.length ? subStatus : []"
+                    (update)="applyFilter($event)"
+                    noResultMessage="{{ 'no_data_found' | translate }}"
+                    resettable
+                  >
+                  </select2>
+                  }
+                </div>
+              </div>
+            </div>
+            }
       </div>
     </div>
     }

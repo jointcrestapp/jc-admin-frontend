@@ -181,14 +181,14 @@ export class FormMemberComponent {
         country: new FormControl("", [Validators.required]),
         state: new FormControl("", [Validators.required]),
         city: new FormControl("", [Validators.required]),
-        dob: new FormControl("", [
+        /* dob: new FormControl("", [
           Validators.required,
           this.validateDob.bind(this),
-        ]),
+        ]), */
         gender: new FormControl("", [Validators.required]),
         // marital_status: new FormControl("", [Validators.required]),
         address_line1: new FormControl("", [Validators.required]),
-        means_of_identification: new FormControl("", [Validators.required]),
+       // means_of_identification: new FormControl("", [Validators.required]),
         account_type: new FormControl("", [Validators.required]),
         cooperativeDetails: this.formBuilder.group({
           registration_date: new FormControl(
@@ -312,7 +312,7 @@ export class FormMemberComponent {
                 );
             }
 
-            if (member.dob) {
+        /*     if (member.dob) {
               const dobDate = new Date(member.dob);
               patchData.dob = this.formatter.format(
                 new NgbDate(
@@ -321,7 +321,7 @@ export class FormMemberComponent {
                   dobDate.getDate()
                 )
               );
-            }
+            } */
 
             this.form.patchValue(patchData);
 
@@ -334,6 +334,8 @@ export class FormMemberComponent {
                     first_name: [kin.first_name],
                     last_name: [kin.last_name],
                     email: [kin.email],
+                    dial_code: [kin.dial_code],
+                    phone: [kin.phone],
                   })
                 );
               });
@@ -550,6 +552,10 @@ export class FormMemberComponent {
       first_name: [""],
       last_name: [""],
       email: [""],
+      phone: new FormControl("", [
+          Validators.pattern(appConfig.pattern.SIMPLE_PHONE_NO),
+        ]),
+      dial_code: new FormControl("234"),
     });
   }
 
@@ -756,7 +762,7 @@ export class FormMemberComponent {
     }
 
     if (this.type === "create") {
-      payload.member_id = GLOBALF.genrateMemberId();
+      delete payload.password;
       action = new CreateMember(payload);
     }
 

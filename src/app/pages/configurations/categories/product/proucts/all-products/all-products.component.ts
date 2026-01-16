@@ -45,6 +45,7 @@ import { HasPermissionDirective } from "src/app/shared/directive/has-permission.
   ],
   templateUrl: "./all-products.component.html",
   styleUrl: "./all-products.component.scss",
+  standalone:true
 })
 export class AllProductsComponent {
   private destroy$ = new Subject<void>();

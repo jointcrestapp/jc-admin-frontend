@@ -9,6 +9,7 @@ import { Location } from "@angular/common";
   imports: [PageWrapperComponent, FormSubscriptionComponent],
   templateUrl: "./add-subscription.component.html",
   styleUrl: "./add-subscription.component.scss",
+  standalone:true
 })
 export class AddSubscriptionComponent {
   constructor(private router: Router, private location: Location) {}

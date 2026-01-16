@@ -85,6 +85,11 @@ export class CreditSalesReportComponent {
 
   public tableConfig: TableConfig = {
     columns: [
+    /* {
+        title: "Date",
+        dataField: "createdAt",
+        type: "date",
+      }, */
       { title: "Status", dataField: "status", type: "transition" },
       { title: "Principal", dataField: "total_principal", type: "price" },
       { title: "Interest", dataField: "total_interest", type: "price" },

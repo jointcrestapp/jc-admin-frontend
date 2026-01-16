@@ -61,6 +61,7 @@ declare var bootstrap: any;
   ],
   templateUrl: "./pending-withdrawals.component.html",
   styleUrl: "./pending-withdrawals.component.scss",
+  standalone: true
 })
 export class PendingWithdrawalsComponent {
   private destroy$ = new Subject<void>();

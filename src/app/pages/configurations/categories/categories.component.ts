@@ -50,6 +50,7 @@ import { AllCurrenciesComponent } from "./currency/all-currencies/all-currencies
 import { AllSubscriptionFeeComponent } from "./subscription-fee/all-subscription-fee/all-subscription-fee.component";
 import { AllSharesAmountComponent } from "./shares-amount/all-shares-amount/all-shares-amount.component";
 import { ActivatedRoute, Router } from "@angular/router";
+import { OtherCategoriesComponent } from "./other-categories/other-categories.component";
 
 function convertToNgbDate(date: NgbDateStruct): NgbDate {
   return new NgbDate(date?.year, date?.month, date?.day);
@@ -75,11 +76,11 @@ function convertToNgbDate(date: NgbDateStruct): NgbDate {
     AllThriftTiersComponent,
     AllThriftCategoryComponent,
     AllCurrenciesComponent,
-    AllSubscriptionFeeComponent,
-    AllSharesAmountComponent,
+    OtherCategoriesComponent
   ],
   templateUrl: "./categories.component.html",
   styleUrl: "./categories.component.scss",
+  standalone:true
 })
 export class CategoriesComponent {
   currency$: Observable<Select2Data> = inject(Store).select(

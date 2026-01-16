@@ -194,19 +194,19 @@ export class FinishedLoansComponent {
       },
     ],
     rowActions: [
-      { label: "View", actionToPerform: "view", icon: "ri-printer-line" },
-      {
+      { label: "View", actionToPerform: "view", icon: "ri-printer-line",permission: "loan.edit", },
+   /*   {
         label: "Edit",
         actionToPerform: "edit",
         icon: "ri-pencil-line",
         permission: "loan.edit",
       },
-      {
+       {
         label: "Delete",
         actionToPerform: "delete",
         icon: "ri-delete-bin-line",
         permission: "loan.destroy",
-      },
+      }, */
     ],
     data: [] as Product[],
     total: 0,
@@ -230,7 +230,7 @@ export class FinishedLoansComponent {
       let loans = loan?.data?.filter((element: any) => {
         element.loan_status =
           element.status == "3"
-            ? `<div class="status-approved"><span>Disbursed</span></div>`
+            ? `<div class="status-approved"><span>Finished</span></div>`
             : "-";
         return element;
       });

@@ -1,0 +1,108 @@
+<app-page-wrapper [gridClass]="'col-sm-12'" [title]="'financial_settings' | translate">
+  <form class="theme-form theme-form-2 mega-form" [formGroup]="form" (ngSubmit)="submit()">
+
+    <app-form-fields [label]="'activation_fee'" [for]="'activation_fee'">
+      <div class="input-group">  
+        <span class="input-group-text">{{currency}}</span>
+        <input class="form-control" id="activation_fee" type="number" formControlName="activation_fee" placeholder="0.00" />
+      </div>
+      
+    </app-form-fields>
+    <app-form-fields [label]="'subscription_fee'" [for]="'subscription_fee'">
+      <div class="input-group">
+        <span class="input-group-text">{{currency}}</span>
+        <input class="form-control" id="subscription_fee" type="number" formControlName="subscription_fee" placeholder="0.00" />
+      </div>
+      
+    </app-form-fields>
+    <app-form-fields [label]="'shares_amount'" [for]="'shares_amount'">
+      <div class="input-group">
+        <span class="input-group-text">{{currency}}</span>
+        <input class="form-control" id="shares_amount" type="number" formControlName="shares_amount" placeholder="0.00" />
+      </div>
+      
+    </app-form-fields>
+    <app-form-fields [label]="'subscription_grace_period_days'" [for]="'subscription_grace_period'">
+      <input class="form-control" id="subscription_grace_period" type="number" formControlName="subscription_grace_period" placeholder="e.g. 7" />
+    </app-form-fields>
+
+   <app-form-fields [label]="'min_deposit'" [for]="'min_deposit'">
+    <div class="input-group">
+        <span class="input-group-text">{{currency}}</span>
+        <input class="form-control" id="min_deposit" type="number" formControlName="min_deposit" />
+      </div>
+    </app-form-fields>
+
+    <app-form-fields [label]="'min_transfer_amount'" [for]="'min_transfer_amount'">
+      <div class="input-group">
+        
+        <span class="input-group-text">{{currency}}</span>
+        <input class="form-control" id="min_transfer_amount" type="number" formControlName="min_transfer_amount" />
+      </div>
+      
+    </app-form-fields>
+
+    <hr>
+
+    <app-form-fields [label]="'min_withdrawal_limit'" [for]="'min_withdrawal'">
+      <div class="input-group">
+        <span class="input-group-text">{{currency}}</span>
+        <input class="form-control" id="min_withdrawal_limit" type="number" formControlName="min_withdrawal" />
+      </div>
+      
+    </app-form-fields>
+
+    <app-form-fields [label]="'max_withdrawal_limit'" [for]="'max_withdrawal'">
+      <div class="input-group">  
+        <span class="input-group-text">{{currency}}</span>
+        <input class="form-control" id="max_withdrawal" type="number" formControlName="max_withdrawal" />
+      </div>
+      
+    </app-form-fields>
+
+    <app-form-fields [label]="'withdrawal_percent_fee'" [for]="'withdrawal_percent'">
+      <div class="input-group">
+        <input class="form-control" id="withdrawal_percent" type="number" formControlName="withdrawal_percent" />
+        <span class="input-group-text">%</span>
+      </div>
+    </app-form-fields>
+    <app-form-fields [label]="'dividend_percent'" [for]="'dividend_percent'">
+      <div class="input-group">
+        <input class="form-control" id="dividend_percent" type="number" formControlName="dividend_percent" />
+        <span class="input-group-text">%</span>
+      </div>
+    </app-form-fields>
+
+    <app-form-fields [label]="'min_withdrawal_fee_fixed'" [for]="'min_withdrawal_fee'">
+      <div class="input-group">
+        <span class="input-group-text">{{currency}}</span>
+        <input class="form-control" id="min_withdrawal_fee" type="number" formControlName="min_withdrawal_fee" />
+      </div>
+      
+    </app-form-fields>
+
+    <app-form-fields [label]="'max_withdrawal_fee_fixed'" [for]="'max_withdrawal_fee'">
+      <div class="input-group">
+        <span class="input-group-text">{{currency}}</span>
+        <input class="form-control" id="max_withdrawal_fee" type="number" formControlName="max_withdrawal_fee" />
+      </div>
+      
+    </app-form-fields>
+
+    <hr>
+
+    <app-form-fields [label]="'fixed_loan_processing_fee'" [for]="'fixed_loan_fee'">
+      <div class="input-group">
+        <span class="input-group-text">{{currency}}</span>
+        <input class="form-control" id="fixed_loan_fee" type="number" formControlName="fixed_loan_fee" />
+      </div>
+      
+    </app-form-fields>
+
+    <div class="mt-4">
+      <app-button [id]="'user_btn'">
+        {{ (type == "create" ? "save_settings" : "update_settings") | translate }}
+      </app-button>
+    </div>
+  </form>
+</app-page-wrapper>

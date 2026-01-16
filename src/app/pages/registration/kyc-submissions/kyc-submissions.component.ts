@@ -128,7 +128,7 @@ export class KycSubmissionsComponent {
 
           rejected_by_name: m.rejector 
               ? `${m.rejector.first_name} ${m.rejector.last_name}` 
-            : null,
+            : '-',
           verification_status_raw: m.verification_status,
           verification_status : 
                 m.verification_status === 'VERIFIED'

@@ -68,6 +68,7 @@ import { NotificationService } from "src/app/shared/services/notification.servic
   ],
   templateUrl: "./form-subscription.component.html",
   styleUrl: "./form-subscription.component.scss",
+  standalone:true
 })
 export class FormSubscriptionComponent {
   public searchResult: boolean = false;

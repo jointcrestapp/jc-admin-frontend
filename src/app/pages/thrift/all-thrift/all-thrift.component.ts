@@ -246,16 +246,19 @@ export class AllThriftComponent {
         sortable: true,
         sort_direction: "desc",
       },
-      { title: "country", dataField: "user_country" },
+     // { title: "country", dataField: "user_country" },
     ],
     rowActions: [
-      { label: "View", actionToPerform: "view", icon: "ri-printer-line" },
-      {
+     /* {
+        label: "View", actionToPerform: "view", icon: "ri-printer-line",
+        permission: "thrift.edit",
+       },
+       {
         label: "Edit",
         actionToPerform: "edit",
         icon: "ri-pencil-line",
         permission: "thrift.edit",
-      },
+      }, */
       {
         label: "Delete",
         actionToPerform: "delete",

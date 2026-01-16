@@ -45,6 +45,7 @@ import { HasPermissionDirective } from "src/app/shared/directive/has-permission.
   ],
   templateUrl: "./all-saving-types.component.html",
   styleUrl: "./all-saving-types.component.scss",
+  standalone:true
 })
 export class AllSavingTypesComponent {
   private destroy$ = new Subject<void>();

@@ -48,6 +48,7 @@ import { HasPermissionDirective } from "src/app/shared/directive/has-permission.
   ],
   templateUrl: "./all-thrift-tiers.component.html",
   styleUrl: "./all-thrift-tiers.component.scss",
+  standalone:true
 })
 export class AllThriftTiersComponent {
   private destroy$ = new Subject<void>();

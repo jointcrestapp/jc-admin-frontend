@@ -91,24 +91,17 @@
           <app-all-currencies></app-all-currencies>
         </ng-template>
       </li>
-      <li ngbNavItem="subscription_fee">
+      
+      <li ngbNavItem="financial_settings">
         <a ngbNavLink>
           <i class="ri-line-chart-line"></i>
-          {{ "subscription_fee" | translate }}
+          Financial Settings
         </a>
         <ng-template ngbNavContent>
-          <app-all-subscription-fee></app-all-subscription-fee>
+          <app-other-categories></app-other-categories>
         </ng-template>
       </li>
-      <li ngbNavItem="shares_amount">
-        <a ngbNavLink>
-          <i class="ri-share-line"></i>
-          {{ "shares_amount" | translate }}
-        </a>
-        <ng-template ngbNavContent>
-          <app-all-shares-amount></app-all-shares-amount>
-        </ng-template>
-      </li>
+      
     </ul>
     <div [ngbNavOutlet]="nav" class="tab-content"></div>
   </div>

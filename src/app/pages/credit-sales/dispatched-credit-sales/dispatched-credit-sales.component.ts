@@ -192,12 +192,12 @@ export class DispatchedCreditSalesComponent {
         icon: "ri-printer-line",
         permission: "credit.index",
       },
-      {
+     /*  {
         label: "Approved",
         actionToPerform: "reactivate",
         icon: "ri-check-line",
         permission: "credit.edit",
-      },
+      }, */
       {
         label: "Delete",
         actionToPerform: "delete",

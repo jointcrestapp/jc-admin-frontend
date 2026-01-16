@@ -68,6 +68,7 @@ import { NotificationService } from "src/app/shared/services/notification.servic
   ],
   templateUrl: "./form-currency.component.html",
   styleUrl: "./form-currency.component.scss",
+  standalone:true
 })
 export class FormCurrencyComponent {
   public searchResult: boolean = false;

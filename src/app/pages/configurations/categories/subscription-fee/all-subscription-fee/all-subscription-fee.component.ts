@@ -43,6 +43,7 @@ import { NotificationService } from "src/app/shared/services/notification.servic
   ],
   templateUrl: "./all-subscription-fee.component.html",
   styleUrl: "./all-subscription-fee.component.scss",
+  standalone:true
 })
 export class AllSubscriptionFeeComponent {
   private destroy$ = new Subject<void>();

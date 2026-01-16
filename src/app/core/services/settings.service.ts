@@ -43,4 +43,16 @@ export class SettingsService extends BaseApiService {
       data
     );
   }
+
+  addUpdateFinancialSettings(data: any): Observable<any> {
+    return this.post(
+      `${environment.apiURL}/add_update_financial_settings`,
+      data
+    );
+  }
+  getFinancialSettings(): Observable<any> {
+    return this.get(
+      `${environment.apiURL}/get_financial_settings`
+    );
+  }
 }

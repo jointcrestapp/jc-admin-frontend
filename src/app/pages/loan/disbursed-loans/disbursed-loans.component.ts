@@ -198,12 +198,12 @@ export class DisbursedLoansComponent {
     ],
     rowActions: [
       { label: "View", actionToPerform: "view", icon: "ri-printer-line" },
-      {
+     /*  {
         label: "Edit",
         actionToPerform: "edit",
         icon: "ri-pencil-line",
         permission: "loan.edit",
-      },
+      }, */
       {
         label: "Delete",
         actionToPerform: "delete",

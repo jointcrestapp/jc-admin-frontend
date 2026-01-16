@@ -45,6 +45,7 @@ import { HasPermissionDirective } from "src/app/shared/directive/has-permission.
   ],
   templateUrl: "./all-loan-type.component.html",
   styleUrl: "./all-loan-type.component.scss",
+  standalone:true
 })
 export class AllLoanTypeComponent {
   private destroy$ = new Subject<void>();
@@ -75,13 +76,14 @@ export class AllLoanTypeComponent {
   public tableConfig: TableConfig = {
     columns: [
       { title: "Date", dataField: "date", type: "date" },
-      { title: "Updated On", dataField: "updated_on", type: "date" },
-      { title: "name", dataField: "name" },
-      { title: "Rate (%)", dataField: "rate" },
-      { title: "Loan Cal. Method", dataField: "cal_method" },
-      { title: "Guarantors", dataField: "guarantors" },
-      { title: "Min Month", dataField: "min_month" },
-      { title: "Max Month", dataField: "max_month" },
+      
+      { title: "name", dataField: "meta" },
+      
+      { title: "Amount", dataField: "amount", type: 'price' },
+      { title: "Interest", dataField: "interest" },
+      { title: "Threshold (%)", dataField: "threshold_percent" },
+      { title: "Guarantor Required", dataField: "isGuarantorRequired" },
+      { title: "Guarantors", dataField: "total_guarantors" }
     ],
     rowActions: [
       {
@@ -127,6 +129,9 @@ export class AllLoanTypeComponent {
     this.loan_types$.pipe(takeUntil(this.destroy$)).subscribe((lt) => {
       let loan_types = lt?.data?.filter((element: any) => {
         // cat.tier.currency = cat?.tier?.currency ? cat?.tier.currency : "";
+        element.isGuarantorRequired = element.guarantor_required == 1
+          ? `<div class="status-success"><span>Yes</span></div>`
+          : `<div class="status-danger"><span>No</span></div>`;
         return element;
       });
       this.tableConfig.data = lt ? loan_types : [];

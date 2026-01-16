@@ -15,6 +15,7 @@ import {
   Select2Data,
   Select2Module,
   Select2Option,
+  Select2UpdateEvent,
 } from "ng-select2-component";
 import { ImportCsvModalComponent } from "../../../shared/components/ui/modal/import-csv-modal/import-csv-modal.component";
 import { DigitalDownloadModalComponent } from "../../../shared/components/ui/modal/digital-download-modal/digital-download-modal.component";
@@ -62,6 +63,17 @@ import { NotificationService } from "src/app/shared/services/notification.servic
 export class AllWalletTransactionsComponent {
   private destroy$ = new Subject<void>();
   private countryMap: Map<number, string> = new Map();
+
+  public subStatus: Select2Data = [
+    {
+      value: "0",
+      label: "Debit",
+    },
+    {
+      value: "1",
+      label: "Credit",
+    },
+  ];
 
   transactions$: Observable<any> = inject(Store).select(
     WalletState.transactions
@@ -185,7 +197,7 @@ export class AllWalletTransactionsComponent {
         sort_direction: "desc",
       },
       { title: "status", dataField: "status" },
-      { title: "country", dataField: "user_country" },
+      /* { title: "country", dataField: "user_country" }, */
     ],
     rowActions: [
       { label: "View", actionToPerform: "view", icon: "ri-printer-line" },
@@ -223,9 +235,18 @@ export class AllWalletTransactionsComponent {
       }
     });
   }
-
+  applyFilter(data: Select2UpdateEvent) {
+    this.filter["status"] = data && data.value ? data.value : null;
+    if (!this.filter["status"]) {
+      delete this.filter["status"];
+    }
+    this.onTableChange(this.filter);
+  }
   getTransactions() {
     this.store.dispatch(new GetUserTransaction({}));
+
+
+    
   }
 
   generateYearOptions(
@@ -254,17 +275,20 @@ export class AllWalletTransactionsComponent {
             return {
               ...item,
               month: this.getMonthLabel(item.month),
-              user_country: this.countryMap.get(item.user_country),
-              status:
-                item.status === 0
-                  ? `<div class="status-out_of_stock"><span>Debit</span></div>`
-                  : `<div class="status-in_stock"><span>Credit</span></div>`,
+              user_country: this.countryMap.get(item.user_country)
             };
           }
           return item;
         });
+        transactions.filter((element: any) => {
+        element.status =
+          element.status == 0
+            ? `<div class="status-danger"><span>Debit</span></div>`
+            : `<div class="status-success"><span>Credit</span></div>`;
+        return element;
+      });
         this.tableConfig.data = transactions || [];
-        this.tableConfig.total = transaction.total || 0;
+        this.tableConfig.total = transactions.total || 0;
       });
   }
 

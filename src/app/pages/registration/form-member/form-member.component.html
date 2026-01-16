@@ -152,7 +152,7 @@
                   }
                 </app-form-fields>
 
-                @if(type != 'edit'){
+               <!--  @if(type != 'edit'){
                 <app-form-fields
                   [label]="'password'"
                   [for]="'password'"
@@ -196,7 +196,7 @@
                   </div>
                   } }
                 </app-form-fields>
-                }
+                } -->
                 <app-form-fields
                   [labelClass]="'form-label-title col-sm-3 mb-0'"
                   [gridClass]="'col-sm-9'"
@@ -275,7 +275,7 @@
                   }
                 </app-form-fields>
 
-                <app-form-fields
+                <!-- <app-form-fields
                   [label]="'Date of Birth'"
                   [for]="'date_of_birth'"
                   [required]="true"
@@ -363,7 +363,7 @@
                       {{ "dob_is_invalid" | translate }}
                     </div>
                   </div>
-                </app-form-fields>
+                </app-form-fields> -->
                 <app-form-fields
                   [labelClass]="'form-label-title col-sm-3 mb-0'"
                   [gridClass]="'col-sm-9'"
@@ -431,7 +431,7 @@
                   </div>
                   }
                 </app-form-fields>
-                <app-form-fields
+                <!-- <app-form-fields
                   [labelClass]="'form-label-title col-sm-3 mb-0'"
                   [gridClass]="'col-sm-9'"
                   [label]="'Means of Identification'"
@@ -455,7 +455,7 @@
                     {{ "means_of_identification_is_required" | translate }}
                   </div>
                   }
-                </app-form-fields>
+                </app-form-fields> -->
                 <app-form-fields
                   [labelClass]="'form-label-title col-sm-3 mb-0'"
                   [gridClass]="'col-sm-9'"
@@ -842,16 +842,59 @@
                         </div>
                         }
                       </app-form-fields>
-                    </div>
-                  </div>
-                </div>
+                      <app-form-fields
+                        [label]="'phone'"
+                        [for]="'phone-{{i}}'"
+                        [required]="true"
+                      >
+                        @if(isBrowser) {
+                        <select2
+                          class="custom-select intl-tel-input"
+                          [templates]="template"
+                          [data]="codes"
+                          formControlName="dial_code"
+                          noResultMessage="{{ 'no_data_found' | translate }}"
+                        >
+                          <ng-template #template let-data="data">
+                            <div class="country">
+                              <div class="flag-box">
+                                <div class="iti-flag {{ data?.class }}"></div>
+                              </div>
+                              <span class="dial-code">{{ data.code }}</span>
+                            </div>
+                          </ng-template>
+                        </select2>
+                        }
+                        <input
+                          type="tel"
+                          class="form-control intl-input-padding"
+                          formControlName="phone"
+                          placeholder="{{ 'enter_phone' | translate }}"
+                          name="phone"
+                          (keydown)="preventLeadingZero($event)"
+                        />
+                        @if(nok.get('phone')?.touched &&
+                        nok.get('phone')?.errors?.['required']){
+                        <div class="invalid-feedback" autocomplete="false">
+                          {{ "phone_number_is_required" | translate }}
+                        </div>
+                        } @if(nok.get('phone')?.touched &&
+                        nok.get('phone')?.errors?.['pattern']){
+                        <div class="invalid-feedback">
+                          {{ "phone_number_is_invalid" | translate }}
+                        </div>
+                        }
+                      </app-form-fields>
+                          </div>
+                        </div>
+                      </div>
 
-                @if(nextOfKins.length === 0){
-                <div class="alert alert-info">
-                  {{ "no_nok_added" | translate }}
+                      @if(nextOfKins.length === 0){
+                      <div class="alert alert-info">
+                        {{ "no_nok_added" | translate }}
+                      </div>
+                      }
                 </div>
-                }
-              </div>
             </ng-template>
           </li>
         </ul>

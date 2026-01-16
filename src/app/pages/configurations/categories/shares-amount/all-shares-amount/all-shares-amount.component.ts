@@ -44,6 +44,7 @@ import { NotificationService } from "src/app/shared/services/notification.servic
   ],
   templateUrl: "./all-shares-amount.component.html",
   styleUrl: "./all-shares-amount.component.scss",
+  standalone:true
 })
 export class AllSharesAmountComponent {
   private destroy$ = new Subject<void>();

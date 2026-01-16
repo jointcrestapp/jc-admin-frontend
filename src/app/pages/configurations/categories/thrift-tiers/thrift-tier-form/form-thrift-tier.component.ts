@@ -73,6 +73,7 @@ import { currency } from "src/app/shared/data/currency";
   ],
   templateUrl: "./form-thrift-tier.component.html",
   styleUrl: "./form-thrift-tier.component.scss",
+  standalone:true
 })
 export class FormThriftTierComponent {
   public searchResult: boolean = false;

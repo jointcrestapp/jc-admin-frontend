@@ -42,9 +42,11 @@ import { HasPermissionDirective } from "src/app/shared/directive/has-permission.
     TableComponent,
     ImportCsvModalComponent,
     DigitalDownloadModalComponent,
+    
   ],
   templateUrl: "./all-product-plans.component.html",
   styleUrl: "./all-product-plans.component.scss",
+  standalone:true
 })
 export class AllProductPlansComponent {
   private destroy$ = new Subject<void>();

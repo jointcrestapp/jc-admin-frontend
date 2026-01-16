@@ -215,9 +215,9 @@ export class AllSharesComponent {
         sortable: true,
         sort_direction: "desc",
       },
-      { title: "country", dataField: "user_country" },
+      //{ title: "country", dataField: "user_country" },
     ],
-    rowActions: [
+    /* rowActions: [
       { label: "View", actionToPerform: "view", icon: "ri-printer-line" },
       {
         label: "Edit",
@@ -231,7 +231,7 @@ export class AllSharesComponent {
         icon: "ri-delete-bin-line",
         permission: "shares.destroy",
       },
-    ],
+    ], */
     data: [] as Product[],
     total: 0,
   };

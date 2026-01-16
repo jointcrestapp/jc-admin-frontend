@@ -14,7 +14,8 @@ import { ButtonComponent } from '../../../shared/components/ui/button/button.com
         Select2Module, FormFieldsComponent, ButtonComponent
     ],
     templateUrl: './withdraw-request-modal.component.html',
-    styleUrl: './withdraw-request-modal.component.scss'
+    styleUrl: './withdraw-request-modal.component.scss',
+    standalone: true
 })
 export class WithdrawRequestModalComponent {
 

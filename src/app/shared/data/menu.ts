@@ -482,14 +482,14 @@ export const menu: Sidebar[] = [
         level: 2,
         permission: ["reporting.index", "reporting.create"],
       },
-      {
+   /*    {
         parent_id: 32,
         title: "revenue report",
         path: "/reporting/revenue-report",
         type: "link",
         level: 2,
         permission: ["reporting.index"],
-      },
+      }, */
       {
         parent_id: 32,
         title: "loan report",
@@ -600,7 +600,7 @@ export const menu: Sidebar[] = [
       },
     ],
   },
-  {
+  /* {
     id: 36,
     title: "user trail",
     active: false,
@@ -609,14 +609,14 @@ export const menu: Sidebar[] = [
     level: 1,
     acl_permission: ["trail.index", "trail.create", "trail.edit"],
     children: [
-    /*   {
+      {
         parent_id: 36,
         title: "users activities",
         path: "/user-trail/user-activities",
         type: "link",
         level: 2,
         permission: ["trail.index", "trail.create"],
-      }, */
+      },
       {
         parent_id: 36,
         title: "users login",
@@ -626,7 +626,7 @@ export const menu: Sidebar[] = [
         permission: ["trail.index", "trail.create"],
       },
     ],
-  },
+  }, */
   {
     id: 37,
     title: "settings",

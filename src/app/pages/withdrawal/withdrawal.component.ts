@@ -56,6 +56,7 @@ import { WithdrawalState } from "src/app/shared/store/state/withdrawal.state";
   ],
   templateUrl: "./withdrawal.component.html",
   styleUrl: "./withdrawal.component.scss",
+  standalone:true
 })
 export class WithdrawalComponent {
   private destroy$ = new Subject<void>();

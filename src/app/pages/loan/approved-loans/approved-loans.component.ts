@@ -204,12 +204,12 @@ export class ApprovedLoansComponent {
         icon: "ri-check-line",
         permission: "loan.edit",
       },
-      {
+     /*  {
         label: "Edit",
         actionToPerform: "edit",
         icon: "ri-pencil-line",
         permission: "loan.edit",
-      },
+      }, */
       {
         label: "Delete",
         actionToPerform: "delete",

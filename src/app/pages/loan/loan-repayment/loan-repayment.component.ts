@@ -191,14 +191,17 @@ export class LoanRepaymentComponent {
       },
     ],
     rowActions: [
-      { label: "View", actionToPerform: "view", icon: "ri-printer-line" },
       {
+        label: "View", actionToPerform: "view", icon: "ri-printer-line",
+        permission: "loan.edit",
+       },
+     /*  {
         label: "Edit",
         actionToPerform: "edit",
         icon: "ri-pencil-line",
         permission: "loan.edit",
-      },
-      {
+      },*/
+      { 
         label: "Delete",
         actionToPerform: "delete",
         icon: "ri-delete-bin-line",
