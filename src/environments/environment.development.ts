@@ -1,5 +1,5 @@
-let baseApiUrl = 'http://localhost:3100/api/v1';
-//let baseApiUrl = 'https://admindemoapi.jointcrest.africa/api/v1';
+//let baseApiUrl = 'http://localhost:3100/api/v1';
+let baseApiUrl = 'https://admindemoapi.jointcrest.africa/api/v1';
 let SERVER_URL = 'http://localhost:3100';
 
 let devUrl = 'http://localhost:4200';
