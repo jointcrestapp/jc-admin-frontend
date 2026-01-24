@@ -10,6 +10,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { AlertComponent } from '../../../shared/components/ui/alert/alert.component';
 import { ButtonComponent } from '../../../shared/components/ui/button/button.component';
 import { AsyncPipe } from '@angular/common';
+import { environment } from 'src/environments/environment.development';
 
 @Component({
     selector: 'app-login',
@@ -26,6 +27,7 @@ export class LoginComponent {
   public form: FormGroup;
 
   setting$: Observable<Values> = inject(Store).select(SettingState.setting) as Observable<Values>;
+  buildVersion: string = environment.VERSION;
 
   constructor(
     private store: Store,

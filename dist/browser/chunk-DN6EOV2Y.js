@@ -1,1 +1,0 @@
-import"./chunk-TSRGIXR5.js";var o=[{path:"product-plan",loadChildren:()=>import("./chunk-AV5P4ROZ.js").then(t=>t.productPlanRoutes)},{path:"products",loadChildren:()=>import("./chunk-JJB6UCDJ.js").then(t=>t.productsRoutes)},{path:"vendors",loadChildren:()=>import("./chunk-HOYAYKV5.js").then(t=>t.vendorsRoutes)}];export{o as productRoutes};

@@ -4,6 +4,8 @@ let SERVER_URL = 'https://demoadmin.jointcrest.africa';
 
 export const environment = {
   production: true,
+  VERSION: '1.0.2',
+  BUILD_DATE: '2024-06-06T12:00:00Z',
   SITE_URL: SERVER_URL,
   apiURL : baseApiUrl,
   USER_PROFILE_PIC: `${SERVER_URL}/ProfileImages/`,
