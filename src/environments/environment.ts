@@ -1,10 +1,11 @@
-//let baseApiUrl = 'https://jointcrest.africa/api/v1';
-let baseApiUrl = 'https://admindemoapi.jointcrest.africa/api/v1';
-let SERVER_URL = 'https://demoadmin.jointcrest.africa';
+//et baseApiUrl = 'https://jointcrest.africa/api/v1';
+ let baseApiUrl = 'https://admindemoapi.jointcrest.africa/api/v1';
+let SERVER_URL = 'https://demoadmin.jointcrest.africa'; 
 
+//0417
 export const environment = {
   production: true,
-  VERSION: '1.0.2',
+  VERSION: '1.0.3',
   BUILD_DATE: '2024-06-06T12:00:00Z',
   SITE_URL: SERVER_URL,
   apiURL : baseApiUrl,

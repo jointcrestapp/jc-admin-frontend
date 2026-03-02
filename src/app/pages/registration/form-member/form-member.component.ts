@@ -139,6 +139,11 @@ export class FormMemberComponent {
   @Input() type: string;
   @ViewChild("nav") nav: NgbNav;
 
+  countryName!: string;
+  stateName!: string;
+  cityName!: string;
+  bankCode!: string;
+
   constructor(
     private notificationService: NotificationService,
     private route: ActivatedRoute,
@@ -195,7 +200,7 @@ export class FormMemberComponent {
             { value: GLOBALF.formatDate(new Date()), disabled: true },
             [Validators.required]
           ),
-          registration_fee: new FormControl(1000, [Validators.required]),
+          registration_fee: new FormControl(1000),
           savings_amount: new FormControl(""),
         }),
         bankDetails: this.formBuilder.group({
@@ -209,14 +214,14 @@ export class FormMemberComponent {
         nextOfKins: this.formBuilder.array([]),
         password: new FormControl(""),
         password_confirmation: new FormControl(""),
-        status: new FormControl(1),
+        status: new FormControl(0),
       },
-      {
+     /*  {
         validator: CustomValidators.MatchValidator(
           "password",
           "password_confirmation"
         ),
-      }
+      } */
     );
   }
   numberOnly(event: KeyboardEvent): boolean {
@@ -229,15 +234,15 @@ export class FormMemberComponent {
     return true;
   }
   
-  get passwordMatchError() {
+ /*  get passwordMatchError() {
     return (
       this.form.getError("mismatch") &&
       this.form.get("password_confirmation")?.touched
     );
-  }
+  } */
 
   ngOnInit() {
-    if (this.type === "create") {
+   /*  if (this.type === "create") {
       this.form.get("password")?.setValidators([Validators.required]);
       this.form
         .get("password_confirmation")
@@ -246,7 +251,7 @@ export class FormMemberComponent {
       // Update the form controls to apply the new validators
       this.form.get("password")?.updateValueAndValidity();
       this.form.get("password_confirmation")?.updateValueAndValidity();
-    }
+    } */
     // Check if there's any state
     if (this.type === "edit") {
       this.route.params
@@ -456,6 +461,8 @@ export class FormMemberComponent {
     this.bank_code$
       .pipe(takeUntil(this.destroy$))
       .subscribe((bankCode: any) => {
+        this.bankCode = bankCode;
+
         if (bankCode) {
           this.form.get("bankDetails.bankCode")?.setValue(bankCode);
         }
@@ -478,6 +485,46 @@ export class FormMemberComponent {
     this.store.dispatch(new GetBanks());
 
     this.role$.pipe(takeUntil(this.destroy$)).subscribe((roles) => {});
+  }
+
+  onCountryUpdate(event: any) {
+    if (event?.options && event.options.length > 0) {
+      const selectedItem = event.options[0];
+      
+      const countryId = selectedItem.value; // This is the ID (e.g., 161)
+      const countryName = selectedItem.label; // This is the Name (e.g., "Nigeria")
+      
+      console.log("Selected Name:", countryName);
+      console.log("Selected ID:", countryId);
+
+      this.countryName = countryName;
+    }
+  }
+
+  onStateUpdate(event: any) {
+    if (event?.options && event.options.length > 0) {
+      const selectedItem = event.options[0];
+      
+      const stateName = selectedItem.label; // This is the Name (e.g., "Nigeria")
+      
+      console.log("Selected Name:", stateName);
+      
+
+      // If you need to store the NAME in a hidden form field for the API:
+      this.stateName = stateName;
+    }
+  }
+  onCityUpdate(event: any) {
+    if (event?.options && event.options.length > 0) {
+      const selectedItem = event.options[0];
+      
+      const cityName = selectedItem.label; // This is the Name (e.g., "Nigeria")
+      
+      console.log("Selected Name:", cityName);
+
+      // If you need to store the NAME in a hidden form field for the API:
+      this.cityName = cityName;
+    }
   }
 
   preventLeadingZero(event: KeyboardEvent) {
@@ -585,6 +632,7 @@ export class FormMemberComponent {
   }
 
   handleCountrySelection(id: number) {
+    console.log("Selected country ID:", id);
     this.store.dispatch(new GetStates(id));
   }
 
@@ -713,12 +761,19 @@ export class FormMemberComponent {
     }
 
     let payload = { ...this.form.value };
-    payload.account_type = appConfig.roles.AGENT;
+    
+    
     payload.is_activated = payload.status ? 1 : 0;
     payload.phone = `0${payload.phone}`;
     payload.is_deleted = 0;
+    payload.country = this.countryName;
+    payload.state = this.stateName;
+    payload.city = this.cityName;
+    payload.bankDetails.bankCode = this.bankCode;
 
     delete payload.password_confirmation;
+
+    console.log("Form payload before transformation:", payload);
 
     // Dispatch the loading action
     this.store.dispatch(new SetLoadingState(true));

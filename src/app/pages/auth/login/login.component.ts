@@ -12,6 +12,7 @@ import { ButtonComponent } from '../../../shared/components/ui/button/button.com
 import { AsyncPipe } from '@angular/common';
 import { environment } from 'src/environments/environment.development';
 
+
 @Component({
     selector: 'app-login',
     imports: [TranslateModule, FormsModule, ReactiveFormsModule,
@@ -34,6 +35,8 @@ export class LoginComponent {
     private router: Router,
     private formBuilder: FormBuilder
   ) {
+    
+
     this.store.dispatch(new AuthClear());
     this.form = this.formBuilder.group({
       email: new FormControl('', [Validators.required, Validators.email]),

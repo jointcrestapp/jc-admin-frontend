@@ -96,7 +96,7 @@ export const menu: Sidebar[] = [
         level: 2,
         permission: ["savings.index", "savings.create"],
       },
-      {
+     /*  {
         parent_id: 22,
         title: "add single savings",
         path: "/savings/add-single-savings",
@@ -113,7 +113,7 @@ export const menu: Sidebar[] = [
         type: "link",
         level: 2,
         permission: ["savings.create"],
-      },
+      }, */
     ],
   },
   {
@@ -125,14 +125,14 @@ export const menu: Sidebar[] = [
     level: 1,
     acl_permission: ["loan.index", "loan.create", "loan.edit"],
     children: [
-      {
+      /* {
         parent_id: 23,
         title: "add_single_loan",
         path: "/loan/add-single-loan",
         type: "link",
         level: 2,
         permission: ["loan.index", "loan.create"],
-      },
+      }, */
       {
         parent_id: 23,
         title: "requested loans",
@@ -183,14 +183,14 @@ export const menu: Sidebar[] = [
         level: 2,
         permission: ["loan.create"],
       },
-      {
+    /*   {
         parent_id: 23,
         title: "add_batch_loan",
         path: "/loan/add-batch-loan",
         type: "link",
         level: 2,
         permission: ["loan.create"],
-      },
+      }, */
     ],
   },
   {
@@ -210,7 +210,7 @@ export const menu: Sidebar[] = [
         level: 2,
         permission: ["shares.index", "shares.create"],
       },
-      {
+     /*  {
         parent_id: 24,
         title: "add_single_share",
         path: "/shares/add-single-share",
@@ -227,7 +227,7 @@ export const menu: Sidebar[] = [
         type: "link",
         level: 2,
         permission: ["shares.create"],
-      },
+      },*/
     ],
   },
   {
@@ -247,7 +247,7 @@ export const menu: Sidebar[] = [
         level: 2,
         permission: ["thrift.index", "thrift.create"],
       },
-      {
+     /*  {
         parent_id: 25,
         title: "add_single_thrift",
         path: "/thrift/add-thrift",
@@ -264,7 +264,7 @@ export const menu: Sidebar[] = [
         type: "link",
         level: 2,
         permission: ["thrift.create"],
-      },
+      }, */
     ],
   },
   {
@@ -357,7 +357,7 @@ export const menu: Sidebar[] = [
         level: 2,
         permission: ["withdrawal.index", "withdrawal.create"],
       },
-      {
+     /*  {
         parent_id: 27,
         title: "add withdrawal",
         path: "/withdrawal/add-withdrawal",
@@ -366,7 +366,7 @@ export const menu: Sidebar[] = [
         badgeValue: 0,
         level: 2,
         permission: ["withdrawal.create"],
-      },
+      }, */
       {
         parent_id: 27,
         title: "pending withdrawal",

@@ -215,6 +215,7 @@
                     noResultMessage="{{ 'no_data_found' | translate }}"
                     id="country"
                     resettable
+                    (update)="onCountryUpdate($event)"
                   >
                   </select2>
                   } @if(form.controls['country'].touched &&
@@ -240,6 +241,7 @@
                     noResultMessage="{{ 'no_data_found' | translate }}"
                     id="state"
                     resettable
+                    (update)="onStateUpdate($event)"
                   >
                   </select2>
                   } @if(form.controls['state'].touched &&
@@ -265,6 +267,7 @@
                     noResultMessage="{{ 'no_data_found' | translate }}"
                     id="city"
                     resettable
+                    (update)="onCityUpdate($event)"
                   >
                   </select2>
                   } @if(form.controls['city'].touched &&
@@ -602,7 +605,7 @@
                     </div>
                   </div>
                 </app-form-fields>
-                <app-form-fields [label]="'Registration Fee'" [for]="'registration_fee'">
+                <!-- app-form-fields [label]="'Registration Fee'" [for]="'registration_fee'">
                   <div class="input-group">
                     <span class="input-group-text">₦</span>
                     <input
@@ -640,9 +643,7 @@
                       {{ "savings_amount_is_required" | translate }}
                     </div>
                   </div>
-                </app-form-fields>
-                
-                
+                </app-form-fields> -->
               </div>
             </ng-template>
           </li>
