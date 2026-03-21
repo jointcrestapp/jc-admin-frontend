@@ -763,6 +763,7 @@ export class FormMemberComponent {
     let payload = { ...this.form.value };
     
     
+    
     payload.is_activated = payload.status ? 1 : 0;
     payload.phone = `0${payload.phone}`;
     payload.is_deleted = 0;
@@ -842,7 +843,7 @@ export class FormMemberComponent {
             this.notificationService.showSuccess(
               response?.message || successMessage
             );
-            this.router.navigateByUrl("/registration");
+            //this.router.navigateByUrl("/registration");
             this.tabError = [];
           } else {
             this.tabError = [];
