@@ -1468,5 +1468,6 @@
   "update_savings": "Update Savings",
   "total_repayment_count": "Total Repayments",
   "total_repayment_amount": "Total Repayment Amount",
-  "total_due_amount": "Total Due Amount"
+  "total_due_amount": "Total Due Amount",
+  "member_management":"Member Management"
 }

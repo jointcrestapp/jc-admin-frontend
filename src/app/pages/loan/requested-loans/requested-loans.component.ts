@@ -84,12 +84,12 @@ export class RequestedLoansComponent {
 
   public loanType: Select2Data = [
     {
-      value: "savings",
-      label: "Savings",
+      value: "Quick Cash",
+      label: "Quick Cash",
     },
     {
-      value: "withdrawal",
-      label: "Withdrawal",
+      value: "Standard Loan",
+      label: "Standard Loan",
     },
   ];
 

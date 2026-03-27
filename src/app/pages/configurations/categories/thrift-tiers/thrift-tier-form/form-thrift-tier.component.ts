@@ -262,8 +262,8 @@ export class FormThriftTierComponent {
   ];
   public durations: Select2Data = [
     {
-      value: [2, 3],
-      label: "[2, 3]",
+      value: [1, 2, 3],
+      label: "['Daily', 'Weekly', 'Monthly']",
     },
   ];
 
@@ -285,10 +285,10 @@ export class FormThriftTierComponent {
     this.isBrowser = isPlatformBrowser(platformId);
     this.form = this.formBuilder.group({
       meta: new FormControl("", [Validators.required]),
-      currency: new FormControl("", [Validators.required]),
+      currency: new FormControl("₦", [Validators.required]),
       amount: new FormControl("", [Validators.required]),
       desc: new FormControl(""),
-      duration: new FormControl("", [Validators.required]),
+       duration: new FormControl("", [Validators.required]),
       percentage_required: new FormControl("", [Validators.required]),
     });
   }
@@ -330,9 +330,12 @@ export class FormThriftTierComponent {
 
   submit() {
     this.form.markAllAsTouched();
+     console.log('checking.error', this.form.valid);
+    console.log('checking.error2',this.form.invalid)
     if (!this.form.valid) {
       return;
     }
+   
 
     let payload = { ...this.form.value };
     this.store.dispatch(new SetLoadingState(true));
@@ -391,3 +394,4 @@ export class FormThriftTierComponent {
     this.renderer.removeClass(this.document.body, "loader-none");
   }
 }
+

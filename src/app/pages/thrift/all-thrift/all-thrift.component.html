@@ -32,7 +32,7 @@
           </div>
           <div>
             <h6>{{ "total_active_thrifts" | translate }}</h6>
-            <h2>{{ (statistics$ | async)?.total_active_thrifts }}</h2>
+            <h2>{{ (statistics$ | async)?.total_active_thrifts ? (statistics$ | async)?.total_active_thrifts : 0 }}</h2>
           </div>
         </a>
       </div>

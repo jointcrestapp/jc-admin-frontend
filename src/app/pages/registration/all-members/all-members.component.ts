@@ -113,6 +113,12 @@ export class AllMembersComponent {
     ],
     rowActions: [
       {
+        label: "Detail",
+        actionToPerform: "detail",
+        icon: "ri-eye-line",
+        permission: "user.view",
+      },
+      {
         label: "Edit",
         actionToPerform: "edit",
         icon: "ri-pencil-line",
@@ -179,7 +185,7 @@ export class AllMembersComponent {
     this.router.navigateByUrl(`/registration/edit-member/${data.id}`);
   }
   view(data: any) {
-    this.router.navigateByUrl(`/user/detail/${data.id}`);
+    this.router.navigateByUrl(`/registration/member-detail/${data.id}`);
   }
 
   status(data: any) {

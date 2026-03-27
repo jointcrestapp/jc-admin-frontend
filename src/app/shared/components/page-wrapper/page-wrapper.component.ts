@@ -18,6 +18,7 @@ export class PageWrapperComponent {
   @Input() title: string;
   @Input() grid: boolean = true;
   @Input() gridClass: string = 'col-xxl-8 col-xl-10 m-auto';
+  @Input() backButton: boolean = true;
 
   loadingStatus$: Observable<boolean> = inject(Store).select(LoaderState.status) as Observable<boolean>;
 

@@ -101,6 +101,12 @@ export class ExitedMembersComponent {
     rowActions: [
       // { label: "Edit", actionToPerform: "edit", icon: "ri-pencil-line", permission: "user.edit" },
       {
+        label: "Detail",
+        actionToPerform: "detail",
+        icon: "ri-eye-line",
+        permission: "user.view",
+      },
+      {
         label: "Delete",
         actionToPerform: "reactivate",
         icon: "ri-refresh-line",
@@ -183,7 +189,7 @@ export class ExitedMembersComponent {
       });
   }
   view(data: any) {
-    this.router.navigateByUrl(`/user/detail/${data.id}`);
+    this.router.navigateByUrl(`/registration/member-detail/${data.id}`);
   }
 
   applyFilter(data: Select2UpdateEvent) {

@@ -82,14 +82,14 @@ export class FinishedLoansComponent {
   @ViewChild("downloadModal") DownloadModal: DigitalDownloadModalComponent;
   public years: Select2Data;
 
-  public loanType: Select2Data = [
+ public loanType: Select2Data = [
     {
-      value: "savings",
-      label: "Savings",
+      value: 1,
+      label: "Quick Cash",
     },
     {
-      value: "withdrawal",
-      label: "Withdrawal",
+      value: 2,
+      label: "Standard Loan",
     },
   ];
 

@@ -16,7 +16,7 @@ export class CurrencySymbolPipe implements PipeTransform {
     position: "before_price" | "after_price" | string = "before_price"
   ): string {
     if (value == null || isNaN(value)) {
-      return "Invalid amount";
+      value = 0;
     }
 
     const setting = this.store.selectSnapshot(SettingState.setting);

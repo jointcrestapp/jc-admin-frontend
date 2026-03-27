@@ -7,7 +7,7 @@ import { KYCState } from 'src/app/shared/store/state/kyc.state';
 import { environment } from 'src/environments/environment.development';
 import { Select2Module, Select2UpdateEvent } from 'ng-select2-component';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { PageWrapperComponent } from 'src/app/shared/components/page-wrapper/page-wrapper.component';
 import { ImportCsvModalComponent } from 'src/app/shared/components/ui/modal/import-csv-modal/import-csv-modal.component';
@@ -54,6 +54,7 @@ export class KycSubmissionsComponent {
   constructor(@Inject(PLATFORM_ID) private platformId: object,
     private lightbox: Lightbox,
     private notificationService: NotificationService,
+    private router: Router
   ) {
     this.KYCImage = environment.KYC_PHOTOS;
     
@@ -71,7 +72,12 @@ export class KycSubmissionsComponent {
           { title: 'Verified By', dataField: 'verified_by_name' },
           { title: 'Rejected By', dataField: 'rejected_by_name' },
         ],
-        rowActions: [
+      rowActions: [
+       /*  {
+          label: "Detail",
+          actionToPerform: "detail",
+          icon: "ri-eye-line"
+        }, */
           {
             label: 'Verify',
             actionToPerform: 'verify',
@@ -186,7 +192,7 @@ export class KycSubmissionsComponent {
 
   onActionClicked(action: TableClickedAction) {
     const row = action.data;
-
+    console.log('action.data.id::',action.actionToPerform);
     switch(action.actionToPerform) {
       case 'verify':
         this.verify(action.data);
@@ -201,13 +207,31 @@ export class KycSubmissionsComponent {
         break;
 
       case 'view':
-        if (isPlatformBrowser(this.platformId)) { 
+        if (isPlatformBrowser(this.platformId)) {
           this.view(row.document_url);
-        }  
+        }
+        break;
+      
+      case 'detail':
+        this.viewDetail(action.data);
+        break;
+      default:
+        console.warn('Unhandled table action:', action.actionToPerform);
         break;
     }
   }
 
+  viewDetail(data: any) {
+    // Robust check: Ensure we have a valid ID before navigating
+    const id = data.id || data.member_id || data._id; 
+    
+    if (id) {
+        this.router.navigateByUrl(`/registration/member-detail/${id}`);
+    } else {
+        console.error('Navigation failed: No ID found in row data', data);
+        // Optional: show a toast error
+    }
+  }
   verify(data: any) {
     
     this.store.dispatch(new UpdateKYCStatus(data.id, { verification_status: 'VERIFIED', verified_by: this.currentUserId }))

@@ -7,6 +7,7 @@ import { ExitedMembersComponent } from './exited-members/exited-members.componen
 import { PendingMembersComponent } from './pending-members/pending-members.component';
 import { AccountClosureRequestComponent } from './account-closure-request/account-closure-request.component';
 import { KycSubmissionsComponent } from './kyc-submissions/kyc-submissions.component';
+import { MemberDetailComponent } from './member-detail/member-detail.component';
 
 export const registrationRoutes: Routes = [
   {
@@ -40,5 +41,9 @@ export const registrationRoutes: Routes = [
   {
     path: 'kyc-submissions',
     component: KycSubmissionsComponent
+  },
+  {
+    path: 'member-detail/:id',
+    component: MemberDetailComponent
   },
 ];

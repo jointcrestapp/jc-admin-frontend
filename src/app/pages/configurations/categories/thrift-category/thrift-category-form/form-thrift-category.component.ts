@@ -121,12 +121,16 @@ export class FormThriftCategoryComponent {
   ];
   public durations: Select2Data = [
     {
+      value: 1,
+      label: "Daily",
+    },
+    {
       value: 2,
-      label: "2",
+      label: "Weekly",
     },
     {
       value: 3,
-      label: "3",
+      label: "Monthly",
     },
   ];
 

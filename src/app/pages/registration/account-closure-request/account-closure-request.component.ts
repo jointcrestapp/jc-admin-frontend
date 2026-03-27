@@ -98,6 +98,12 @@ export class AccountClosureRequestComponent {
     ],
     rowActions: [
       {
+        label: "Detail",
+        actionToPerform: "detail",
+        icon: "ri-eye-line",
+        permission: "user.view",
+      },
+      {
         label: "Delete",
         actionToPerform: "delete",
         icon: "ri-close-circle-line",
@@ -156,7 +162,7 @@ export class AccountClosureRequestComponent {
 
   edit(data: any) {}
   view(data: any) {
-    this.router.navigateByUrl(`/user/detail/${data.id}`);
+    this.router.navigateByUrl(`/registration/member-detail/${data.id}`);
   }
 
   applyFilter(data: Select2UpdateEvent) {
