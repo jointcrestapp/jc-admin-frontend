@@ -167,5 +167,22 @@ export const appConfig = {
     IN_PROGRESS: 1,
     COMPLETED: 2,
     DECLINED: 3
-  }
+  },
+  loan_status: {
+    REQUEST_LOAN: 0,
+    APPROVED_LOAN: 1,
+    DISBURSED_LOAN: 2,
+    FINISHED_LOAN: 3,
+    REJECTED_LOAN: 4,
+    DEFAULTED_LOAN: 5,
+    PARTIALLY_PAID_LOAN: 6
+  },
+  loan_components: {
+    REQUESTED_LOAN: '0',
+    APPROVED_LOAN: '1',
+    DISBURSED_LOAN: '2',
+    FINISHED_LOAN: '3',
+    LOAN_REPAYMENT: '4',
+    DUE_LOAN_REPAYMENT: '5'
+  },
 };

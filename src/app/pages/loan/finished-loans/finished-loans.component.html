@@ -1,61 +1,60 @@
 <app-page-wrapper [gridClass]="'col-sm-12'" [title]="'finished loans'">
-  <div class="card-bottom-space">
-    <div
-      class="row row-cols-xxl-5 row-cols-md-3 row-cols-sm-2 row-cols-1 g-sm-4 g-3"
-    >
+  <div class="card-bottom-space mb-4">
+    <div class="row row-cols-xxl-3 row-cols-md-3 row-cols-sm-1 row-cols-1 g-sm-4 g-3">
+      
       <div class="widget-card-box">
-        <a href="javascript:void(0)" class="widget-card card">
-          <div class="widget-icon">
-            <img
-              src="assets/images/svg/empty-wallet.svg"
-              class="img-fluid"
-              alt="empty-wallet"
-            />
+        <div class="widget-card card border-0 shadow-sm">
+          <div class="widget-icon bg-primary-light">
+            <i class="ri-numbers-line fs-1 text-primary"></i>
           </div>
           <div>
-            <h6>{{ "principal" | translate }}</h6>
-            <h2>{{ (statistics$ | async)?.total_principal ?? 0 }}</h2>
+            <h6 class="text-muted small text-uppercase fw-bold">{{ "total_finished_loans" | translate }}</h6>
+            <h2 class="mb-0 fw-bold">
+              {{ (statistics$ | async)?.total_loans_count ?? 0 }}</h2>
           </div>
-        </a>
+        </div>
+      </div>
+      <div class="widget-card-box">
+        <div class="widget-card card border-0 shadow-sm">
+          <div class="widget-icon bg-info-light">
+            <i class="ri-hand-coin-line fs-1 text-info"></i>
+          </div>
+          <div>
+            <h6 class="text-muted small text-uppercase fw-bold">{{ "total_principal_sum" | translate }}</h6>
+            <h2 class="mb-0 fw-bold">
+              ₦{{ (statistics$ | async)?.sum_principal ?? 0 | number:'1.2-2' }}
+            </h2>
+          </div>
+        </div>
+      </div>
+      <div class="widget-card-box">
+        <div class="widget-card card border-0 shadow-sm">
+          <div class="widget-icon bg-info-light">
+            <i class="ri-hand-coin-line fs-1 text-info"></i>
+          </div>
+          <div>
+            <h6 class="text-muted small text-uppercase fw-bold">{{ "total_interest" | translate }}</h6>
+            <h2 class="mb-0 fw-bold">
+              ₦{{ (statistics$ | async)?.sum_interest ?? 0 | number:'1.2-2' }}
+            </h2>
+          </div>
+        </div>
       </div>
 
       <div class="widget-card-box">
-        <a [routerLink]="['/product']" class="widget-card card">
-          <div class="widget-icon">
-            <img
-              src="assets/images/svg/receipt-2.svg"
-              class="img-fluid"
-              alt="receipt"
-            />
+        <div class="widget-card card border-0 shadow-sm">
+          <div class="widget-icon bg-success-light">
+            <i class="ri-bank-card-check-line fs-1 text-success"></i>
           </div>
           <div>
-            <h6>{{ "interest" | translate }}</h6>
-            <h2>
-              {{ (statistics$ | async)?.total_interest ?? 0 | currencySymbol }}
+            <h6 class="text-muted small text-uppercase fw-bold">{{ "total_recovered_sum" | translate }}</h6>
+            <h2 class="mb-0 fw-bold">
+                ₦{{ (statistics$ | async)?.sum_total_recovered ?? 0 | number:'1.2-2' }}
             </h2>
           </div>
-        </a>
+        </div>
       </div>
-      <div class="widget-card-box">
-        <a
-          [routerLink]="['/registration/exited-members']"
-          class="widget-card card"
-        >
-          <div class="widget-icon">
-            <img
-              src="assets/images/svg/empty-wallet.svg"
-              class="img-fluid"
-              alt="log-out"
-            />
-          </div>
-          <div>
-            <h6>{{ "total_due" | translate }}</h6>
-            <h2>
-              {{ (statistics$ | async)?.total_due ?? 0 | currencySymbol }}
-            </h2>
-          </div>
-        </a>
-      </div>
+
     </div>
   </div>
 

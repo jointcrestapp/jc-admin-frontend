@@ -177,8 +177,8 @@ export class DueLoanPaymentComponent {
         sortable: true,
         sort_direction: "desc",
       },
-      { title: "Total Due", dataField: "total_due" },
-      { title: "Interest", dataField: "interest" },
+       { title: "Total Payback", dataField: "total_payback_amount" },
+      { title: "Interest", dataField: "interestRate" },
       {
         title: "Monthly Due",
         dataField: "monthly_due",
@@ -194,8 +194,9 @@ export class DueLoanPaymentComponent {
       },
     ],
     rowActions: [
+    { label: "Detail", actionToPerform: "detail", icon: "ri-eye-line" },
       { label: "View", actionToPerform: "view", icon: "ri-printer-line" },
-      {
+      /* {
         label: "Edit",
         actionToPerform: "edit",
         icon: "ri-pencil-line",
@@ -206,7 +207,7 @@ export class DueLoanPaymentComponent {
         actionToPerform: "delete",
         icon: "ri-delete-bin-line",
         permission: "loan.destroy",
-      },
+      }, */
     ],
     data: [] as Product[],
     total: 0,
@@ -232,6 +233,7 @@ export class DueLoanPaymentComponent {
           element.status == "3"
             ? `<div class="status-approved"><span>Disbursed</span></div>`
             : "-";
+        element.interestRate = element.interest + '%';
         return element;
       });
       this.tableConfig.data = loan ? loans : [];
@@ -278,6 +280,12 @@ export class DueLoanPaymentComponent {
     else if (action.actionToPerform == "duplicate") this.duplicate(action.data);
     else if (action.actionToPerform == "download") this.download(action.data);
     else if (action.actionToPerform == "view") this.view(action.data);
+    else if (action.actionToPerform == "detail") this.viewLoanDetail(action.data);
+  }
+
+  
+  viewLoanDetail(data: any) { 
+    this.router.navigateByUrl(`/loan/loan-detail/${appConfig.loan_components.DUE_LOAN_REPAYMENT}/${data.id}`);
   }
 
   edit(data: any) {

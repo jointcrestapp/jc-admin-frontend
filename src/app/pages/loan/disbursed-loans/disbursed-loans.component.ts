@@ -177,8 +177,8 @@ export class DisbursedLoansComponent {
         sortable: true,
         sort_direction: "desc",
       },
-      { title: "Total Due", dataField: "total_due" },
-      { title: "Interest", dataField: "interest" },
+       { title: "Total Payback", dataField: "total_payback_amount" },
+      { title: "Interest", dataField: "interestRate" },
       {
         title: "Monthly Due",
         dataField: "monthly_due",
@@ -197,6 +197,7 @@ export class DisbursedLoansComponent {
       },
     ],
     rowActions: [
+      { label: "Detail", actionToPerform: "detail", icon: "ri-eye-line" },
       { label: "View", actionToPerform: "view", icon: "ri-printer-line" },
      /*  {
         label: "Edit",
@@ -204,12 +205,12 @@ export class DisbursedLoansComponent {
         icon: "ri-pencil-line",
         permission: "loan.edit",
       }, */
-      {
+      /* {
         label: "Delete",
         actionToPerform: "delete",
         icon: "ri-delete-bin-line",
         permission: "loan.destroy",
-      },
+      }, */
     ],
     data: [] as Product[],
     total: 0,
@@ -230,20 +231,19 @@ export class DisbursedLoansComponent {
     this.years = this.generateYearOptions();
     this.getLoan();
     this.loans$.pipe(takeUntil(this.destroy$)).subscribe((loan) => {
-      let loans = loan?.data?.filter((element: any) => {
-        element.loan_status =
-          element.status == "2"
-            ? `<div class="status-approved"><span>Disbursed</span></div>`
-            : "-";
-        return element;
-      });
-      this.tableConfig.data = loan ? loans : [];
-      this.tableConfig.total = loan ? loan?.total : 0;
+      if (loan?.data) {
+        this.tableConfig.data = loan.data.map((item: any) => ({
+          ...item,
+          interestRate: `${item.interest}%`,
+          loan_status: `<div class="status-approved"><span>Disbursed</span></div>`
+        }));
+        this.tableConfig.total = loan.total_records || loan.total || 0;
+      }
     });
   }
 
   getLoan() {
-    this.store.dispatch(new GetDisbursedLoan({}));
+    this.store.dispatch(new GetDisbursedLoan(this.filter));
   }
 
   generateYearOptions(
@@ -261,7 +261,7 @@ export class DisbursedLoansComponent {
 
   onTableChange(data?: Params) {
     this.filter = { ...this.filter, ...data };
-    this.store.dispatch(new GetDisbursedLoan(this.filter));
+    this.getLoan();
   }
 
   applyFilter(data: Select2UpdateEvent) {
@@ -281,6 +281,12 @@ export class DisbursedLoansComponent {
     else if (action.actionToPerform == "duplicate") this.duplicate(action.data);
     else if (action.actionToPerform == "download") this.download(action.data);
     else if (action.actionToPerform == "view") this.view(action.data);
+    else if (action.actionToPerform == "detail") this.viewLoanDetail(action.data);
+  }
+
+  
+  viewLoanDetail(data: any) { 
+    this.router.navigateByUrl(`/loan/loan-detail/${appConfig.loan_components.DISBURSED_LOAN}/${data.id}`);
   }
 
   edit(data: any) {

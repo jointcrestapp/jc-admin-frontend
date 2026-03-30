@@ -7,8 +7,8 @@ let devUrl = 'http://localhost:4200';
 
 export const environment = {
   production: false,
-  VERSION: '1.0.4',
-  BUILD_DATE: '2024-06-06T12:00:00Z',
+  VERSION: '0.0.6',
+  BUILD_DATE: '224-06-06T12:00:00Z',
   SITE_URL: devUrl,
   SERVER_URL:SERVER_URL,
   apiURL : baseApiUrl,

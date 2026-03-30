@@ -162,38 +162,18 @@ export class FinishedLoansComponent {
 
   public tableConfig: TableConfig = {
     columns: [
-      { title: "Date", dataField: "date", type: "date" },
-      { title: "Member ID", dataField: "member_id" },
-      {
-        title: "Full Name",
-        dataField: "full_name",
-        sortable: true,
-        sort_direction: "desc",
-      },
-      {
-        title: "Principal",
-        dataField: "amount",
-        type: "price",
-        sortable: true,
-        sort_direction: "desc",
-      },
-      { title: "Total Due", dataField: "total_due" },
-      { title: "Interest", dataField: "interest" },
-      {
-        title: "Monthly Due",
-        dataField: "monthly_due",
-        sortable: true,
-        sort_direction: "desc",
-      },
-      { title: "Status", dataField: "loan_status" },
-      {
-        title: "Loan Type",
-        dataField: "loan_type",
-        sortable: true,
-        sort_direction: "desc",
-      },
-    ],
+    { title: "Date", dataField: "date", type: "date" },
+    { title: "Member ID", dataField: "member_id" },
+    { title: "Full Name", dataField: "full_name" },
+    { title: "Principal", dataField: "amount", type: "price" },
+    { title: "Interest", dataField: "interestRate" },
+    { title: "Interest Paid", dataField: "total_interest_paid", type: "price" },
+    { title: "Total Payback", dataField: "total_payback", type: "price" },
+    { title: "Total Repaid", dataField: "total_repaid", type: "price" },
+    { title: "Status", dataField: "loan_status" },
+  ],
     rowActions: [
+    { label: "Detail", actionToPerform: "detail", icon: "ri-eye-line" },
       { label: "View", actionToPerform: "view", icon: "ri-printer-line",permission: "loan.edit", },
    /*   {
         label: "Edit",
@@ -226,21 +206,37 @@ export class FinishedLoansComponent {
   ngOnInit() {
     this.years = this.generateYearOptions();
     this.getLoan();
-    this.loans$.pipe(takeUntil(this.destroy$)).subscribe((loan) => {
-      let loans = loan?.data?.filter((element: any) => {
-        element.loan_status =
-          element.status == "3"
-            ? `<div class="status-approved"><span>Finished</span></div>`
-            : "-";
-        return element;
-      });
-      this.tableConfig.data = loan ? loans : [];
-      this.tableConfig.total = loan ? loan?.total : 0;
+
+    this.loans$.pipe(takeUntil(this.destroy$)).subscribe((loanResponse) => {
+      if (loanResponse?.data) {
+        this.tableConfig.data = loanResponse.data.map((element: any) => {
+          return {
+            ...element,
+            // UI formatting
+            interestRate: `${element.interest}%`,
+            loan_status: `<div class="status-approved"><span>Finished</span></div>`,
+            
+            // Ensure numeric consistency for the table's price pipe
+            // Converting string "1015.00" to actual number if necessary
+            total_repaid: element.total_repaid ? Number(element.total_repaid) : 0,
+            total_payback: element.total_payback ? Number(element.total_payback) : 0,
+            
+            // Useful for the 'Detail' view to know this is a finished record
+            is_finished: true 
+          };
+        });
+
+        // Map the total records from the counts object
+        this.tableConfig.total = loanResponse.counts?.total_loans_count || 0;
+      } else {
+        this.tableConfig.data = [];
+        this.tableConfig.total = 0;
+      }
     });
   }
 
   getLoan() {
-    this.store.dispatch(new GetFinishedLoan({}));
+    this.store.dispatch(new GetFinishedLoan(this.filter));
   }
 
   generateYearOptions(
@@ -258,7 +254,7 @@ export class FinishedLoansComponent {
 
   onTableChange(data?: Params) {
     this.filter = { ...this.filter, ...data };
-    this.store.dispatch(new GetFinishedLoan(this.filter));
+    this.getLoan();
   }
 
   applyFilter(data: Select2UpdateEvent) {
@@ -278,6 +274,12 @@ export class FinishedLoansComponent {
     else if (action.actionToPerform == "duplicate") this.duplicate(action.data);
     else if (action.actionToPerform == "download") this.download(action.data);
     else if (action.actionToPerform == "view") this.view(action.data);
+    else if (action.actionToPerform == "detail") this.viewLoanDetail(action.data);
+  }
+
+  
+  viewLoanDetail(data: any) { 
+    this.router.navigateByUrl(`/loan/loan-detail/${appConfig.loan_components.FINISHED_LOAN}/${data.id}`);
   }
 
   edit(data: any) {
@@ -305,7 +307,6 @@ export class FinishedLoansComponent {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: any) => {
-          console.log("Resp :::::::", res);
           const response = res?.loan?.response;
           if (response.status === appConfig.statusCode.ok) {
             this.notificationService.showSuccess(response.message);

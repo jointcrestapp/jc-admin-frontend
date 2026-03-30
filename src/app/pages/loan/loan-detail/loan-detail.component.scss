@@ -1,0 +1,143 @@
+:host {
+  display: block;
+  background-color: #f8f9fa;
+  min-height: 100vh;
+}
+
+.loan-detail-container {
+  max-width: 100% !important;
+  padding-bottom: 3rem;
+
+  // --- Cards & Layout ---
+  .card {
+    border: 1px solid #edf2f9;
+    border-radius: 16px;
+    background-color: #ffffff;
+    transition: transform 0.2s ease;
+    overflow: hidden;
+
+    &.balance-card:hover {
+      transform: translateY(-5px);
+    }
+  }
+
+  // Border accents for status identification
+  .border-primary-custom {
+    border-left: 5px solid #0d6efd !important;
+  }
+
+  // Specific sizing for the 5-column stat row on XL screens
+  .col-xl {
+    flex: 1 0 0%;
+  }
+
+  // --- Typography & Badges ---
+  h2, h3, h4, h5 {
+    overflow-wrap: anywhere;
+    white-space: normal;
+    color: #1e293b;
+  }
+
+  .fw-extrabold { font-weight: 800; }
+  
+  .smaller {
+    font-size: 0.65rem;
+    letter-spacing: 0.8px;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+
+  // High-performance soft badges
+  .badge {
+    font-weight: 600;
+    &.bg-primary-light { background: rgba(13, 110, 253, 0.1) !important; color: #0d6efd; }
+    &.bg-success-light { background: #e6f7ef !important; color: #10b981; }
+    &.bg-warning-light { background: #fffbeb !important; color: #f59e0b; }
+    &.bg-danger-light  { background: rgba(220, 53, 69, 0.1) !important; color: #dc3545; }
+    &.bg-info-light    { background: rgba(13, 202, 240, 0.1) !important; color: #0dcaf0; }
+  }
+
+  // --- Specialized Sections ---
+  
+  // Dark Disbursement Card
+  .bg-dark-custom {
+    background-color: #0f172a !important;
+    border: none;
+
+    .list-group-item {
+      background: transparent;
+      border-color: rgba(255, 255, 255, 0.1);
+      min-width: 0;
+      word-wrap: break-word;
+      color: #ffffff;
+    }
+
+    h3 {
+      font-size: 1.75rem;
+      letter-spacing: -0.5px;
+    }
+  }
+
+  // Automation Audit Icons
+  .automation-checks {
+    i {
+      font-size: 1.2rem;
+      vertical-align: middle;
+    }
+  }
+
+  // --- Elements ---
+  .btn {
+    border-radius: 8px;
+    padding: 0.6rem 1.2rem;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    i { font-size: 1.1rem; }
+
+    &.btn-icon {
+      width: 40px;
+      height: 40px;
+      padding: 0;
+      justify-content: center;
+    }
+  }
+
+  // --- Table Optimization ---
+  .table {
+    font-size: 0.9rem;
+
+    thead th {
+      background-color: #f9fafb;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 1.25rem 0.75rem;
+      border-bottom: 2px solid #f1f5f9;
+      color: #64748b;
+    }
+
+    tbody td {
+      padding: 1.25rem 0.75rem;
+      vertical-align: middle;
+      border-bottom: 1px solid #f1f5f9;
+    }
+  }
+}
+
+// --- Responsive Overrides ---
+@media (min-width: 992px) {
+  .col-lg-4, .col-xl-3 {
+    min-width: 320px; // Ensures currency amounts never squash
+  }
+}
+
+// Progress bar customization
+.progress {
+  background-color: #e2e8f0;
+  overflow: hidden;
+  .progress-bar {
+    transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+}

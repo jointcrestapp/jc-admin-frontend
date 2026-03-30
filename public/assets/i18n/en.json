@@ -1234,7 +1234,7 @@
   "no_nok_added": "No next of kin added yet",
   "select_bank": "Select Bank",
   "enter_bank_code": "Enter Bank Code",
-  "approved_members": "Approved Members",
+  "approved_members": "Active Members",
   "select_deduction_source": "Select deduction source",
   "deduction_source_is_required": "Deduction source is required",
   "enter_short_narration": "Enter short narration",
@@ -1469,5 +1469,17 @@
   "total_repayment_count": "Total Repayments",
   "total_repayment_amount": "Total Repayment Amount",
   "total_due_amount": "Total Due Amount",
-  "member_management":"Member Management"
+  "loan_requests":"Loan Requests",
+  "member_management":"Member Detail",
+  "total_loan_principal":"Total Loan Principal",
+  "total_principal_disbursed":"Total Principal Disbursed",
+  "total_projected_interest":"Total Projected Interest",
+  "total_principal":"Total Principal",
+  "total_finished_loans":"Total Finished Loans",
+  "total_principal_recovered":"Total Principal Recovered",
+  "total_interest_earned":"Total Interest Earned",
+  "total_recovered_sum":"Total Recovered",
+  "total_principal_sum":"Total Principal",
+  "select_month":"Select Month",
+  "select_year":"Select Year"
 }

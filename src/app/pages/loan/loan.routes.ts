@@ -10,6 +10,7 @@ import { LoanRepaymentComponent } from "./loan-repayment/loan-repayment.componen
 import { DueLoanPaymentComponent } from "./due-loan-payment/due-loan-payment.component";
 import { EditLoanComponent } from "./edit-loan/edit-loan.component";
 import { DetailsComponent } from "./details/details.component";
+import { LoanDetailComponent } from "./loan-detail/loan-detail.component";
 
 export const loanRoutes: Routes = [
   {
@@ -51,5 +52,9 @@ export const loanRoutes: Routes = [
   {
     path: "details/:id",
     component: DetailsComponent,
+  },
+  {
+    path: "loan-detail/:cat/:id",
+    component: LoanDetailComponent,
   },
 ];

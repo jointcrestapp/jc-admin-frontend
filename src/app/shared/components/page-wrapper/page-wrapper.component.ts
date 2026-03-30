@@ -1,8 +1,8 @@
 import { Component, inject, Input } from '@angular/core';
-import { Select, Store } from '@ngxs/store';
+import { Location, CommonModule } from '@angular/common'; // Import Location
+import { Store } from '@ngxs/store';
 import { LoaderState } from '../../store/state/loader.state';
 import { Observable } from 'rxjs';
-import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { LoaderComponent } from '../loader/loader.component';
 
@@ -10,10 +10,11 @@ import { LoaderComponent } from '../loader/loader.component';
     selector: 'app-page-wrapper',
     imports: [CommonModule, TranslateModule, LoaderComponent],
     templateUrl: './page-wrapper.component.html',
-  styleUrl: './page-wrapper.component.scss',
-    standalone:true
+    styleUrl: './page-wrapper.component.scss',
+    standalone: true
 })
 export class PageWrapperComponent {
+  private location = inject(Location); // Inject Location service
 
   @Input() title: string;
   @Input() grid: boolean = true;
@@ -22,4 +23,7 @@ export class PageWrapperComponent {
 
   loadingStatus$: Observable<boolean> = inject(Store).select(LoaderState.status) as Observable<boolean>;
 
+  goBack() {
+    this.location.back();
+  }
 }

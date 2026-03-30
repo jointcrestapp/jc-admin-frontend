@@ -62,6 +62,7 @@ import { LoanState } from "src/app/shared/store/state/loan.state";
   templateUrl: "./approved-loans.component.html",
   styleUrl: "./approved-loans.component.scss",
 })
+
 export class ApprovedLoansComponent {
   private destroy$ = new Subject<void>();
 
@@ -177,8 +178,8 @@ export class ApprovedLoansComponent {
         sortable: true,
         sort_direction: "desc",
       },
-      { title: "Total Due", dataField: "total_due" },
-      { title: "Interest", dataField: "interest" },
+       { title: "Total Payback", dataField: "total_payback_amount" },
+      { title: "Interest", dataField: "interestRate" },
       {
         title: "Monthly Due",
         dataField: "monthly_due",
@@ -197,6 +198,7 @@ export class ApprovedLoansComponent {
       },
     ],
     rowActions: [
+      { label: "Detail", actionToPerform: "detail", icon: "ri-eye-line" },
       { label: "View", actionToPerform: "view", icon: "ri-printer-line" },
       {
         label: "Transition",
@@ -236,20 +238,19 @@ export class ApprovedLoansComponent {
     this.years = this.generateYearOptions();
     this.getLoan();
     this.loans$.pipe(takeUntil(this.destroy$)).subscribe((loan) => {
-      let loans = loan?.data?.filter((element: any) => {
-        element.loan_status =
-          element.status == "1"
-            ? `<div class="status-approved"><span>Approved</span></div>`
-            : "-";
-        return element;
-      });
-      this.tableConfig.data = loan ? loans : [];
-      this.tableConfig.total = loan ? loan?.total : 0;
+      if (loan?.data) {
+        this.tableConfig.data = loan.data.map((item: any) => ({
+          ...item,
+          interestRate: `${item.interest}%`,
+          loan_status: `<div class="status-approved"><span>Approved</span></div>`
+        }));
+        this.tableConfig.total = loan.total_records || loan.total || 0;
+      }
     });
   }
 
   getLoan() {
-    this.store.dispatch(new GetApprovedLoan({}));
+    this.store.dispatch(new GetApprovedLoan(this.filter));
   }
 
   generateYearOptions(
@@ -267,7 +268,7 @@ export class ApprovedLoansComponent {
 
   onTableChange(data?: Params) {
     this.filter = { ...this.filter, ...data };
-    this.store.dispatch(new GetApprovedLoan(this.filter));
+    this.getLoan();
   }
 
   applyFilter(data: Select2UpdateEvent) {
@@ -287,6 +288,12 @@ export class ApprovedLoansComponent {
     else if (action.actionToPerform == "duplicate") this.duplicate(action.data);
     else if (action.actionToPerform == "download") this.download(action.data);
     else if (action.actionToPerform == "view") this.view(action.data);
+    else if (action.actionToPerform == "detail") this.viewLoanDetail(action.data);
+  }
+
+  
+  viewLoanDetail(data: any) { 
+    this.router.navigateByUrl(`/loan/loan-detail/${appConfig.loan_components.APPROVED_LOAN}/${data.id}`);
   }
 
   edit(data: any) {

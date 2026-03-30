@@ -191,6 +191,7 @@ export class LoanRepaymentComponent {
       },
     ],
     rowActions: [
+    { label: "Detail", actionToPerform: "detail", icon: "ri-eye-line" },
       {
         label: "View", actionToPerform: "view", icon: "ri-printer-line",
         permission: "loan.edit",
@@ -201,12 +202,12 @@ export class LoanRepaymentComponent {
         icon: "ri-pencil-line",
         permission: "loan.edit",
       },*/
-      { 
+      /* { 
         label: "Delete",
         actionToPerform: "delete",
         icon: "ri-delete-bin-line",
         permission: "loan.destroy",
-      },
+      }, */
     ],
     data: [] as Product[],
     total: 0,
@@ -274,6 +275,12 @@ export class LoanRepaymentComponent {
     else if (action.actionToPerform == "duplicate") this.duplicate(action.data);
     else if (action.actionToPerform == "download") this.download(action.data);
     else if (action.actionToPerform == "view") this.view(action.data);
+    else if (action.actionToPerform == "detail") this.viewLoanDetail(action.data);
+  }
+
+  
+  viewLoanDetail(data: any) { 
+    this.router.navigateByUrl(`/loan/loan-detail/${appConfig.loan_components.LOAN_REPAYMENT}/${data.id}`);
   }
 
   edit(data: any) {

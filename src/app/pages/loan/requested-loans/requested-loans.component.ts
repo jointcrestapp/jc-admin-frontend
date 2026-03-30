@@ -7,7 +7,7 @@ import {
   ViewChild,
 } from "@angular/core";
 import { Store } from "@ngxs/store";
-import { Observable, Subject, takeUntil } from "rxjs";
+import { map, Observable, Subject, takeUntil } from "rxjs";
 import { Product } from "../../../shared/interface/product.interface";
 import {
   Select2Data,
@@ -177,8 +177,8 @@ export class RequestedLoansComponent {
         sortable: true,
         sort_direction: "desc",
       },
-      { title: "Total Due", dataField: "total_due" },
-      { title: "Interest", dataField: "interest" },
+      { title: "Total Payback", dataField: "total_payback_amount" },
+      { title: "Interest", dataField: "interestRate" },
       {
         title: "Monthly Due",
         dataField: "monthly_due",
@@ -187,7 +187,7 @@ export class RequestedLoansComponent {
       },
       {
         title: "Status",
-        dataField: "loan_status",
+        dataField: "status",
       },
       {
         title: "Loan Type",
@@ -197,30 +197,31 @@ export class RequestedLoansComponent {
       },
     ],
     rowActions: [
+      { label: "Detail", actionToPerform: "detail", icon: "ri-eye-line" },
       { label: "View", actionToPerform: "view", icon: "ri-printer-line" },
-      {
+      /* {
         label: "Transition",
         actionToPerform: "reactivate",
         icon: "ri-check-line",
         permission: "loan.edit",
-      },
+      }, */
       /* {
         label: "Edit",
         actionToPerform: "edit",
         icon: "ri-pencil-line",
         permission: "loan.edit",
       }, */
-      {
+      /* {
         label: "Delete",
         actionToPerform: "delete",
         icon: "ri-delete-bin-line",
         permission: "loan.destroy",
-      },
+      }, */
     ],
     data: [] as Product[],
     total: 0,
   };
-
+  public totalPrincipal$: Observable<number>;
   constructor(
     private store: Store,
     private renderer: Renderer2,
@@ -242,6 +243,8 @@ export class RequestedLoansComponent {
           element.status == "0"
             ? `<div class="status-pending"><span>Requested</span></div>`
             : "-";
+        element.interestRate = element.interest + '%';
+        
         return element;
       });
       this.tableConfig.data = loan ? loans : [];
@@ -250,7 +253,15 @@ export class RequestedLoansComponent {
   }
 
   getLoan() {
-    this.store.dispatch(new GetLoan({}));
+    this.store.dispatch(new GetLoan(this.filter));
+    
+    // Calculate total principal dynamically based on the current data in state
+    this.totalPrincipal$ = this.loans$.pipe(
+      map(res => {
+        const data = res?.data || [];
+        return data.reduce((acc: number, curr: any) => acc + Number(curr.amount || 0), 0);
+      })
+    );
   }
 
   generateYearOptions(
@@ -288,11 +299,20 @@ export class RequestedLoansComponent {
     else if (action.actionToPerform == "duplicate") this.duplicate(action.data);
     else if (action.actionToPerform == "download") this.download(action.data);
     else if (action.actionToPerform == "view") this.view(action.data);
+    else if (action.actionToPerform == "detail") this.viewLoanDetail(action.data);
   }
 
+  
+  viewLoanDetail(data: any) { 
+    console.log('loan::', data);
+    this.router.navigateByUrl(`/loan/loan-detail/${appConfig.loan_components.REQUESTED_LOAN}/${data.id}`);
+  }
+  
   edit(data: any) {
     this.router.navigateByUrl(`/loan/edit-loan/${data.id}`);
   }
+
+  
 
   view(data: Product) {
     this.router.navigate(["loan/details", data.id], {
