@@ -21,6 +21,7 @@ export interface DashboardStateModel {
   recent_savings?: any[];
   recent_thrifts?: any[];
   recent_txns?: any[];
+  recent_loans?: any[];
   notification?: {
     data: Notification[];
     total: 0;
@@ -36,6 +37,7 @@ export interface DashboardStateModel {
     recent_savings: [],
     recent_thrifts: [],
     recent_txns: [],
+    recent_loans: [],
     notification: {
       data: [],
       total: 0,
@@ -72,6 +74,11 @@ export class DashboardState {
   }
 
   @Selector()
+  static recent_loans(state: DashboardStateModel) {
+    return state.recent_loans;
+  }
+
+  @Selector()
   static revenueChart(state: DashboardStateModel) {
     return state.revenueChart;
   }
@@ -101,6 +108,7 @@ export class DashboardState {
           recent_savings: result.data.recent_savings,
           recent_thrifts: result.data.recent_thrifts,
           recent_txns: result.data.recent_txns,
+          recent_loans: result.data.recent_loans,
           loading: false,
         });
       }),

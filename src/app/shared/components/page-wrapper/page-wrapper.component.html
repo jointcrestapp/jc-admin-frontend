@@ -10,8 +10,13 @@
             <div class="card-body">
                @if(title){
                   <div class="title-header">
-                     <div class="d-flex align-items-center">
-                        <h5>{{ title | translate }}</h5>
+                     <div class="d-flex align-items-center gap-2">
+                        @if(backButton){
+                           <button type="button" class="btn btn-light btn-sm back-btn" (click)="goBack()" title="Go back">
+                              <i class="ri-arrow-left-line"></i>
+                           </button>
+                        }
+                        <h5 class="mb-0">{{ title | translate }}</h5>
                         <ng-content select="[option]"></ng-content>
                      </div>
                      <ng-content select="[button]"></ng-content>

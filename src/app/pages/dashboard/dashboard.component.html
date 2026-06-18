@@ -30,7 +30,7 @@
         <div class="card">
           <img src="assets/images/bg.jpg" class="img-fluid" />
           <div class="card-body">
-            <h2>Welcome Back, Admin</h2>
+            <h2>Welcome Back, {{ adminName }}</h2>
             <p>
               Manage your cooperative’s activities effortlessly with real-time savings and loan tracking, member administration tools, and detailed, customizable financial reports.
             </p>
@@ -212,71 +212,34 @@
       >
         <div class="widget-card-box">
           <a href="javascript:void(0)" class="widget-card card">
-            <div class="widget-icon">
-              <img
-                src="assets/images/svg/empty-wallet.svg"
-                class="img-fluid"
-                alt="empty-wallet"
-              />
-            </div>
+            <div class="widget-icon"><i class="ri-wallet-3-line"></i></div>
             <div>
               <h6>{{ "total_wallet_amount" | translate }}</h6>
-              <h2>
-                {{
-                  (statistics$ | async)?.total_wallet_amount | currencySymbol
-                }}
-              </h2>
+              <h2>{{ (statistics$ | async)?.total_wallet_amount | currencySymbol }}</h2>
             </div>
           </a>
         </div>
         <div class="widget-card-box">
           <a [routerLink]="['/savings']" class="widget-card card">
-            <div class="widget-icon">
-              <img
-                src="assets/images/svg/receipt-2.svg"
-                class="img-fluid"
-                alt="receipt"
-              />
-            </div>
+            <div class="widget-icon"><i class="ri-bank-line"></i></div>
             <div>
               <h6>{{ "total_savings_amount" | translate }}</h6>
-              <h2>
-                {{
-                  (statistics$ | async)?.total_savings_amount | currencySymbol
-                }}
-              </h2>
+              <h2>{{ (statistics$ | async)?.total_savings_amount | currencySymbol }}</h2>
             </div>
           </a>
         </div>
         <div class="widget-card-box">
-          <a
-            [routerLink]="['/credit-sales/order-credit-sales']"
-            class="widget-card card"
-          >
-            <div class="widget-icon">
-              <img
-                src="assets/images/svg/medal-star.svg"
-                class="img-fluid"
-                alt="medal-star"
-              />
-            </div>
+          <a [routerLink]="['/credit-sales/order-credit-sales']" class="widget-card card">
+            <div class="widget-icon"><i class="ri-shopping-bag-3-line"></i></div>
             <div>
               <h6>{{ "total_credit_sales" | translate }}</h6>
-              <h2>
-                {{ (statistics$ | async)?.total_credit_sales }}
-              </h2>
+              <h2>{{ (statistics$ | async)?.total_credit_sales }}</h2>
             </div>
           </a>
         </div>
         <div class="widget-card-box">
           <a [routerLink]="['/loan/requested-loans']" class="widget-card card">
-            <div class="widget-icon">
-              <img
-                src="assets/images/svg/shop-white.svg"
-                class="img-fluid"
-                alt="shop-white"
-              />
-            </div>
+            <div class="widget-icon"><i class="ri-file-list-3-line"></i></div>
             <div>
               <h6>{{ "total_loans" | translate }}</h6>
               <h2>{{ (statistics$ | async)?.total_loans }}</h2>
@@ -285,16 +248,64 @@
         </div>
         <div class="widget-card-box">
           <a [routerLink]="['/registration']" class="widget-card card">
-            <div class="widget-icon">
-              <img
-                src="assets/images/svg/people.svg"
-                class="img-fluid"
-                alt="people"
-              />
-            </div>
+            <div class="widget-icon"><i class="ri-group-line"></i></div>
             <div>
               <h6>{{ "total_members" | translate }}</h6>
               <h2>{{ (statistics$ | async)?.total_members }}</h2>
+            </div>
+          </a>
+        </div>
+        <div class="widget-card-box">
+          <a [routerLink]="['/investment']" class="widget-card card">
+            <div class="widget-icon"><i class="ri-funds-box-line"></i></div>
+            <div>
+              <h6>Investment Pool</h6>
+              <h2>{{ (statistics$ | async)?.total_investment_pool | currencySymbol }}</h2>
+            </div>
+          </a>
+        </div>
+        <div class="widget-card-box">
+          <a [routerLink]="['/investment']" class="widget-card card">
+            <div class="widget-icon"><i class="ri-user-star-line"></i></div>
+            <div>
+              <h6>Active Investors</h6>
+              <h2>{{ (statistics$ | async)?.total_active_investors }}</h2>
+            </div>
+          </a>
+        </div>
+        <div class="widget-card-box">
+          <a [routerLink]="['/investment']" class="widget-card card">
+            <div class="widget-icon"><i class="ri-money-dollar-circle-line"></i></div>
+            <div>
+              <h6>Total Invested</h6>
+              <h2>{{ (statistics$ | async)?.total_invested_amount | currencySymbol }}</h2>
+            </div>
+          </a>
+        </div>
+        <div class="widget-card-box">
+          <a [routerLink]="['/loan/requested-loans']" class="widget-card card">
+            <div class="widget-icon"><i class="ri-hand-coin-line"></i></div>
+            <div>
+              <h6>Loan Outstanding</h6>
+              <h2>{{ (statistics$ | async)?.total_loan_amount | currencySymbol }}</h2>
+            </div>
+          </a>
+        </div>
+        <div class="widget-card-box">
+          <a [routerLink]="['/loan/requested-loans']" [queryParams]="{ status: 0 }" class="widget-card card">
+            <div class="widget-icon"><i class="ri-time-line"></i></div>
+            <div>
+              <h6>Pending Loans</h6>
+              <h2>{{ (statistics$ | async)?.total_pending_loans }}</h2>
+            </div>
+          </a>
+        </div>
+        <div class="widget-card-box">
+          <a [routerLink]="['/loan/requested-loans']" [queryParams]="{ status: 2 }" class="widget-card card">
+            <div class="widget-icon"><i class="ri-send-plane-line"></i></div>
+            <div>
+              <h6>Disbursed Loans</h6>
+              <h2>{{ (statistics$ | async)?.total_disbursed_loans }}</h2>
             </div>
           </a>
         </div>
@@ -412,6 +423,7 @@
       <app-page-wrapper
         [gridClass]="'col-sm-12'"
         [title]="'savings recent activities'"
+        [backButton]="false"
       >
         <app-table
           [tableConfig]="recentSavingsTableConfig"
@@ -432,6 +444,7 @@
       <app-page-wrapper
         [gridClass]="'col-sm-12'"
         [title]="'thrifts recent activities'"
+        [backButton]="false"
       >
         <app-table
           [tableConfig]="recentThriftsTableConfig"
@@ -450,6 +463,7 @@
         <app-page-wrapper
           [gridClass]="'col-sm-12'"
           [title]="'transactions recent activities'"
+          [backButton]="false"
         >
           <app-table
             [tableConfig]="recentTxnsTableConfig"
@@ -463,6 +477,27 @@
           </app-table>
         </app-page-wrapper>
       </div>
+    </div>
+  </div>
+  <div class="row m-0">
+    <div class="col-xl-12 col-md-6 p-0" *hasPermission="'loan.index'">
+      <app-page-wrapper
+        [gridClass]="'col-sm-12'"
+        [title]="'recent loan applications'"
+        [backButton]="false"
+      >
+        <div button>
+          <a [routerLink]="['/loan/requested-loans']" class="btn btn-theme btn-sm">View All</a>
+        </div>
+        <app-table
+          [tableConfig]="recentLoansTableConfig"
+          [pagination]="false"
+          [topbar]="false"
+          [hasCheckbox]="false"
+          (action)="onRecentLoansActionClicked($event)"
+        >
+        </app-table>
+      </app-page-wrapper>
     </div>
   </div>
 </section>

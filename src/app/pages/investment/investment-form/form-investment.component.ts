@@ -18,9 +18,11 @@ import { Store } from "@ngxs/store";
 import {
   Observable,
   Subject,
+  combineLatest,
   finalize,
   mergeMap,
   of,
+  startWith,
   switchMap,
   takeUntil,
 } from "rxjs";
@@ -30,11 +32,14 @@ import {
   Select2Option,
 } from "ng-select2-component";
 import {
+  AbstractControl,
   FormBuilder,
   FormControl,
   FormGroup,
   FormsModule,
   ReactiveFormsModule,
+  ValidationErrors,
+  ValidatorFn,
   Validators,
 } from "@angular/forms";
 import { Editor, NgxEditorModule } from "ngx-editor";
@@ -47,6 +52,7 @@ import { NavService } from "src/app/shared/services/nav.service";
 import { Sidebar } from "src/app/shared/interface/sidebar.interface";
 import { RouterModule } from "@angular/router";
 import { ConfigurationsState } from "src/app/shared/store/state/configurations.state";
+import { InvestmentsState } from "src/app/shared/store/state/investment.state";
 import {
   CreateInvestment,
   EditInvestment,
@@ -81,7 +87,15 @@ export class FormInvestmentComponent {
   public text: string;
   public open = false;
 
-  public years: Select2Data;
+  public tenureOptions: Select2Option[] = [
+    { value: '6 months',  label: '6 Months' },
+    { value: '12 months', label: '12 Months (1 Year)' },
+    { value: '18 months', label: '18 Months' },
+    { value: '24 months', label: '24 Months (2 Years)' },
+    { value: '36 months', label: '36 Months (3 Years)' },
+    { value: '5 years',   label: '5 Years' },
+    { value: '10 years',  label: '10 Years' },
+  ];
 
   public methods: Select2Option[] = [
     {
@@ -114,6 +128,16 @@ export class FormInvestmentComponent {
 
   public attribute$: Observable<Select2Data>;
   public tabError: string[] | null = [];
+  public maxRoi: number | null = null;
+
+  private static endAfterStart(): ValidatorFn {
+    return (group: AbstractControl): ValidationErrors | null => {
+      const start = group.get('start_date')?.value;
+      const end   = group.get('end_date')?.value;
+      if (!start || !end) return null;
+      return new Date(end) > new Date(start) ? null : { endBeforeStart: true };
+    };
+  }
   public form: FormGroup;
   public id: number;
   private destroy$ = new Subject<void>();
@@ -141,6 +165,7 @@ export class FormInvestmentComponent {
     this.form = this.formBuilder.group({
       investment_type_id: new FormControl("", [Validators.required]),
       amount: new FormControl("", [Validators.required]),
+      tenure: new FormControl(""),
       roi: new FormControl("", [Validators.required]),
       rate: new FormControl(0, [
         Validators.required,
@@ -150,15 +175,73 @@ export class FormInvestmentComponent {
       end_date: new FormControl("", [Validators.required]),
       maturity_year: new FormControl("", [Validators.required]),
       description: new FormControl(""),
-    });
+    }, { validators: FormInvestmentComponent.endAfterStart() });
+  }
+
+  private updateRoiMax(rate: number | string, tenure: string) {
+    const months = this.tenureToMonths(tenure);
+    const roiCtrl = this.form.get('roi');
+    if (!rate || !months || !roiCtrl) {
+      this.maxRoi = null;
+      roiCtrl?.setValidators([Validators.required]);
+      roiCtrl?.updateValueAndValidity({ emitEvent: false });
+      return;
+    }
+    this.maxRoi = parseFloat((Number(rate) * (months / 12)).toFixed(2));
+    roiCtrl.setValidators([Validators.required, Validators.max(this.maxRoi)]);
+    roiCtrl.updateValueAndValidity({ emitEvent: false });
+  }
+
+  private tenureToMonths(tenure: string): number | null {
+    if (!tenure) return null;
+    const m = tenure.match(/(\d+)\s*month/i);
+    const y = tenure.match(/(\d+)\s*year/i);
+    if (m) return parseInt(m[1], 10);
+    if (y) return parseInt(y[1], 10) * 12;
+    return null;
+  }
+
+  private autoComputeDates(startDate: string, tenure: string) {
+    const months = this.tenureToMonths(tenure);
+    if (!startDate || !months) return;
+    const start = new Date(startDate);
+    if (isNaN(start.getTime())) return;
+    start.setMonth(start.getMonth() + months);
+    const endDateStr = start.toISOString().split('T')[0];
+    const maturityYear = start.getFullYear();
+    this.form.get('end_date')?.setValue(endDateStr, { emitEvent: false });
+    this.form.get('maturity_year')?.setValue(maturityYear, { emitEvent: false });
   }
 
   ngOnInit() {
-    this.years = this.generateYearOptions();
     this.getInvestmentTypes();
     if (this.isBrowser) {
       this.editor = new Editor();
     }
+
+    combineLatest([
+      this.form.get('start_date')!.valueChanges.pipe(startWith(this.form.get('start_date')!.value)),
+      this.form.get('tenure')!.valueChanges.pipe(startWith(this.form.get('tenure')!.value)),
+    ]).pipe(takeUntil(this.destroy$)).subscribe(([startDate, tenure]) => {
+      this.autoComputeDates(startDate, tenure);
+    });
+
+    this.form.get('end_date')!.valueChanges
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(endDate => {
+        if (!endDate) return;
+        const d = new Date(endDate);
+        if (!isNaN(d.getTime())) {
+          this.form.get('maturity_year')?.setValue(d.getFullYear(), { emitEvent: false });
+        }
+      });
+
+    combineLatest([
+      this.form.get('rate')!.valueChanges.pipe(startWith(this.form.get('rate')!.value)),
+      this.form.get('tenure')!.valueChanges.pipe(startWith(this.form.get('tenure')!.value)),
+    ]).pipe(takeUntil(this.destroy$)).subscribe(([rate, tenure]) => {
+      this.updateRoiMax(rate, tenure);
+    });
 
     this.investment_types$.pipe(takeUntil(this.destroy$)).subscribe((it) => {
       this.investment_types = it?.data?.filter((element: any) => {
@@ -176,7 +259,7 @@ export class FormInvestmentComponent {
             .dispatch(new EditInvestment(params["id"]))
             .pipe(
               mergeMap(() =>
-                this.store.select(ConfigurationsState.selectedInvestmentType)
+                this.store.select(InvestmentsState.selectedInvestment)
               )
             );
         }),
@@ -187,30 +270,22 @@ export class FormInvestmentComponent {
           this.id = investment.id;
           let patchData: any = {
             investment_type_id: investment.investment_type_id,
-            amount: investment.amount,
+            amount: investment.total_investment_fund ?? investment.amount,
+            tenure: investment.tenure || '',
             roi: investment.roi,
             rate: investment.rate,
             start_date: investment.start_date,
             end_date: investment.end_date,
-            maturity_year: investment.maturity_year,
+            maturity_year: investment.maturity_year
+              ? (typeof investment.maturity_year === 'number'
+                  ? investment.maturity_year
+                  : new Date(investment.maturity_year).getFullYear())
+              : '',
             description: investment.description,
           };
           this.form.patchValue(patchData);
         }
       });
-  }
-
-  generateYearOptions(
-    startYear: number = new Date().getFullYear(),
-    numberOfYears: number = 50
-  ): any[] {
-    return Array.from({ length: numberOfYears }, (_, i) => {
-      const year = startYear + i;
-      return {
-        value: year,
-        label: year.toString(),
-      };
-    });
   }
 
   getInvestmentTypes() {
@@ -236,6 +311,10 @@ export class FormInvestmentComponent {
     }
 
     let payload = { ...this.form.value };
+    // DB column is DATE type; convert bare integer year to a valid date string
+    if (payload.maturity_year && typeof payload.maturity_year === 'number') {
+      payload.maturity_year = `${payload.maturity_year}-01-01`;
+    }
     this.store.dispatch(new SetLoadingState(true));
     let action: any;
 

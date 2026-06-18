@@ -7,16 +7,17 @@ import {
   SetLoadingState,
   CreateDividend,
   ExportDividends,
+  GetMonthlyProfits,
+  AddMonthlyProfit,
+  DeleteMonthlyProfit,
 } from "../action/dividend.action";
 import { DividendService } from "src/app/core/services/dividend.service";
 import { NotificationService } from "../../services/notification.service";
 import { DividendExcelService } from "src/app/core/services/dividend-export.service";
 
 export interface DividendStateModel {
-  dividend: {
-    data: any[];
-    total: any | null;
-  };
+  dividend: { data: any[]; total: any | null };
+  monthlyProfits: { data: any[]; total: number; yearly_total: number };
   loading?: boolean;
   selectedDividend?: any | null;
   response?: any | null;
@@ -26,10 +27,8 @@ export interface DividendStateModel {
 @State<DividendStateModel>({
   name: "dividend",
   defaults: {
-    dividend: {
-      data: [],
-      total: 0,
-    },
+    dividend: { data: [], total: 0 },
+    monthlyProfits: { data: [], total: 0, yearly_total: 0 },
     loading: false,
     response: null,
     selectedDividend: null,
@@ -56,6 +55,11 @@ export class DividendState {
   }
 
   @Selector()
+  static monthlyProfits(state: DividendStateModel) {
+    return state.monthlyProfits;
+  }
+
+  @Selector()
   static member(state: DividendStateModel) {
     return state.member;
   }
@@ -66,59 +70,39 @@ export class DividendState {
   }
 
   @Action(SetLoadingState)
-  setLoading(
-    ctx: StateContext<DividendStateModel>,
-    { isLoading }: SetLoadingState
-  ) {
+  setLoading(ctx: StateContext<DividendStateModel>, { isLoading }: SetLoadingState) {
     ctx.patchState({ loading: isLoading });
   }
 
   @Action(GetDividends)
-  getWithdrawal(
-    ctx: StateContext<DividendStateModel>,
-    { payload }: GetDividends
-  ) {
+  getDividends(ctx: StateContext<DividendStateModel>, { payload }: GetDividends) {
     ctx.patchState({ loading: true });
-
     return this.dividendService.getDividend(payload).pipe(
       tap((result: any) => {
         ctx.patchState({
           dividend: {
-            data: result?.data,
-            total:
-              result?.pagination?.total ||
-              result?.total ||
-              result?.data?.length,
+            data: result?.data || [],
+            total: result?.pagination?.total || result?.data?.length || 0,
           },
           loading: false,
         });
       }),
       catchError((err) => {
         ctx.patchState({ loading: false });
-        console.error("Error fetching dividend:", err);
         return throwError(() => err);
       })
     );
   }
 
   @Action(GetFilteredMembers)
-  getFilteredMembers(
-    ctx: StateContext<DividendStateModel>,
-    { payload }: GetFilteredMembers
-  ) {
-    const state = ctx.getState();
+  getFilteredMembers(ctx: StateContext<DividendStateModel>, { payload }: GetFilteredMembers) {
     ctx.patchState({ loading: true });
-
     return this.dividendService.getFilteredMember(payload).pipe(
       tap((result: any) => {
-        ctx.patchState({
-          member: result?.data,
-          loading: false,
-        });
+        ctx.patchState({ member: result?.data, loading: false });
       }),
       catchError((err) => {
         ctx.patchState({ loading: false });
-        console.error("Error fetching members:", err);
         return throwError(() => err);
       })
     );
@@ -129,50 +113,74 @@ export class DividendState {
     ctx.patchState({ loading: true });
     return this.dividendService.addDividend(payload).pipe(
       tap((res: any) => {
-        ctx.patchState({
-          response: res,
-        });
+        ctx.patchState({ response: res });
       }),
       finalize(() => ctx.patchState({ loading: false })),
-      map((res: any) => res) // ✅ this returns the real API response to your component
+      map((res: any) => res)
+    );
+  }
+
+  @Action(GetMonthlyProfits)
+  getMonthlyProfits(ctx: StateContext<DividendStateModel>, { payload }: GetMonthlyProfits) {
+    ctx.patchState({ loading: true });
+    return this.dividendService.getMonthlyProfits(payload).pipe(
+      tap((result: any) => {
+        ctx.patchState({
+          monthlyProfits: {
+            data: result?.data || [],
+            total: result?.pagination?.total || result?.data?.length || 0,
+            yearly_total: result?.yearly_total || 0,
+          },
+          loading: false,
+        });
+      }),
+      catchError((err) => {
+        ctx.patchState({ loading: false });
+        return throwError(() => err);
+      })
+    );
+  }
+
+  @Action(AddMonthlyProfit)
+  addMonthlyProfit(ctx: StateContext<DividendStateModel>, { payload }: AddMonthlyProfit) {
+    ctx.patchState({ loading: true });
+    return this.dividendService.addMonthlyProfit(payload).pipe(
+      tap((res: any) => {
+        ctx.patchState({ response: res });
+      }),
+      finalize(() => ctx.patchState({ loading: false })),
+      map((res: any) => res)
+    );
+  }
+
+  @Action(DeleteMonthlyProfit)
+  deleteMonthlyProfit(ctx: StateContext<DividendStateModel>, { id }: DeleteMonthlyProfit) {
+    ctx.patchState({ loading: true });
+    return this.dividendService.deleteMonthlyProfit(id).pipe(
+      tap((res: any) => {
+        ctx.patchState({ response: res });
+      }),
+      finalize(() => ctx.patchState({ loading: false })),
+      map((res: any) => res)
     );
   }
 
   @Action(ExportDividends)
-  export(
-    ctx: StateContext<DividendStateModel>,
-    { customData }: ExportDividends
-  ) {
+  export(ctx: StateContext<DividendStateModel>, { customData }: ExportDividends) {
     const state = ctx.getState();
     ctx.patchState({ loading: true });
-
-    let dividendsToExport: any[] = [];
-
-    if (customData && customData.length > 0) {
-      dividendsToExport = customData;
-    } else {
-      dividendsToExport = state.dividend.data;
-    }
-
-    if (!dividendsToExport || dividendsToExport.length === 0) {
+    const dividendsToExport = (customData?.length ? customData : state.dividend.data) || [];
+    if (!dividendsToExport.length) {
       ctx.patchState({ loading: false });
-      this.notificationService.showError(
-        `No Dividend Historry data available to export`
-      );
+      this.notificationService.showError('No dividend data available to export');
       return;
     }
-
-    return this.dividendExcelService
-      .exportDividendToExcel(dividendsToExport)
-      .pipe(
-        tap(() => {
-          ctx.patchState({ loading: false });
-        }),
-        catchError((err) => {
-          ctx.patchState({ loading: false });
-          console.error("Error exporting dividends:", err);
-          return throwError(() => err);
-        })
-      );
+    return this.dividendExcelService.exportDividendToExcel(dividendsToExport).pipe(
+      tap(() => ctx.patchState({ loading: false })),
+      catchError((err) => {
+        ctx.patchState({ loading: false });
+        return throwError(() => err);
+      })
+    );
   }
 }

@@ -8,6 +8,7 @@ export interface Sidebar {
   parent_id?: number;
   title?: string;
   path?: string;
+  params?: { [key: string]: any };
   member_id?: any;
   savings_bal?: any;
   active?: boolean;

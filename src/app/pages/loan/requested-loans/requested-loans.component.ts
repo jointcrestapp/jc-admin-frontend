@@ -4,7 +4,6 @@ import {
   Inject,
   PLATFORM_ID,
   Renderer2,
-  ViewChild,
 } from "@angular/core";
 import { Store } from "@ngxs/store";
 import { map, Observable, Subject, takeUntil } from "rxjs";
@@ -14,8 +13,6 @@ import {
   Select2Module,
   Select2UpdateEvent,
 } from "ng-select2-component";
-import { ImportCsvModalComponent } from "../../../shared/components/ui/modal/import-csv-modal/import-csv-modal.component";
-import { DigitalDownloadModalComponent } from "../../../shared/components/ui/modal/digital-download-modal/digital-download-modal.component";
 import { Params, Router, RouterModule } from "@angular/router";
 import {
   TableClickedAction,
@@ -24,7 +21,6 @@ import {
 import { CommonModule, DOCUMENT, isPlatformBrowser } from "@angular/common";
 import {
   DeleteAllProduct,
-  Download,
   ExportProduct,
   ReplicateProduct,
   UpdateProductStatus,
@@ -33,7 +29,6 @@ import { TranslateModule } from "@ngx-translate/core";
 import { PageWrapperComponent } from "../../../shared/components/page-wrapper/page-wrapper.component";
 import { TableComponent } from "../../../shared/components/ui/table/table.component";
 import { HasPermissionDirective } from "../../../shared/directive/has-permission.directive";
-import { CurrencySymbolPipe } from "../../../shared/pipe/currency-symbol.pipe";
 import {
   GetLoan,
   DeleteLoan,
@@ -55,9 +50,6 @@ import { LoanState } from "src/app/shared/store/state/loan.state";
     Select2Module,
     PageWrapperComponent,
     TableComponent,
-    ImportCsvModalComponent,
-    DigitalDownloadModalComponent,
-    CurrencySymbolPipe,
   ],
   templateUrl: "./requested-loans.component.html",
   styleUrl: "./requested-loans.component.scss",
@@ -78,8 +70,6 @@ export class RequestedLoansComponent {
     LoanState.isLoading
   ) as Observable<any>;
 
-  @ViewChild("csvModal") CSVModal: ImportCsvModalComponent;
-  @ViewChild("downloadModal") DownloadModal: DigitalDownloadModalComponent;
   public years: Select2Data;
 
   public loanType: Select2Data = [
@@ -297,7 +287,6 @@ export class RequestedLoansComponent {
     else if (action.actionToPerform == "delete") this.delete(action.data);
     else if (action.actionToPerform == "deleteAll") this.deleteAll(action.data);
     else if (action.actionToPerform == "duplicate") this.duplicate(action.data);
-    else if (action.actionToPerform == "download") this.download(action.data);
     else if (action.actionToPerform == "view") this.view(action.data);
     else if (action.actionToPerform == "detail") this.viewLoanDetail(action.data);
   }
@@ -372,16 +361,6 @@ export class RequestedLoansComponent {
 
   duplicate(ids: number[]) {
     this.store.dispatch(new ReplicateProduct(ids));
-  }
-
-  download(data: Product) {
-    if (data?.variations?.length) {
-      this.DownloadModal.openModal(data);
-    } else {
-      this.store.dispatch(
-        new Download({ product_id: data.id, variation_id: null })
-      );
-    }
   }
 
   export() {

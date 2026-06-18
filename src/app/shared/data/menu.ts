@@ -404,6 +404,14 @@ export const menu: Sidebar[] = [
       },
       {
         parent_id: 29,
+        title: "monthly profits",
+        path: "/dividend/monthly-profits",
+        type: "link",
+        level: 2,
+        permission: ["dividend.create"],
+      },
+      {
+        parent_id: 29,
         title: "generate dividend",
         path: "/dividend/generate-dividend",
         type: "link",
@@ -527,12 +535,29 @@ export const menu: Sidebar[] = [
   {
     id: 33,
     title: "investment",
-    path: "/investment",
     active: false,
     icon: "ri-line-chart-line",
     type: "sub",
     level: 1,
     permission: ["investment.index"],
+    children: [
+      {
+        parent_id: 33,
+        title: "all investments",
+        path: "/investment",
+        type: "link",
+        level: 2,
+        permission: ["investment.index"],
+      },
+      {
+        parent_id: 33,
+        title: "investment history",
+        path: "/investment/history",
+        type: "link",
+        level: 2,
+        permission: ["investment.index"],
+      },
+    ],
   },
   {
     id: 34,
@@ -594,6 +619,7 @@ export const menu: Sidebar[] = [
         parent_id: 35,
         title: "add agent",
         path: "/registration/create",
+        params: { role: "agent" },
         type: "link",
         level: 2,
         permission: ["agent.index"],

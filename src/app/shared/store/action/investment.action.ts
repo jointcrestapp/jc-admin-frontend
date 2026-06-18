@@ -30,3 +30,13 @@ export class DeleteInvestment {
   static readonly type = "[Investment] Delete Investment";
   constructor(public id: number) {}
 }
+
+export class GetInvestmentHistories {
+  static readonly type = "[Investment] Get Investment Histories";
+  constructor(public payload?: Params) {}
+}
+
+export class DisburseInvestment {
+  static readonly type = "[Investment] Disburse Investment";
+  constructor(public id: number) {}
+}

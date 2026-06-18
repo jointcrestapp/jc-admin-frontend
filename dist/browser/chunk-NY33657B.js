@@ -1,1 +1,0 @@
-var a=(()=>{class t{static{this.type="[Communication] Set Loading State"}constructor(e){this.isLoading=e}}return t})(),o=(()=>{class t{static{this.type="[Communication] Message"}constructor(e){this.payload=e}}return t})(),i=(()=>{class t{static{this.type="[Communication] Sms"}constructor(e){this.payload=e}}return t})();export{a,o as b,i as c};

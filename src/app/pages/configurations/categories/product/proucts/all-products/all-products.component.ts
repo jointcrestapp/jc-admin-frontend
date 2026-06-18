@@ -19,6 +19,7 @@ import {
 } from "../../../../../../shared/interface/table.interface";
 import { CommonModule, DOCUMENT, isPlatformBrowser } from "@angular/common";
 import { TranslateModule } from "@ngx-translate/core";
+import { environment } from "src/environments/environment";
 import { PageWrapperComponent } from "../../../../../../shared/components/page-wrapper/page-wrapper.component";
 import { TableComponent } from "../../../../../../shared/components/ui/table/table.component";
 import { ConfigurationsState } from "src/app/shared/store/state/configurations.state";
@@ -29,6 +30,7 @@ import {
 import { appConfig } from "src/app/core/config/config";
 import { NotificationService } from "src/app/shared/services/notification.service";
 import { HasPermissionDirective } from "src/app/shared/directive/has-permission.directive";
+import { Lightbox, LightboxModule } from "ngx-lightbox";
 
 @Component({
   selector: "app-all-products",
@@ -42,6 +44,7 @@ import { HasPermissionDirective } from "src/app/shared/directive/has-permission.
     TableComponent,
     ImportCsvModalComponent,
     DigitalDownloadModalComponent,
+    LightboxModule,
   ],
   templateUrl: "./all-products.component.html",
   styleUrl: "./all-products.component.scss",
@@ -87,6 +90,12 @@ export class AllProductsComponent {
     ],
     rowActions: [
       {
+        label: "View Image",
+        actionToPerform: "viewImage",
+        icon: "ri-eye-line",
+        conditional: { field: "_image_filename", condition: "!=", value: null },
+      },
+      {
         label: "Edit",
         actionToPerform: "edit",
         icon: "ri-pencil-line",
@@ -109,7 +118,8 @@ export class AllProductsComponent {
     @Inject(DOCUMENT) private document: Document,
     @Inject(PLATFORM_ID) private platformId: object,
     private notificationService: NotificationService,
-    private router: Router
+    private router: Router,
+    private lightbox: Lightbox
   ) {
     this.isBrowser = isPlatformBrowser(platformId);
 
@@ -127,11 +137,17 @@ export class AllProductsComponent {
   ngOnInit() {
     this.getProducts();
     this.products$.pipe(takeUntil(this.destroy$)).subscribe((prod) => {
-      console.log("products ::::::::::::::::", prod);
-      let products = prod?.data?.filter((element: any) => {
-        // cat.tier.currency = cat?.tier?.currency ? cat?.tier.currency : "";
-        return element;
-      });
+      const products = prod?.data?.map((element: any) => ({
+        ...element,
+        status: element.status == 1
+          ? `<div class="status-approved"><span>Active</span></div>`
+          : `<div class="status-danger"><span>Inactive</span></div>`,
+        sold: `<div class="status-processing"><span>${element.sold ?? 0} sold</span></div>`,
+        _image_filename: element.image || null,
+        image: element.image
+          ? `<img src="${environment.PRODUCT_IMAGES}${element.image}" class="tbl-thumb" />`
+          : `<span style="color:#cbd5e1;">—</span>`,
+      }));
       this.tableConfig.data = prod ? products : [];
       this.tableConfig.total = prod ? prod?.total : 0;
     });
@@ -160,8 +176,16 @@ export class AllProductsComponent {
   }
 
   onActionClicked(action: TableClickedAction) {
-    if (action.actionToPerform == "edit") this.edit(action.data);
+    if (action.actionToPerform == "viewImage") this.viewImage(action.data);
+    else if (action.actionToPerform == "edit") this.edit(action.data);
     else if (action.actionToPerform == "delete") this.delete(action.data);
+  }
+
+  viewImage(data: any) {
+    if (!data._image_filename) return;
+    const src = environment.PRODUCT_IMAGES + data._image_filename;
+    const caption = data.product || data.name || '';
+    this.lightbox.open([{ src, caption, thumb: src }], 0);
   }
 
   edit(data: any) {

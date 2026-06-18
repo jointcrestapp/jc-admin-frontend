@@ -19,6 +19,7 @@ import { LoanComponent } from './loan/loan.component';
 import { NotificationComponent } from './notification/notification.component';
 import { OthersComponent } from './others/others.component';
 import { PaymentComponent } from './payment/payment.component';
+import { AppContentComponent } from './app-content/app-content.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 
@@ -30,7 +31,8 @@ function convertToNgbDate(date: NgbDateStruct): NgbDate {
     selector: 'app-setting',
     imports: [CommonModule, PageWrapperComponent, FormsModule, ReactiveFormsModule,
         TranslateModule, NgbModule, Select2Module,
-        BasicComponent, LoanComponent, NotificationComponent, OthersComponent, PaymentComponent
+        BasicComponent, LoanComponent, NotificationComponent, OthersComponent, PaymentComponent,
+        AppContentComponent,
       ],
     templateUrl: './setting.component.html',
     styleUrl: './setting.component.scss'

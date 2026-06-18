@@ -69,6 +69,7 @@
   <app-table
     [tableConfig]="tableConfig"
     [dateRange]="true"
+    [searchInput]="true"
     (tableChanged)="onTableChange($event)"
     (rowClicked)="edit($event)"
     (action)="onActionClicked($event)"

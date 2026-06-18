@@ -4,52 +4,27 @@ import {
   Inject,
   OnDestroy,
   PLATFORM_ID,
-  Renderer2,
-  ViewChild,
 } from "@angular/core";
 import { Store } from "@ngxs/store";
-import { SettingState } from "../../../shared/store/state/setting.state";
 import { Observable, Subject, takeUntil } from "rxjs";
-import { Product } from "../../../shared/interface/product.interface";
-import { Values } from "../../../shared/interface/setting.interface";
-import {
-  Select2Data,
-  Select2Module,
-  Select2UpdateEvent,
-} from "ng-select2-component";
-import { ImportCsvModalComponent } from "../../../shared/components/ui/modal/import-csv-modal/import-csv-modal.component";
-import { DigitalDownloadModalComponent } from "../../../shared/components/ui/modal/digital-download-modal/digital-download-modal.component";
-import { Params, Router, RouterModule } from "@angular/router";
+import { Select2Data, Select2Module } from "ng-select2-component";
+import { Params, RouterModule } from "@angular/router";
 import {
   TableClickedAction,
   TableConfig,
 } from "../../../shared/interface/table.interface";
-import { CommonModule, DOCUMENT, isPlatformBrowser } from "@angular/common";
-import {
-  ApproveProductStatus,
-  DeleteAllProduct,
-  Download,
-  ExportProduct,
-  ReplicateProduct,
-  UpdateProductStatus,
-} from "../../../shared/store/action/product.action";
+import { CommonModule, isPlatformBrowser } from "@angular/common";
 import { TranslateModule } from "@ngx-translate/core";
 import { PageWrapperComponent } from "../../../shared/components/page-wrapper/page-wrapper.component";
 import { TableComponent } from "../../../shared/components/ui/table/table.component";
 import { HasPermissionDirective } from "../../../shared/directive/has-permission.directive";
 import { DividendState } from "src/app/shared/store/state/dividend.state";
-import {
-  SetLoadingState,
-  GetDividends,
-  GetFilteredMembers,
-  ExportDividends,
-} from "src/app/shared/store/action/dividend.action";
-import { CountryState } from "src/app/shared/store/state/country.state";
-import { appConfig } from "src/app/core/config/config";
+import { GetDividends, ExportDividends } from "src/app/shared/store/action/dividend.action";
 import { NotificationService } from "src/app/shared/services/notification.service";
 
 @Component({
   selector: "app-dividend-history",
+  standalone: true,
   imports: [
     CommonModule,
     TranslateModule,
@@ -58,30 +33,18 @@ import { NotificationService } from "src/app/shared/services/notification.servic
     Select2Module,
     PageWrapperComponent,
     TableComponent,
-    ImportCsvModalComponent,
-    DigitalDownloadModalComponent,
   ],
   templateUrl: "./dividend-history.component.html",
   styleUrl: "./dividend-history.component.scss",
-  standalone:true
 })
 export class DividendHistoryComponent {
   private destroy$ = new Subject<void>();
   dividends$: Observable<any> = inject(Store).select(
     DividendState.dividend
   ) as Observable<any>;
-  countries$: Observable<any> = inject(Store).select(
-    CountryState.countries
-  ) as Observable<any>;
   isLoading$: Observable<any> = inject(Store).select(
     DividendState.isLoading
   ) as Observable<any>;
-  setting$: Observable<Values> = inject(Store).select(
-    SettingState.setting
-  ) as Observable<Values>;
-
-  @ViewChild("csvModal") CSVModal: ImportCsvModalComponent;
-  @ViewChild("downloadModal") DownloadModal: DigitalDownloadModalComponent;
   public years: Select2Data;
 
   public months: Select2Data = [
@@ -146,8 +109,6 @@ export class DividendHistoryComponent {
     paginate: 15, // Display per page,
   };
 
-  public advanceFilter: any[] = [];
-  public url: string;
   public open: boolean = true;
   public isBrowser: boolean;
 
@@ -161,12 +122,12 @@ export class DividendHistoryComponent {
         sortable: true,
         sort_direction: "desc",
       },
-      { title: "Savings Balance", dataField: "savings_bal", type: "price" },
-      {
-        title: "Savings Dividend",
-        dataField: "savings_dividend",
-        type: "price",
-      },
+      { title: "Year", dataField: "year" },
+      { title: "Equity (₦)", dataField: "member_equity", type: "price" },
+      { title: "Share %", dataField: "savings_percent" },
+      { title: "Dividend Pool (₦)", dataField: "total_declared", type: "price" },
+      { title: "Dividend Earned (₦)", dataField: "dividend_amount", type: "price" },
+      { title: "Rate", dataField: "dividend_percent" },
     ],
     rowActions: [],
     data: [] as any[],
@@ -175,18 +136,10 @@ export class DividendHistoryComponent {
 
   constructor(
     private store: Store,
-    private renderer: Renderer2,
-    @Inject(DOCUMENT) private document: Document,
     @Inject(PLATFORM_ID) private platformId: object,
-    private notificationService: NotificationService,
-    private router: Router
+    private notificationService: NotificationService
   ) {
     this.isBrowser = isPlatformBrowser(platformId);
-    this.setting$.subscribe((setting) => {
-      if (setting && setting.general) {
-        this.url = setting.general.site_url;
-      }
-    });
   }
 
   ngOnInit() {
@@ -223,77 +176,8 @@ export class DividendHistoryComponent {
     this.store.dispatch(new GetDividends(this.filter));
   }
 
-  applyFilter(data: Select2UpdateEvent) {
-    this.filter["savings_type"] = data && data.value ? data.value : null;
-    if (!this.filter["savings_type"]) {
-      delete this.filter["savings_type"];
-    }
-    this.onTableChange(this.filter);
-  }
-
   onActionClicked(action: TableClickedAction) {
-    if (action.actionToPerform == "edit") this.edit(action.data);
-    else if (action.actionToPerform == "is_approved") this.approve(action.data);
-    else if (action.actionToPerform == "status") this.status(action.data);
-    else if (action.actionToPerform == "delete") this.delete(action.data);
-    else if (action.actionToPerform == "deleteAll") this.deleteAll(action.data);
-    else if (action.actionToPerform == "duplicate") this.duplicate(action.data);
-    else if (action.actionToPerform == "download") this.download(action.data);
-    else if (action.actionToPerform == "view") this.view(action.data);
-  }
-
-  edit(data: Product) {
-    this.router.navigateByUrl(`/savings/edit-savings/${data.id}`);
-  }
-
-  view(data: Product) {
-    this.router.navigateByUrl(`/savings/details/${data.id}`);
-  }
-
-  approve(data: Product) {
-    this.store.dispatch(new ApproveProductStatus(data.id, data.is_approved));
-  }
-
-  status(data: Product) {
-    this.store.dispatch(new UpdateProductStatus(data.id, data.status));
-  }
-
-  delete(data: Product) {
-    // this.store
-    //   .dispatch(new DeleteSaving(data.id))
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe({
-    //     next: (res: any) => {
-    //       const response = res?.savings?.response;
-    //       if (response.status === appConfig.statusCode.ok) {
-    //         this.notificationService.showSuccess(response.message);
-    //         this.getSavings();
-    //       }
-    //     },
-    //     error: (err) => {
-    //       this.notificationService.showError(
-    //         err?.message || "Failed to delete user!"
-    //       );
-    //     },
-    //   });
-  }
-
-  deleteAll(ids: number[]) {
-    this.store.dispatch(new DeleteAllProduct(ids));
-  }
-
-  duplicate(ids: number[]) {
-    this.store.dispatch(new ReplicateProduct(ids));
-  }
-
-  download(data: Product) {
-    if (data?.variations?.length) {
-      this.DownloadModal.openModal(data);
-    } else {
-      this.store.dispatch(
-        new Download({ product_id: data.id, variation_id: null })
-      );
-    }
+    // reserved for future row actions
   }
 
   export() {
@@ -317,28 +201,18 @@ export class DividendHistoryComponent {
     this.open = !this.open;
   }
 
-  selectItem(data: number[]) {
-    this.renderer.addClass(this.document.body, "loader-none");
-    if (Array.isArray(data) && data.length) {
-      this.filter["category_ids"] = data.join();
+  filters(data: any, key: string) {
+    const val = data?.value ?? data ?? '';
+    if (val !== '' && val !== null && val !== undefined) {
+      this.filter[key] = val;
     } else {
-      this.filter["category_ids"] = [];
+      delete this.filter[key];
     }
     this.onTableChange(this.filter);
   }
 
-  filters(data: any, key: string) {
-    console.log("Filters ::::", {
-      data,
-      key,
-    });
-    this.renderer.addClass(this.document.body, "loader-none");
-    console.log(data && data.value);
-    if (data && data.value) {
-      this.filter[key] = data.value;
-    } else {
-      this.filter[key] = [];
-    }
-    this.onTableChange(this.filter);
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

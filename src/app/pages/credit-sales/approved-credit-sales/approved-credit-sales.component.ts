@@ -236,20 +236,29 @@ export class ApprovedCreditSalesComponent {
     this.approved_credit_sales$
       .pipe(takeUntil(this.destroy$))
       .subscribe((rcs) => {
-        let approved_credit_sales = rcs?.data?.filter((element: any) => {
-          element.credit_status =
-            element.status == "1"
-              ? `<div class="status-approved"><span>Approved</span></div>`
-              : "-";
-          return element;
-        });
-        this.tableConfig.data = rcs ? rcs?.data : [];
+        const data = rcs?.data?.map((element: any) => ({
+          ...element,
+          credit_status: this.creditStatusBadge(element.status),
+        }));
+        this.tableConfig.data = rcs ? data : [];
         this.tableConfig.total = rcs ? rcs?.total : 0;
       });
   }
 
   approvedCreditSales() {
     this.store.dispatch(new ApprovedCreditSales({}));
+  }
+
+  creditStatusBadge(status: any): string {
+    const s = Number(status);
+    const map: Record<number, [string, string]> = {
+      0: ['status-pending',   'Pending'],
+      1: ['status-approved',  'Approved'],
+      2: ['status-delivered', 'Dispatched'],
+      3: ['status-completed', 'Completed'],
+    };
+    const [cls, label] = map[s] ?? ['status-draft', 'Unknown'];
+    return `<div class="${cls}"><span>${label}</span></div>`;
   }
 
   getProductPlan() {

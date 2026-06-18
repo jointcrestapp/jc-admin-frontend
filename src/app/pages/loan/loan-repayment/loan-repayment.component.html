@@ -10,8 +10,8 @@
   <app-table
     [tableConfig]="tableConfig"
     [dateRange]="true"
+    [searchInput]="true"
     (tableChanged)="onTableChange($event)"
-    
     (action)="onActionClicked($event)"
   >
     @if(open){

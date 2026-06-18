@@ -65,8 +65,8 @@
   <app-table
     [tableConfig]="tableConfig"
     [dateRange]="true"
+    [searchInput]="true"
     (tableChanged)="onTableChange($event)"
-    
     (action)="onActionClicked($event)"
   >
     <!-- <div filter class="top-panel-selection">

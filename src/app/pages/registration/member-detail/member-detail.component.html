@@ -18,7 +18,7 @@
             <div class="profile-info-main flex-grow-1">
               <h2 class="mb-1">{{ user.fullName }}</h2>
               <p class="text-muted mb-2"><i class="ri-fingerprint-line"></i> {{ user.memberId }} | Joined {{ user.joinedDate | date:'mediumDate' }}</p>
-              <div class="d-flex flex-wrap gap-2">
+              <div class="d-flex flex-wrap gap-2 mb-3">
                 <span class="badge rounded-pill" [ngClass]="user.isActivated ? 'bg-success-light' : 'bg-danger-light'">
                   {{ user.isActivated ? 'Activated' : 'Deactivated' }}
                 </span>
@@ -29,6 +29,19 @@
                   <i [class]="user.isSharesCompleted ? 'ri-checkbox-circle-line' : 'ri-time-line'"></i>
                   {{ user.isSharesCompleted ? 'Shares Completed' : 'Shares Pending' }}
                 </span>
+              </div>
+              <div class="d-flex flex-wrap gap-2">
+                <button
+                  class="btn btn-sm"
+                  [class]="user.isActivated ? 'btn-outline-danger' : 'btn-outline-success'"
+                  [disabled]="isUpdating"
+                  (click)="toggleActivation(user)">
+                  <i [class]="user.isActivated ? 'ri-user-forbid-line' : 'ri-user-follow-line'"></i>
+                  {{ isUpdating ? 'Updating...' : (user.isActivated ? 'Deactivate Member' : 'Activate Member') }}
+                </button>
+                <a [routerLink]="['/registration/edit-member', user.id]" class="btn btn-sm btn-outline-primary">
+                  <i class="ri-edit-line"></i> Edit Profile
+                </a>
               </div>
             </div>
 

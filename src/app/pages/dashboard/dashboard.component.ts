@@ -131,6 +131,9 @@ export class DashboardComponent {
   recent_txns$: Observable<any | null> = inject(Store).select(
     DashboardState.recent_txns
   );
+  recent_loans$: Observable<any | null> = inject(Store).select(
+    DashboardState.recent_loans
+  );
   order$: Observable<OrderModel | null> = inject(Store).select(
     OrderState.order
   );
@@ -164,6 +167,7 @@ export class DashboardComponent {
   public topSellerLoader: boolean = false;
   public notice: Notice;
   public filterType: string;
+  public adminName: string = 'Admin';
   public filter: Select2Data = [
     {
       value: "today",
@@ -279,9 +283,34 @@ export class DashboardComponent {
       { title: "amount", dataField: "amount", type: "price" },
       { title: "Tier Type", dataField: "tier_type" },
       { title: "Tier Category", dataField: "tier_category" },
-      // { title: "Duration", dataField: "duration" },
     ],
     rowActions: [],
+    data: [] as any[],
+    total: 0,
+  };
+
+  public recentLoansTableConfig: any = {
+    columns: [
+      { title: "Member ID", dataField: "member_id" },
+      {
+        title: "date",
+        dataField: "date",
+        type: "date",
+        date_format: "dd MMM yyyy",
+      },
+      { title: "name", dataField: "full_name" },
+      { title: "amount", dataField: "amount", type: "price" },
+      { title: "duration", dataField: "duration" },
+      { title: "status", dataField: "status" },
+    ],
+    rowActions: [
+      {
+        label: "View",
+        actionToPerform: "view",
+        icon: "ri-eye-line",
+        permission: "loan.index",
+      },
+    ],
     data: [] as any[],
     total: 0,
   };
@@ -305,6 +334,9 @@ export class DashboardComponent {
       this.store.dispatch(new ResentNotice("recent"));
     }
     this.notice$.subscribe((data) => (this.notice = data));
+    this.user$.subscribe((user) => {
+      if (user) this.adminName = user.fname || user.name || 'Admin';
+    });
     config.max = 5;
     config.readonly = true;
 
@@ -559,6 +591,12 @@ export class DashboardComponent {
       this.sellerTableConfig.data = store ? store?.data.slice(0, 5) : [];
       this.sellerTableConfig.total = store ? store?.total : 0;
     });
+
+    // For recent loans
+    this.recent_loans$.subscribe((loans) => {
+      this.recentLoansTableConfig.data = loans ?? [];
+      this.recentLoansTableConfig.total = loans?.length ?? 0;
+    });
   }
 
   async ngAfterViewInit() {
@@ -671,6 +709,10 @@ export class DashboardComponent {
   }
   recentTxnEdit(data: any) {
     this.router.navigateByUrl(`/thrift`);
+  }
+
+  onRecentLoansActionClicked(action: TableClickedAction) {
+    if (action.actionToPerform == "view") this.router.navigateByUrl(`/loan/requested-loans`);
   }
 
   // For Seller

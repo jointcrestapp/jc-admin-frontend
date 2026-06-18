@@ -1,0 +1,29 @@
+.total-badge {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: linear-gradient(135deg, #0249fe, #1b5afe);
+  border-radius: 8px;
+  padding: 8px 18px;
+  color: #fff;
+
+  .badge-label {
+    font-size: 13px;
+    opacity: 0.85;
+  }
+
+  .badge-value {
+    font-size: 16px;
+    font-weight: 700;
+  }
+}
+
+.btn-light-danger {
+  background: #fff0f0;
+  color: #e53935;
+  border: none;
+
+  &:hover {
+    background: #ffd5d5;
+  }
+}

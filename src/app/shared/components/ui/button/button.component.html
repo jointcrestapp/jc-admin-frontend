@@ -1,12 +1,12 @@
-<button 
-   [class]="class" 
-   [id]="id" 
-   [type]="type" 
-   [class.disabled]="disabled || ((spinnerStatus$ | async) && spinner && buttonId == id)" 
-   [disabled]="disabled || ((spinnerStatus$ | async) && buttonId == id)" 
+<button
+   [class]="class"
+   [id]="id"
+   [type]="type"
+   [class.disabled]="disabled || (spinner && !!(spinnerStatus$ | async) && !!buttonId && buttonId == id)"
+   [disabled]="disabled || (spinner && !!(spinnerStatus$ | async) && !!buttonId && buttonId == id)"
    (click)="onClick(id)">
-   <div 
-      [ngClass]="{ 'position-relative spinning' : spinner && (spinnerStatus$ | async) && buttonId && buttonId == id }">
-      <ng-content></ng-content>
-   </div>
+   @if(spinner && (spinnerStatus$ | async) && buttonId && buttonId == id) {
+     <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+   }
+   <ng-content></ng-content>
 </button>

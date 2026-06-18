@@ -311,17 +311,13 @@ export class AllThriftComponent {
     this.thrifts$.pipe(takeUntil(this.destroy$)).subscribe((thrift) => {
       if (!thrift) return;
 
-      const thrifts = thrift.data?.map((item: any) => {
-        // Replace country ID with label if available
-        if (item.user_country && this.countryMap.has(item.user_country)) {
-          return {
-            ...item,
-            month: this.getMonthLabel(item.month),
-            user_country: this.countryMap.get(item.user_country),
-          };
-        }
-        return item;
-      });
+      const thrifts = thrift.data?.map((item: any) => ({
+        ...item,
+        month: this.getMonthLabel(item.month),
+        ...(item.user_country && this.countryMap.has(item.user_country)
+          ? { user_country: this.countryMap.get(item.user_country) }
+          : {}),
+      }));
 
       this.tableConfig.data = thrifts || [];
       this.tableConfig.total = thrift.total || 0;

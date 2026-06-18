@@ -34,7 +34,6 @@ import { TranslateModule } from "@ngx-translate/core";
 import { PageWrapperComponent } from "../../../shared/components/page-wrapper/page-wrapper.component";
 import { TableComponent } from "../../../shared/components/ui/table/table.component";
 import { HasPermissionDirective } from "../../../shared/directive/has-permission.directive";
-import { CurrencySymbolPipe } from "../../../shared/pipe/currency-symbol.pipe";
 import {
   DeleteLoan,
   ExportLoans,
@@ -57,7 +56,6 @@ import { LoanState } from "src/app/shared/store/state/loan.state";
     TableComponent,
     ImportCsvModalComponent,
     DigitalDownloadModalComponent,
-    CurrencySymbolPipe,
   ],
   templateUrl: "./finished-loans.component.html",
   styleUrl: "./finished-loans.component.scss",

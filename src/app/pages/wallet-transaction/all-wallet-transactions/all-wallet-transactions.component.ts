@@ -3,7 +3,6 @@ import {
   inject,
   Inject,
   PLATFORM_ID,
-  Renderer2,
   ViewChild,
 } from "@angular/core";
 import { Store } from "@ngxs/store";
@@ -24,7 +23,7 @@ import {
   TableClickedAction,
   TableConfig,
 } from "../../../shared/interface/table.interface";
-import { CommonModule, DOCUMENT, isPlatformBrowser } from "@angular/common";
+import { CommonModule, isPlatformBrowser } from "@angular/common";
 import {
   Download,
   ExportProduct,
@@ -208,8 +207,6 @@ export class AllWalletTransactionsComponent {
 
   constructor(
     private store: Store,
-    private renderer: Renderer2,
-    @Inject(DOCUMENT) private document: Document,
     @Inject(PLATFORM_ID) private platformId: object,
     private notificationService: NotificationService,
     private router: Router
@@ -343,16 +340,11 @@ export class AllWalletTransactionsComponent {
   }
 
   filters(data: any, key: string) {
-    console.log("Filters ::::", {
-      data,
-      key,
-    });
-    this.renderer.addClass(this.document.body, "loader-none");
-    console.log(data && data.value);
-    if (data && data.value) {
-      this.filter[key] = data.value;
+    const val = data?.value ?? data ?? '';
+    if (val !== '' && val !== null && val !== undefined) {
+      this.filter[key] = val;
     } else {
-      this.filter[key] = [];
+      delete this.filter[key];
     }
     this.onTableChange(this.filter);
   }

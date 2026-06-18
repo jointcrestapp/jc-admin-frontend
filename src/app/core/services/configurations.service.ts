@@ -132,10 +132,16 @@ export class COnfigurationsService extends BaseApiService {
   }
 
   addProduct(data: any): Observable<any> {
+    if (data instanceof FormData) {
+      return this.postMultipart(`${environment.apiURL}/add_product`, data);
+    }
     return this.post(`${environment.apiURL}/add_product`, data);
   }
 
   updateProduct(data: any, id: number): Observable<any> {
+    if (data instanceof FormData) {
+      return this.putMultipart(`${environment.apiURL}/update_product/${id}`, data);
+    }
     return this.put(`${environment.apiURL}/update_product/${id}`, data);
   }
 

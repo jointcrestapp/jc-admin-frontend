@@ -27,6 +27,14 @@ export class BaseApiService {
     return this.http.put<T>(url, this.encryptIfNeeded(body), { headers }).pipe(apiOperators());
   }
 
+  postMultipart<T>(url: string, body: FormData) {
+    return this.http.post<T>(url, body).pipe(apiOperators());
+  }
+
+  putMultipart<T>(url: string, body: FormData) {
+    return this.http.put<T>(url, body).pipe(apiOperators());
+  }
+
   patch<T>(url: string, headers?: HttpHeaders) {
     return this.http.patch<T>(url, { headers }).pipe(apiOperators());
   }

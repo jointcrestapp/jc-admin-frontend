@@ -484,7 +484,22 @@ export class FormMemberComponent {
     this.store.dispatch(new GetRoles({}));
     this.store.dispatch(new GetBanks());
 
-    this.role$.pipe(takeUntil(this.destroy$)).subscribe((roles) => {});
+    const roleParam = this.route.snapshot.queryParams['role'];
+    if (roleParam && this.type === 'create') {
+      this.role$.pipe(
+        filter((roles: any) => !!roles?.length),
+        take(1),
+        takeUntil(this.destroy$)
+      ).subscribe((roles: any) => {
+        const match = roles.find((r: any) =>
+          r.label?.toLowerCase() === roleParam.toLowerCase()
+        );
+        if (match) {
+          // Defer by one tick so the select2 [data] binding is set before patchValue
+          setTimeout(() => this.form.patchValue({ account_type: match.value }), 0);
+        }
+      });
+    }
   }
 
   onCountryUpdate(event: any) {

@@ -24,3 +24,19 @@ export class ExportDividends {
   static readonly type = "[Dividend] Export";
   constructor(public customData?: any[]) {}
 }
+
+// Monthly profit actions
+export class GetMonthlyProfits {
+  static readonly type = "[Dividend] Get Monthly Profits";
+  constructor(public payload?: Params) {}
+}
+
+export class AddMonthlyProfit {
+  static readonly type = "[Dividend] Add Monthly Profit";
+  constructor(public payload: any) {}
+}
+
+export class DeleteMonthlyProfit {
+  static readonly type = "[Dividend] Delete Monthly Profit";
+  constructor(public id: number) {}
+}

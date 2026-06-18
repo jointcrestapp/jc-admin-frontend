@@ -1,0 +1,154 @@
+<app-page-wrapper [gridClass]="'col-sm-12'" [title]="'Monthly Profits'">
+
+  <!-- Add Profit Form -->
+  <div card class="card mb-4">
+    <div class="card-header">
+      <h5 class="mb-0">Record Monthly Profit</h5>
+    </div>
+    <div class="card-body">
+      <form [formGroup]="form" (ngSubmit)="submit()" class="theme-form theme-form-2 mega-form">
+        <div class="row g-3">
+
+          <div class="col-md-3">
+            <app-form-fields [label]="'Month'" [for]="'month'" [required]="true">
+              @if(isBrowser) {
+              <select2
+                class="custom-select"
+                [data]="months"
+                [placeholder]="'Select month'"
+                formControlName="month"
+                noResultMessage="No data found"
+              ></select2>
+              }
+              @if(form.controls['month']?.touched && form.controls['month']?.errors?.['required']) {
+              <div class="invalid-feedback d-block">Month is required</div>
+              }
+            </app-form-fields>
+          </div>
+
+          <div class="col-md-2">
+            <app-form-fields [label]="'Year'" [for]="'year'" [required]="true">
+              <input
+                class="form-control"
+                id="year"
+                type="number"
+                formControlName="year"
+                placeholder="e.g. 2025"
+              />
+              @if(form.controls['year']?.touched && form.controls['year']?.errors?.['required']) {
+              <div class="invalid-feedback d-block">Year is required</div>
+              }
+            </app-form-fields>
+          </div>
+
+          <div class="col-md-3">
+            <app-form-fields [label]="'Profit Amount (₦)'" [for]="'amount'" [required]="true">
+              <input
+                class="form-control"
+                id="amount"
+                type="number"
+                formControlName="amount"
+                placeholder="0.00"
+              />
+              @if(form.controls['amount']?.touched && form.controls['amount']?.errors?.['required']) {
+              <div class="invalid-feedback d-block">Amount is required</div>
+              }
+            </app-form-fields>
+          </div>
+
+          <div class="col-md-3">
+            <app-form-fields [label]="'Narration'" [for]="'narration'">
+              <input
+                class="form-control"
+                id="narration"
+                type="text"
+                formControlName="narration"
+                placeholder="Optional note"
+              />
+            </app-form-fields>
+          </div>
+
+          <div class="col-md-1 d-flex align-items-end pb-1">
+            <app-button [id]="'add_profit_btn'" [class]="'btn-theme w-100'">Add</app-button>
+          </div>
+
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Year Filter + Summary -->
+  <div class="d-flex align-items-center justify-content-between mb-3 flex-wrap gap-2" button>
+    <div class="d-flex align-items-center gap-3">
+      @if(isBrowser) {
+      <select2
+        class="custom-select"
+        style="min-width: 140px"
+        [data]="years"
+        [placeholder]="'Filter by year'"
+        (update)="onYearFilter($event)"
+        resettable
+      ></select2>
+      }
+      <span class="text-muted fs-6">
+        Showing: <strong>{{ selectedYear }}</strong>
+      </span>
+    </div>
+    <div class="total-badge">
+      <span class="badge-label">Total {{ selectedYear }} Profit</span>
+      <span class="badge-value">₦{{ yearlyTotal | number:'1.2-2' }}</span>
+    </div>
+  </div>
+
+  <!-- Profit Table -->
+  <div class="table-responsive">
+    <table class="table table-hover align-middle">
+      <thead class="table-light">
+        <tr>
+          <th>Month</th>
+          <th>Year</th>
+          <th class="text-end">Amount (₦)</th>
+          <th>Narration</th>
+          <th>Date Added</th>
+          <th class="text-center">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        @if(isLoading$ | async) {
+        <tr>
+          <td colspan="6" class="text-center py-4">
+            <div class="spinner-border spinner-border-sm text-primary" role="status"></div>
+            Loading…
+          </td>
+        </tr>
+        } @else if((monthlyProfits$ | async)?.data?.length === 0) {
+        <tr>
+          <td colspan="6" class="text-center text-muted py-4">
+            No profit entries for {{ selectedYear }}. Add one above.
+          </td>
+        </tr>
+        } @else {
+          @for(row of (monthlyProfits$ | async)?.data; track row.id) {
+          <tr>
+            <td><strong>{{ row.month_name }}</strong></td>
+            <td>{{ row.year }}</td>
+            <td class="text-end fw-semibold text-success">₦{{ row.amount | number:'1.2-2' }}</td>
+            <td class="text-muted">{{ row.narration || '—' }}</td>
+            <td>{{ row.date | date:'dd MMM yyyy' }}</td>
+            <td class="text-center">
+              <button
+                class="btn btn-sm btn-light-danger"
+                (click)="delete(row.id)"
+                title="Delete"
+              >
+                <i class="ri-delete-bin-line"></i>
+              </button>
+            </td>
+          </tr>
+          }
+        }
+      </tbody>
+    </table>
+  </div>
+
+</app-page-wrapper>

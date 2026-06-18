@@ -18,8 +18,10 @@ import {
   AddCreditSales,
 } from "../../../shared/store/action/credit.action";
 import { CommonModule } from "@angular/common";
+import { environment } from "src/environments/environment";
 import { appConfig } from "src/app/core/config/config";
 import { NotificationService } from "src/app/shared/services/notification.service";
+import { Lightbox, LightboxModule } from "ngx-lightbox";
 
 @Component({
   selector: "app-order-credit-sales",
@@ -30,6 +32,7 @@ import { NotificationService } from "src/app/shared/services/notification.servic
     TableComponent,
     ImportCsvModalComponent,
     CommonModule,
+    LightboxModule,
   ],
   templateUrl: "./order-credit-sales.component.html",
   styleUrl: "./order-credit-sales.component.scss",
@@ -49,6 +52,7 @@ export class OrderCreditSalesComponent {
 
   public tableConfig: TableConfig = {
     columns: [
+      { title: "Image", dataField: "image" },
       {
         title: "Product",
         dataField: "product",
@@ -63,11 +67,17 @@ export class OrderCreditSalesComponent {
     ],
     rowActions: [
       {
+        label: "View Image",
+        actionToPerform: "viewImage",
+        icon: "ri-eye-line",
+        conditional: { field: "_image_filename", condition: "!=", value: null },
+      }/* ,
+      {
         label: "Order",
         actionToPerform: "order",
         icon: "ri-shopping-cart-line",
         permission: "credit.create",
-      },
+      } */,
     ],
     //data: [] as User[],
     data: [] as any[],
@@ -76,16 +86,21 @@ export class OrderCreditSalesComponent {
 
   constructor(
     private notificationService: NotificationService,
-    public router: Router
+    public router: Router,
+    private lightbox: Lightbox
   ) {}
 
   ngOnInit() {
     this.orderCreditSales();
     this.order_credit_sales$.pipe(takeUntil(this.destroy$)).subscribe((ocs) => {
-      let order_credit_sales = ocs?.data?.filter((element: any) => {
-        return element;
-      });
-      this.tableConfig.data = ocs ? ocs?.data : [];
+      const data = ocs?.data?.map((element: any) => ({
+        ...element,
+        _image_filename: element.image || null,
+        image: element.image
+          ? `<img src="${environment.PRODUCT_IMAGES}${element.image}" class="tbl-thumb" />`
+          : `<span style="color:#cbd5e1;">—</span>`,
+      }));
+      this.tableConfig.data = ocs ? data : [];
       this.tableConfig.total = ocs ? ocs.total : ocs?.length;
     });
   }
@@ -104,13 +119,21 @@ export class OrderCreditSalesComponent {
   }
 
   onActionClicked(action: TableClickedAction) {
-    if (action.actionToPerform == "edit") this.edit(action.data);
+    if (action.actionToPerform == "viewImage") this.viewImage(action.data);
+    else if (action.actionToPerform == "edit") this.edit(action.data);
     else if (action.actionToPerform == "is_activated") this.status(action.data);
     else if (action.actionToPerform == "detail") this.view(action.data);
     else if (action.actionToPerform == "delete") this.delete(action.data);
     else if (action.actionToPerform == "deleteAll") this.deleteAll(action.data);
     else if (action.actionToPerform == "order")
       this.addCreditSales(action.data);
+  }
+
+  viewImage(data: any) {
+    if (!data._image_filename) return;
+    const src = environment.PRODUCT_IMAGES + data._image_filename;
+    const caption = data.product || data.name || '';
+    this.lightbox.open([{ src, caption, thumb: src }], 0);
   }
 
   edit(data: any) {

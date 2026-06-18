@@ -1481,5 +1481,10 @@
   "total_recovered_sum":"Total Recovered",
   "total_principal_sum":"Total Principal",
   "select_month":"Select Month",
-  "select_year":"Select Year"
+  "select_year":"Select Year",
+  "monthly_profits":"Monthly Profits",
+  "credit_sales_limit":"Credit Sales Limit",
+  "investment_history":"Investment History",
+  "all_investments":"All Investments",
+  "filter_by_investment_pool":"Filter by Investment Pool"
 }

@@ -25,6 +25,7 @@ import { InvestmentsState } from "src/app/shared/store/state/investment.state";
 import {
   GetInvestments,
   DeleteInvestment,
+  DisburseInvestment,
 } from "src/app/shared/store/action/investment.action";
 import { appConfig } from "src/app/core/config/config";
 import { NotificationService } from "src/app/shared/services/notification.service";
@@ -130,25 +131,33 @@ export class AllInvestmentsComponent {
 
   public tableConfig: TableConfig = {
     columns: [
-      { title: "name", dataField: "name" },
-      { title: "Descsription", dataField: "description" },
-      { title: "Amount", dataField: "amount", type: "price" },
-      { title: "ROI", dataField: "roi" },
-      { title: "Start Date", dataField: "start_date", type: "date" },
-      { title: "End Date", dataField: "end_date", type: "date" },
+      { title: "Name", dataField: "name" },
+      { title: "Total Fund", dataField: "total_investment_fund", type: "price" },
+      { title: "Contributed", dataField: "total_contributed", type: "price" },
+      { title: "Investors", dataField: "contributor_count" },
+      { title: "Rate", dataField: "rate" },
+      { title: "Tenure", dataField: "tenure" },
+      { title: "End Date", dataField: "end_date", type: "date", date_format: "dd MMM, yyyy" },
+      { title: "Status", dataField: "maturity_status" },
     ],
     rowActions: [
       {
         label: "Edit",
         actionToPerform: "edit",
         icon: "ri-pencil-line",
-        permission: "investment.edit",
+        conditional: { field: 'total_contributed', condition: '==', value: '0' },
       },
       {
         label: "Delete",
         actionToPerform: "delete",
         icon: "ri-delete-bin-line",
-        permission: "investment.destroy",
+        conditional: { field: 'total_contributed', condition: '==', value: '0' },
+      },
+      {
+        label: "Disburse",
+        actionToPerform: "disburse",
+        icon: "ri-send-plane-fill",
+        conditional: { field: 'can_disburse', condition: '==', value: 'true' },
       },
     ],
     data: [] as any[],
@@ -183,12 +192,18 @@ export class AllInvestmentsComponent {
     this.years = this.generateYearOptions();
     this.getInvestments();
     this.investments$.pipe(takeUntil(this.destroy$)).subscribe((investment) => {
-      let investments = investment?.data?.filter((element: any) => {
-        // cat.tier.currency = cat?.tier?.currency ? cat?.tier.currency : "";
-        return element;
-      });
-      this.tableConfig.data = investment ? investments : [];
-      this.tableConfig.total = investment ? investment?.total : 0;
+      const now = new Date();
+      const investments = (investment?.data ?? []).map((inv: any) => ({
+        ...inv,
+        maturity_status: inv.is_disbursed
+          ? '<span class="badge bg-success">Disbursed</span>'
+          : inv.is_matured
+            ? '<span class="badge bg-warning text-dark">Matured</span>'
+            : '<span class="badge bg-primary">Active</span>',
+        can_disburse: String(inv.is_matured && !inv.is_disbursed),
+      }));
+      this.tableConfig.data = investments;
+      this.tableConfig.total = investment?.total ?? 0;
     });
   }
 
@@ -216,6 +231,7 @@ export class AllInvestmentsComponent {
   onActionClicked(action: TableClickedAction) {
     if (action.actionToPerform == "edit") this.edit(action.data);
     else if (action.actionToPerform == "delete") this.delete(action.data);
+    else if (action.actionToPerform == "disburse") this.disburse(action.data);
   }
 
   edit(data: any) {
@@ -235,9 +251,27 @@ export class AllInvestmentsComponent {
           }
         },
         error: (err) => {
-          this.notificationService.showError(
-            err?.message || "Failed to delete Loan Type!"
-          );
+          this.notificationService.showError(err?.message || "Failed to delete investment!");
+        },
+      });
+  }
+
+  disburse(data: any) {
+    const confirmed = window.confirm(
+      `Disburse "${data.name}" to ${data.contributor_count} investor(s)?\n\nPrincipal + ${data.rate}% ROI will be credited to each member's wallet. This cannot be undone.`
+    );
+    if (!confirmed) return;
+
+    this.store
+      .dispatch(new DisburseInvestment(data.id))
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res: any) => {
+          const response = res?.investments?.response;
+          this.notificationService.showSuccess(response?.message || "Disbursement successful!");
+        },
+        error: (err) => {
+          this.notificationService.showError(err?.message || "Disbursement failed!");
         },
       });
   }

@@ -13,39 +13,16 @@
     @if(isBrowser) {
     <input
       class="form-control"
+      [class.bg-light]="type === 'edit'"
       id="name"
       type="text"
       placeholder="{{ 'enter_name' | translate }}"
       formControlName="name"
+      [attr.readonly]="type === 'edit' ? true : null"
     />
     } @if(form.controls['name']?.touched &&
     form.controls['name'].errors?.['required']){
     <div class="invalid-feedback">{{ "name_is_required" | translate }}</div>
-    }
-  </app-form-fields>
-  <app-form-fields
-    [labelClass]="'form-label-title col-sm-3 mb-0'"
-    [gridClass]="'col-sm-9'"
-    [label]="'Cal. Repayment Loan'"
-    [for]="'cal_method'"
-    [required]="true"
-  >
-    @if(isBrowser) {
-    <select2
-      class="custom-select"
-      [placeholder]="'select_method' | translate"
-      [data]="methods.length ? methods : []"
-      formControlName="cal_method"
-      noResultMessage="{{ 'no_data_found' | translate }}"
-      id="cal_method"
-      resettable
-    >
-    </select2>
-    } @if(form.controls['cal_method']?.touched &&
-    form.controls['cal_method']?.errors?.['required']){
-    <div class="invalid-feedback">
-      {{ "cal_method_is_required" | translate }}
-    </div>
     }
   </app-form-fields>
   <app-form-fields
@@ -96,6 +73,7 @@
   >
     @if(isBrowser) {
     <div class="input-group">
+      @if(!isQuickCash) {
       <button
         class="btn btn-outline-secondary"
         type="button"
@@ -103,14 +81,18 @@
       >
         <i class="ri-subtract-line"></i>
       </button>
+      }
       <input
         class="form-control text-center"
+        [class.bg-light]="isQuickCash"
         id="guarantors"
         type="number"
         placeholder="{{ 'select_guarantors' | translate }}"
         formControlName="guarantors"
+        [attr.readonly]="isQuickCash ? true : null"
         min="0"
       />
+      @if(!isQuickCash) {
       <button
         class="btn btn-outline-secondary"
         type="button"
@@ -118,6 +100,7 @@
       >
         <i class="ri-add-line"></i>
       </button>
+      }
     </div>
     } @if(form.controls['guarantors']?.touched &&
     form.controls['guarantors'].errors?.['required']){
@@ -129,101 +112,16 @@
   <app-form-fields
     [labelClass]="'form-label-title col-sm-3 mb-0'"
     [gridClass]="'col-sm-9'"
-    [label]="'min month'"
-    [for]="'min_month'"
-    [required]="true"
-  >
-    @if(isBrowser) {
-    <div class="input-group">
-      <button
-        class="btn btn-outline-secondary"
-        type="button"
-        (click)="decrementRate('min_month')"
-      >
-        <i class="ri-subtract-line"></i>
-      </button>
-      <input
-        class="form-control text-center"
-        id="min_month"
-        type="number"
-        placeholder="{{ 'select_min_month' | translate }}"
-        formControlName="min_month"
-        min="0"
-      />
-      <button
-        class="btn btn-outline-secondary"
-        type="button"
-        (click)="incrementRate('min_month')"
-      >
-        <i class="ri-add-line"></i>
-      </button>
-    </div>
-    } @if(form.controls['min_month']?.touched &&
-    form.controls['min_month'].errors?.['required']){
-    <div class="invalid-feedback">
-      {{ "min_month_is_required" | translate }}
-    </div>
-    }
-  </app-form-fields>
-  <app-form-fields
-    [labelClass]="'form-label-title col-sm-3 mb-0'"
-    [gridClass]="'col-sm-9'"
-    [label]="'max month'"
-    [for]="'max_month'"
-    [required]="true"
-  >
-    @if(isBrowser) {
-    <div class="input-group">
-      <button
-        class="btn btn-outline-secondary"
-        type="button"
-        (click)="decrementRate('max_month')"
-      >
-        <i class="ri-subtract-line"></i>
-      </button>
-      <input
-        class="form-control text-center"
-        id="max_month"
-        type="number"
-        placeholder="{{ 'select_max_month' | translate }}"
-        formControlName="max_month"
-        min="0"
-      />
-      <button
-        class="btn btn-outline-secondary"
-        type="button"
-        (click)="incrementRate('max_month')"
-      >
-        <i class="ri-add-line"></i>
-      </button>
-    </div>
-    } @if(form.controls['max_month']?.touched &&
-    form.controls['max_month'].errors?.['required']){
-    <div class="invalid-feedback">
-      {{ "max_month_is_required" | translate }}
-    </div>
-    }
-  </app-form-fields>
-  <app-form-fields
-    [labelClass]="'form-label-title col-sm-3 mb-0'"
-    [gridClass]="'col-sm-9'"
     [label]="'description'"
     [for]="'description'"
   >
     @if(isBrowser) {
-    <textarea
-      class="form-control"
-      id="description"
-      placeholder="{{ 'enter_description' | translate }}"
-      rows="3"
+    <ngx-editor-menu [editor]="editor"></ngx-editor-menu>
+    <ngx-editor
+      [editor]="editor"
       formControlName="description"
-    ></textarea>
-    <p class="help-text">{{ "*Maximum length should be 300 characters." }}</p>
-    } @if(form.controls['description']?.touched &&
-    form.controls['description'].errors?.['required']){
-    <div class="invalid-feedback">
-      {{ "description_is_required" | translate }}
-    </div>
+      [placeholder]="'enter_description' | translate"
+    ></ngx-editor>
     }
   </app-form-fields>
   <app-button [id]="'user_btn'">{{

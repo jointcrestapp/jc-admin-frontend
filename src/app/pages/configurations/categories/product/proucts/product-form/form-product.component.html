@@ -31,16 +31,13 @@
     [required]="true"
   >
     @if(isBrowser) {
-    <select2
-      class="custom-select"
-      [placeholder]="'select_category' | translate"
-      [data]="categories.length ? categories : []"
-      formControlName="category"
-      noResultMessage="{{ 'no_data_found' | translate }}"
+    <input
+      class="form-control"
       id="category"
-      resettable
-    >
-    </select2>
+      type="text"
+      placeholder="{{ 'enter_category' | translate }}"
+      formControlName="category"
+    />
     } @if(form.controls['category']?.touched &&
     form.controls['category']?.errors?.['required']){
     <div class="invalid-feedback">
@@ -179,6 +176,104 @@
     </div>
     }
   </app-form-fields>
+  <app-form-fields
+    [labelClass]="'form-label-title col-sm-3 mb-0'"
+    [gridClass]="'col-sm-9'"
+    [label]="'status'"
+    [for]="'status'"
+    [required]="true"
+  >
+    @if(isBrowser) {
+    <select class="form-control" id="status" formControlName="status">
+      <option [value]="1">Active</option>
+      <option [value]="0">Inactive</option>
+    </select>
+    }
+  </app-form-fields>
+  <app-form-fields
+    [labelClass]="'form-label-title col-sm-3 mb-0'"
+    [gridClass]="'col-sm-9'"
+    [label]="'unit'"
+    [for]="'unit'"
+  >
+    @if(isBrowser) {
+    <input
+      class="form-control"
+      id="unit"
+      type="text"
+      placeholder="e.g. kg, pcs, litre"
+      formControlName="unit"
+    />
+    <p class="help-text">{{ "Unit of measurement displayed on the mobile app." }}</p>
+    }
+  </app-form-fields>
+  <app-form-fields
+    [labelClass]="'form-label-title col-sm-3 mb-0'"
+    [gridClass]="'col-sm-9'"
+    [label]="'max order qty'"
+    [for]="'max_order_qty'"
+  >
+    @if(isBrowser) {
+    <input
+      class="form-control"
+      id="max_order_qty"
+      type="number"
+      placeholder="Leave blank for no limit"
+      formControlName="max_order_qty"
+      min="1"
+    />
+    <p class="help-text">{{ "Maximum quantity a member can order per transaction." }}</p>
+    }
+  </app-form-fields>
+  <app-form-fields
+    [labelClass]="'form-label-title col-sm-3 mb-0'"
+    [gridClass]="'col-sm-9'"
+    [label]="'SKU / product code'"
+    [for]="'sku'"
+  >
+    @if(isBrowser) {
+    <input
+      class="form-control"
+      id="sku"
+      type="text"
+      formControlName="sku"
+      readonly
+      style="background:#f8fafc;cursor:default;"
+    />
+    }
+  </app-form-fields>
+  <app-form-fields
+    [labelClass]="'form-label-title col-sm-3 mb-0'"
+    [gridClass]="'col-sm-9'"
+    [label]="'product image'"
+    [for]="'image'"
+  >
+    @if(isBrowser) {
+    <input
+      class="form-control"
+      id="image"
+      type="file"
+      accept="image/jpeg,image/jpg,image/png,image/webp"
+      (change)="onImageSelect($event)"
+    />
+    <p class="help-text">{{ "JPEG, PNG or WebP · Max 2 MB" }}</p>
+    @if(imagePreview || existingImageUrl) {
+    <div class="img-preview-wrap mt-2">
+      <img
+        [src]="imagePreview || existingImageUrl"
+        class="img-preview"
+        alt="Product preview"
+      />
+      @if(imagePreview) {
+      <button type="button" class="btn-remove-img" (click)="removeImage()">
+        <i class="ri-close-line"></i>
+      </button>
+      }
+    </div>
+    }
+    }
+  </app-form-fields>
+
   <app-button [id]="'user_btn'">{{
     (type == "create" ? "add_product" : "edit_product") | translate
   }}</app-button>

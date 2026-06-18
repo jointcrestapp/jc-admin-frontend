@@ -338,6 +338,12 @@
         --Iconsax-Color: White;
     }
 
+    .widget-icon i {
+        font-size: 24px;
+        color: #fff;
+        line-height: 1;
+    }
+
     .widget-icon,
     .booking-widget-icon {
         @include flex_common;
@@ -404,6 +410,72 @@
                 background-color: #0249fe;
             }
         }
+    }
+
+    &:nth-child(6) {
+        .widget-card {
+            background-color: rgba(2, 73, 254, 0.08);
+
+            .widget-icon {
+                background-color: #0249fe;
+            }
+        }
+    }
+
+    &:nth-child(7) {
+        .widget-card {
+            background-color: rgba(0, 210, 141, 0.1);
+
+            .widget-icon {
+                background-color: #00d28d;
+            }
+        }
+    }
+
+    &:nth-child(8) {
+        .widget-card {
+            background-color: rgba(0, 210, 141, 0.1);
+
+            .widget-icon {
+                background-color: #00a871;
+            }
+        }
+    }
+
+    &:nth-child(9) {
+        .widget-card {
+            background-color: rgba(73, 86, 121, 0.1);
+
+            .widget-icon {
+                background-color: #495679;
+            }
+        }
+    }
+
+    &:nth-child(10) {
+        .widget-card {
+            background-color: rgba(179, 97, 138, 0.1);
+
+            .widget-icon {
+                background-color: #B3618A;
+            }
+        }
+    }
+
+    &:nth-child(11) {
+        .widget-card {
+            background-color: rgba(134, 144, 156, 0.1);
+
+            .widget-icon {
+                background-color: #568537;
+            }
+        }
+    }
+
+    .widget-icon i {
+        font-size: 24px;
+        color: #fff;
+        line-height: 1;
     }
 }
 

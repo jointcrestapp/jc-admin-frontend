@@ -28,4 +28,12 @@ export class InvestmentService extends BaseApiService {
   deleteInvestment(id: number): Observable<any> {
     return this.delete(`${environment.apiURL}/delete_investment/${id}`);
   }
+
+  getInvestmentHistories(filter: any): Observable<any> {
+    return this.get(`${environment.apiURL}/get_investment_histories`, filter);
+  }
+
+  disburseInvestment(id: number): Observable<any> {
+    return this.post(`${environment.apiURL}/disburse_investment/${id}`, {});
+  }
 }

@@ -96,7 +96,13 @@
         <span class="input-group-text">{{currency}}</span>
         <input class="form-control" id="fixed_loan_fee" type="number" formControlName="fixed_loan_fee" />
       </div>
-      
+    </app-form-fields>
+
+    <app-form-fields [label]="'credit_sales_limit'" [for]="'credit_sales_limit'">
+      <div class="input-group">
+        <span class="input-group-text">{{currency}}</span>
+        <input class="form-control" id="credit_sales_limit" type="number" formControlName="credit_sales_limit" placeholder="50000" />
+      </div>
     </app-form-fields>
 
     <div class="mt-4">

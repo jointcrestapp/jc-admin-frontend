@@ -9,6 +9,7 @@
     </a>
     <a
       [routerLink]="['/registration/create']"
+      [queryParams]="{ role: 'agent' }"
       class="align-items-center btn btn-theme"
     >
       <i class="ri-add-line"></i> {{ "add_agent" | translate }}

@@ -10,12 +10,12 @@
                                 <app-basic></app-basic>
                             </ng-template>
                         </li>
-                        <li ngbNavItem="loan">
+                        <!-- <li ngbNavItem="loan">
                             <a ngbNavLink><i class="ri-exchange-funds-line"></i> {{ 'loan' | translate }}</a>
                             <ng-template ngbNavContent>
                                 <app-loan></app-loan>
                             </ng-template>
-                        </li>
+                        </li> -->
                         <li ngbNavItem="notification">
                             <a ngbNavLink><i class="ri-notification-line"></i>{{ 'notification' | translate }}</a>
                             <ng-template ngbNavContent>
@@ -32,6 +32,12 @@
                             <a ngbNavLink><i class="ri-bank-card-line"></i>{{ 'payment' | translate }}</a>
                             <ng-template ngbNavContent>
                                 <app-payment></app-payment>
+                            </ng-template>
+                        </li>
+                        <li ngbNavItem="app-content">
+                            <a ngbNavLink><i class="ri-video-line"></i>App Content</a>
+                            <ng-template ngbNavContent>
+                                <app-app-content></app-app-content>
                             </ng-template>
                         </li>
                     </ul>

@@ -23,4 +23,17 @@ export class DividendService extends BaseApiService {
   addDividend(data: any): Observable<any> {
     return this.post(`${environment.apiURL}/calculate_dividends`, data);
   }
+
+  // Monthly profits
+  getMonthlyProfits(filter: any): Observable<any> {
+    return this.get(`${environment.apiURL}/get_monthly_profits`, filter);
+  }
+
+  addMonthlyProfit(data: any): Observable<any> {
+    return this.post(`${environment.apiURL}/add_monthly_profit`, data);
+  }
+
+  deleteMonthlyProfit(id: number): Observable<any> {
+    return this.delete(`${environment.apiURL}/delete_monthly_profit/${id}`);
+  }
 }

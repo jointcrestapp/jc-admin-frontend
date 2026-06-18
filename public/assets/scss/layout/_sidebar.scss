@@ -1655,7 +1655,6 @@
         box-shadow: 0 0 21px 0 rgba($semi-dark, 0.1);
         background: #202020;
         overflow: hidden;
-        background-image: url("../../images/sidebg.jpg");
 
         @media (max-width: 1199px) {
           width: 260px;
@@ -1686,12 +1685,12 @@
 
         .logo-wrapper,
         .logo-icon-wrapper {
-          height: 82px;
+          height: 100px;
           display: flex;
           align-items: center;
           padding-left: 30px;
-          padding-top: 10px;
-          padding-bottom: 10px;
+          padding-top: 14px;
+          padding-bottom: 14px;
           border-bottom: 1px solid #3a3a3a;
 
           [dir="rtl"] & {

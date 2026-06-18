@@ -145,13 +145,58 @@
 .member-info {
   display: flex;
   flex-direction: column;
-  
+
   .member-name {
     font-weight: 500;
   }
-  
+
   .member-id {
     color: #666;
     font-size: 0.8em;
+  }
+}
+
+.dividend-preview-card {
+  background: #f8faff;
+  border: 1px solid #d0dbff;
+  border-radius: 10px;
+  padding: 16px 20px;
+
+  .preview-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 0;
+    border-bottom: 1px solid #e8eeff;
+
+    &:last-of-type {
+      border-bottom: none;
+    }
+
+    .preview-label {
+      color: #64748b;
+      font-size: 13px;
+    }
+
+    .preview-val {
+      font-size: 14px;
+      color: #1e293b;
+    }
+
+    &.total-row {
+      margin-top: 4px;
+      padding-top: 10px;
+      border-top: 2px solid #0249fe;
+
+      .preview-label {
+        color: #0249fe;
+        font-weight: 600;
+      }
+
+      .preview-val {
+        color: #0249fe;
+        font-size: 16px;
+      }
+    }
   }
 }

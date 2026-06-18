@@ -282,17 +282,13 @@ export class AllSharesComponent {
     this.savings$.pipe(takeUntil(this.destroy$)).subscribe((saving) => {
       if (!saving) return;
 
-      const savings = saving.data?.map((item: any) => {
-        // Replace country ID with label if available
-        if (item.user_country && this.countryMap.has(item.user_country)) {
-          return {
-            ...item,
-            month: this.getMonthLabel(item.month),
-            user_country: this.countryMap.get(item.user_country),
-          };
-        }
-        return item;
-      });
+      const savings = saving.data?.map((item: any) => ({
+        ...item,
+        month: this.getMonthLabel(item.month),
+        ...(item.user_country && this.countryMap.has(item.user_country)
+          ? { user_country: this.countryMap.get(item.user_country) }
+          : {}),
+      }));
 
       this.tableConfig.data = savings || [];
       this.tableConfig.total = saving.total || 0;

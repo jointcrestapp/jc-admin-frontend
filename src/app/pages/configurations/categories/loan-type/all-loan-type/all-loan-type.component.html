@@ -1,16 +1,6 @@
 <app-page-wrapper [gridClass]="'col-sm-12'" [title]="'loan types'">
-  <div
-    class="d-flex flex-wrap gap-3"
-    button
-    *hasPermission="'configurations.create'"
-  >
-    <a
-      (click)="navigateToAddLoanType()"
-      class="align-items-center btn btn-theme d-flex rounded"
-    >
-      {{ "add_loan_type" | translate }}
-    </a>
-  </div>
+  <!-- Add loan type hidden: platform uses fixed loan types only -->
+  <div button></div>
   <app-table
     [tableConfig]="tableConfig"
     (tableChanged)="onTableChange($event)"

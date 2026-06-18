@@ -5,19 +5,19 @@ import { InvestmentService } from "../../../core/services/investment.service";
 import {
   SetLoadingState,
   GetInvestments,
+  GetInvestmentHistories,
   EditInvestment,
   CreateInvestment,
   UpdateInvestment,
   DeleteInvestment,
+  DisburseInvestment,
 } from "../action/investment.action";
 
 export interface InvestmentsStateModel {
   loading?: boolean;
   response?: any | null;
-  investments?: {
-    data: any[];
-    total: any | null;
-  };
+  investments?: { data: any[]; total: any | null };
+  investmentHistories?: { data: any[]; total: any | null };
   SelectedInvestment?: any | null;
 }
 
@@ -26,10 +26,8 @@ export interface InvestmentsStateModel {
   defaults: {
     loading: false,
     SelectedInvestment: null,
-    investments: {
-      data: [],
-      total: 0,
-    },
+    investments: { data: [], total: 0 },
+    investmentHistories: { data: [], total: 0 },
   },
 })
 @Injectable()
@@ -49,6 +47,11 @@ export class InvestmentsState {
   @Selector()
   static investments(state: InvestmentsStateModel) {
     return state.investments;
+  }
+
+  @Selector()
+  static investmentHistories(state: InvestmentsStateModel) {
+    return state.investmentHistories;
   }
 
   @Action(SetLoadingState)
@@ -194,6 +197,57 @@ export class InvestmentsState {
       catchError((err) => {
         ctx.patchState({ loading: false });
         console.error("Error deleting Investment:", err);
+        return throwError(() => err);
+      })
+    );
+  }
+
+  @Action(GetInvestmentHistories)
+  getInvestmentHistories(
+    ctx: StateContext<InvestmentsStateModel>,
+    { payload }: GetInvestmentHistories
+  ) {
+    ctx.patchState({ loading: true });
+    return this.investmentsService.getInvestmentHistories(payload).pipe(
+      tap((result: any) => {
+        ctx.patchState({
+          investmentHistories: {
+            data: result?.data ?? [],
+            total: result?.total ?? result?.data?.length ?? 0,
+          },
+          loading: false,
+        });
+      }),
+      catchError((err) => {
+        ctx.patchState({ loading: false });
+        console.error("Error fetching investment histories:", err);
+        return throwError(() => err);
+      })
+    );
+  }
+
+  @Action(DisburseInvestment)
+  disburseInvestment(
+    ctx: StateContext<InvestmentsStateModel>,
+    { id }: DisburseInvestment
+  ) {
+    ctx.patchState({ loading: true });
+    return this.investmentsService.disburseInvestment(id).pipe(
+      tap((res: any) => {
+        // Mark the pool as disbursed in local state so the button disappears immediately
+        const state = ctx.getState();
+        const updated = (state.investments?.data ?? []).map((inv: any) =>
+          inv.id === id ? { ...inv, is_disbursed: true } : inv
+        );
+        ctx.patchState({
+          investments: { data: updated, total: state.investments?.total ?? 0 },
+          response: res,
+          loading: false,
+        });
+      }),
+      catchError((err) => {
+        ctx.patchState({ loading: false });
+        console.error("Error disbursing investment:", err);
         return throwError(() => err);
       })
     );

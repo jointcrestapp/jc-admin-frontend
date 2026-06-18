@@ -3,116 +3,113 @@
   [formGroup]="form"
   (ngSubmit)="submit()"
 >
+
+  <!-- Year selector -->
   <app-form-fields
     [labelClass]="'form-label-title col-sm-3 mb-0'"
     [gridClass]="'col-sm-9'"
-    [label]="'Dividend Percent'"
-    [for]="'dividendPercent'"
-    [required]="true"
-  >
-    <input
-      class="form-control"
-      id="dividendPercent"
-      type="number"
-      placeholder="{{ 'enter_dividend_percent' | translate }}"
-      formControlName="dividendPercent"
-    />
-    @if(form.controls['dividendPercent']?.touched &&
-    form.controls['dividendPercent']?.errors?.['required']){
-    <div class="invalid-feedback">
-      {{ "dividend_percent_is_required" | translate }}
-    </div>
-    }
-  </app-form-fields>
-  <app-form-fields
-    [labelClass]="'form-label-title col-sm-3 mb-0'"
-    [gridClass]="'col-sm-9'"
-    [label]="'Loan Profit'"
-    [for]="'totalLoanProfit'"
-    [required]="true"
-  >
-    <input
-      class="form-control"
-      id="totalLoanProfit"
-      type="number"
-      placeholder="{{ 'enter_loan_profit' | translate }}"
-      formControlName="totalLoanProfit"
-    />
-    @if(form.controls['totalLoanProfit']?.touched &&
-    form.controls['totalLoanProfit']?.errors?.['required']){
-    <div class="invalid-feedback">
-      {{ "loan_profit_is_required" | translate }}
-    </div>
-    }
-  </app-form-fields>
-  <app-form-fields
-    [labelClass]="'form-label-title col-sm-3 mb-0'"
-    [gridClass]="'col-sm-9'"
-    [label]="'Sales Profit'"
-    [for]="'totalCreditSalesProfit'"
-    [required]="true"
-  >
-    <input
-      class="form-control"
-      id="totalCreditSalesProfit"
-      type="number"
-      placeholder="{{ 'enter_sales_profit' | translate }}"
-      formControlName="totalCreditSalesProfit"
-    />
-    @if(form.controls['totalCreditSalesProfit']?.touched &&
-    form.controls['totalCreditSalesProfit']?.errors?.['required']){
-    <div class="invalid-feedback">
-      {{ "sales_profit_is_required" | translate }}
-    </div>
-    }
-  </app-form-fields>
-  <app-form-fields
-    [labelClass]="'form-label-title col-sm-3 mb-0'"
-    [gridClass]="'col-sm-9'"
-    [label]="'Savings Profit'"
-    [for]="'totalSavingsProfit'"
-    [required]="true"
-  >
-    <input
-      class="form-control"
-      id="totalSavingsProfit"
-      type="number"
-      placeholder="{{ 'enter_savings_profit' | translate }}"
-      formControlName="totalSavingsProfit"
-    />
-    @if(form.controls['totalSavingsProfit']?.touched &&
-    form.controls['totalSavingsProfit']?.errors?.['required']){
-    <div class="invalid-feedback">
-      {{ "savings_profit_is_required" | translate }}
-    </div>
-    }
-  </app-form-fields>
-  <app-form-fields
-    [labelClass]="'form-label-title col-sm-3 mb-0'"
-    [gridClass]="'col-sm-9'"
-    [label]="'month'"
-    [for]="'month'"
+    [label]="'Dividend Year'"
+    [for]="'year'"
     [required]="true"
   >
     @if(isBrowser) {
     <select2
       class="custom-select"
-      [placeholder]="'month' | translate"
-      [data]="months?.length ? months : []"
-      formControlName="endMonth"
-      noResultMessage="{{ 'no_data_found' | translate }}"
-      id="month"
-      resettable
-    >
-    </select2>
-    } @if(form.controls['endMonth']?.touched &&
-    form.controls['endMonth'].errors?.['required']){
-    <div class="invalid-feedback">
-      {{ "month_is_required" | translate }}
-    </div>
+      [data]="years"
+      [placeholder]="'Select year'"
+      (update)="onYearChange($event)"
+      noResultMessage="No data found"
+    ></select2>
+    }
+    @if(form.controls['year']?.touched && form.controls['year']?.errors?.['required']) {
+    <div class="invalid-feedback d-block">Year is required</div>
     }
   </app-form-fields>
-  <app-button [id]="'user_btn'">{{
-    (type == "create" ? "generate_dividend" : "update_dividend") | translate
-  }}</app-button>
+
+  <!-- Total yearly profit (read-only, fetched from monthly entries) -->
+  <app-form-fields
+    [labelClass]="'form-label-title col-sm-3 mb-0'"
+    [gridClass]="'col-sm-9'"
+    [label]="'Total Profit for ' + selectedYear"
+    [for]="'total_profit'"
+  >
+    <div class="input-group">
+      <span class="input-group-text">₦</span>
+      <input
+        class="form-control bg-light"
+        id="total_profit"
+        type="text"
+        [value]="yearlyTotal | number:'1.2-2'"
+        readonly
+      />
+    </div>
+    <small class="text-muted">
+      Auto-calculated from monthly profit entries.
+      @if(yearlyTotal <= 0) {
+        <span class="text-danger ms-1">No profit data found for {{ selectedYear }} — add monthly profits first.</span>
+      }
+    </small>
+  </app-form-fields>
+
+  <!-- Dividend percent -->
+  <app-form-fields
+    [labelClass]="'form-label-title col-sm-3 mb-0'"
+    [gridClass]="'col-sm-9'"
+    [label]="'Dividend Percent (%)'"
+    [for]="'dividendPercent'"
+    [required]="true"
+  >
+    <div class="input-group">
+      <input
+        class="form-control"
+        id="dividendPercent"
+        type="number"
+        placeholder="e.g. 10"
+        formControlName="dividendPercent"
+        min="0.01"
+        max="100"
+        step="0.01"
+      />
+      <span class="input-group-text">%</span>
+    </div>
+    @if(form.controls['dividendPercent']?.touched && form.controls['dividendPercent']?.errors?.['required']) {
+    <div class="invalid-feedback d-block">Dividend percent is required</div>
+    }
+    @if(form.controls['dividendPercent']?.touched && form.controls['dividendPercent']?.errors?.['min']) {
+    <div class="invalid-feedback d-block">Must be greater than 0</div>
+    }
+    <small class="text-muted">Pre-filled from coop settings. You can adjust this per declaration.</small>
+  </app-form-fields>
+
+  <!-- Dividend pool preview -->
+  @if(declaredPool > 0) {
+  <div class="row mb-4">
+    <div class="col-sm-3"></div>
+    <div class="col-sm-9">
+      <div class="dividend-preview-card">
+        <div class="preview-row">
+          <span class="preview-label">Total Profit ({{ selectedYear }})</span>
+          <span class="preview-val">₦{{ yearlyTotal | number:'1.2-2' }}</span>
+        </div>
+        <div class="preview-row">
+          <span class="preview-label">Dividend %</span>
+          <span class="preview-val">{{ form.get('dividendPercent')?.value }}%</span>
+        </div>
+        <div class="preview-row total-row">
+          <span class="preview-label">Total Dividend Pool</span>
+          <span class="preview-val fw-bold">₦{{ declaredPool | number:'1.2-2' }}</span>
+        </div>
+        <small class="text-muted d-block mt-2">
+          This pool will be distributed proportionally based on each member's equity
+          (savings balance minus outstanding loans).
+        </small>
+      </div>
+    </div>
+  </div>
+  }
+
+  <app-button [id]="'declare_btn'" [disabled]="yearlyTotal <= 0">
+    Declare Dividends for {{ selectedYear }}
+  </app-button>
+
 </form>

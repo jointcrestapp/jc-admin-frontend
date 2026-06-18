@@ -30,24 +30,41 @@
   <app-form-fields
     [labelClass]="'form-label-title col-sm-3 mb-0'"
     [gridClass]="'col-sm-9'"
-    [label]="'amount'"
+    [label]="'Total Investment Fund'"
     [for]="'amount'"
     [required]="true"
   >
     @if(isBrowser) {
     <input
       class="form-control"
-      id="rate"
+      id="amount"
       type="number"
-      placeholder="{{ 'enter_amount' | translate }}"
+      placeholder="Enter total fund target amount"
       formControlName="amount"
       min="0"
     />
     } @if(form.controls['amount']?.touched &&
     form.controls['amount'].errors?.['required']){
     <div class="invalid-feedback">
-      {{ "amount_is_required" | translate }}
+      Total investment fund is required.
     </div>
+    }
+  </app-form-fields>
+  <app-form-fields
+    [labelClass]="'form-label-title col-sm-3 mb-0'"
+    [gridClass]="'col-sm-9'"
+    [label]="'Tenure'"
+    [for]="'tenure'"
+  >
+    @if(isBrowser) {
+    <select2
+      class="custom-select"
+      [placeholder]="'Select tenure duration'"
+      [data]="tenureOptions"
+      formControlName="tenure"
+      noResultMessage="No options found"
+      id="tenure"
+    ></select2>
     }
   </app-form-fields>
   <app-form-fields
@@ -106,12 +123,18 @@
       placeholder="{{ 'enter_return_on_investment' | translate }}"
       formControlName="roi"
       min="0"
+      [max]="maxRoi ?? ''"
     />
-    } @if(form.controls['roi']?.touched &&
-    form.controls['roi'].errors?.['required']){
-    <div class="invalid-feedback">
+    } @if(form.controls['roi']?.touched && form.controls['roi'].errors?.['required']){
+    <div class="invalid-feedback d-block">
       {{ "return_on_investment_is_required" | translate }}
     </div>
+    } @if(form.controls['roi']?.touched && form.controls['roi'].errors?.['max']){
+    <div class="invalid-feedback d-block">
+      ROI cannot exceed <strong>{{ maxRoi }}%</strong> based on the current rate and tenure.
+    </div>
+    } @if(maxRoi !== null && !form.controls['roi'].errors?.['max']){
+    <small class="text-muted">Max allowed: {{ maxRoi }}% &nbsp;(rate × tenure)</small>
     }
   </app-form-fields>
   <app-form-fields
@@ -144,17 +167,25 @@
     [required]="true"
   >
     @if(isBrowser) {
-    <input
-      class="form-control"
-      id="end_date"
-      type="date"
-      placeholder="{{ 'enter_end_date' | translate }}"
-      formControlName="end_date"
-    />
-    } @if(form.controls['end_date']?.touched &&
-    form.controls['end_date'].errors?.['required']){
-    <div class="invalid-feedback">
+    <div class="input-group">
+      <input
+        class="form-control"
+        id="end_date"
+        type="date"
+        formControlName="end_date"
+        [min]="form.get('start_date')?.value"
+      />
+      @if(form.get('tenure')?.value && form.get('start_date')?.value) {
+        <span class="input-group-text text-muted" style="font-size:11px;">auto-filled</span>
+      }
+    </div>
+    } @if(form.controls['end_date']?.touched && form.controls['end_date'].errors?.['required']){
+    <div class="invalid-feedback d-block">
       {{ "end_date_is_required" | translate }}
+    </div>
+    } @if(form.errors?.['endBeforeStart'] && form.controls['end_date']?.touched){
+    <div class="invalid-feedback d-block">
+      End date must be after the start date.
     </div>
     }
   </app-form-fields>
@@ -166,15 +197,17 @@
     [required]="true"
   >
     @if(isBrowser) {
-    <select2
-      class="custom-select"
-      [placeholder]="'select_maturity_year' | translate"
-      [data]="years.length ? years : []"
-      formControlName="maturity_year"
-      noResultMessage="{{ 'no_data_found' | translate }}"
-      id="maturity_year"
-    >
-    </select2>
+    <div class="input-group">
+      <input
+        class="form-control bg-light"
+        id="maturity_year"
+        type="text"
+        formControlName="maturity_year"
+        readonly
+        [placeholder]="'Derived from end date'"
+      />
+      <span class="input-group-text text-muted" style="font-size:11px;">auto</span>
+    </div>
     } @if(form.controls['maturity_year']?.touched &&
     form.controls['maturity_year'].errors?.['required']){
     <div class="invalid-feedback">

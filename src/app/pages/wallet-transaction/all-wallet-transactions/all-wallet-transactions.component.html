@@ -74,27 +74,41 @@
       </button>
     </div> -->
 
-    @if(open){
     <div advanceFilter class="show-box mb-4 d-block product-category-option">
       <div class="row g-sm-4 g-3">
-        <!-- <div class="col-xl-4 col-lg-6 col-md-3 col-sm-6">
+
+        <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12">
+          <div class="search-box">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Search by name, email, member ID, amount, reference…"
+              [value]="filter['search'] || ''"
+              (input)="filters({ value: $any($event.target).value }, 'search')"
+            />
+            <i class="ri-search-line"></i>
+          </div>
+        </div>
+
+        <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6">
           @if(isBrowser) {
           <select2
             class="custom-select"
-            [data]="(countries$ | async)?.length ? (countries$ | async) : []"
-            [placeholder]="'select_country' | translate"
-            (update)="filters($event, 'country')"
+            [data]="subStatus"
+            [placeholder]="'Filter by status' | translate"
+            (update)="applyFilter($event)"
             noResultMessage="{{ 'no_data_found' | translate }}"
             resettable
           >
           </select2>
           }
-        </div> -->
-        <div class="col-xl-6 col-lg-6 col-md-3 col-sm-6">
+        </div>
+
+        <div class="col-xl-2 col-lg-6 col-md-6 col-sm-6">
           @if(isBrowser) {
           <select2
             class="custom-select"
-            [data]="months.length ? months : []"
+            [data]="months"
             [placeholder]="'month' | translate"
             (update)="filters($event, 'month')"
             noResultMessage="{{ 'no_data_found' | translate }}"
@@ -103,11 +117,12 @@
           </select2>
           }
         </div>
-        <div class="col-xl-6 col-lg-6 col-md-3 col-sm-6">
+
+        <div class="col-xl-2 col-lg-6 col-md-6 col-sm-6">
           @if(isBrowser) {
           <select2
             class="custom-select"
-            [data]="years.length ? years : []"
+            [data]="years"
             [placeholder]="'year' | translate"
             (update)="filters($event, 'year')"
             noResultMessage="{{ 'no_data_found' | translate }}"
@@ -116,28 +131,9 @@
           </select2>
           }
         </div>
-           @if(open){
-            <div advanceFilter class="show-box mb-4 d-block product-category-option">
-              <div class="row g-sm-4 g-3">
-                <div class="col-xl-4 col-lg-6 col-md-3 col-sm-6">
-                  @if(isBrowser) {
-                  <select2
-                    class="custom-select"
-                    [placeholder]="'select_status' | translate"
-                    [data]="subStatus.length ? subStatus : []"
-                    (update)="applyFilter($event)"
-                    noResultMessage="{{ 'no_data_found' | translate }}"
-                    resettable
-                  >
-                  </select2>
-                  }
-                </div>
-              </div>
-            </div>
-            }
+
       </div>
     </div>
-    }
   </app-table>
 </app-page-wrapper>
 

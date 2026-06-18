@@ -80,6 +80,7 @@ export class OtherCategoriesComponent implements OnInit {
       subscription_fee: [0, [Validators.required, Validators.min(0)]],
       subscription_grace_period: [0, [Validators.required, Validators.min(0)]],
       min_transfer_amount: [0, [Validators.required, Validators.min(0)]],
+      credit_sales_limit: [50000, [Validators.required, Validators.min(0)]],
     });
   }
 

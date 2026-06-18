@@ -76,11 +76,9 @@ export class AllLoanTypeComponent {
   public tableConfig: TableConfig = {
     columns: [
       { title: "Date", dataField: "date", type: "date" },
-      
-      { title: "name", dataField: "meta" },
-      
-      { title: "Amount", dataField: "amount", type: 'price' },
-      { title: "Interest", dataField: "interest" },
+      { title: "Name", dataField: "meta" },
+      { title: "Amount", dataField: "amount", type: "price" },
+      { title: "Interest (%)", dataField: "interest" },
       { title: "Threshold (%)", dataField: "threshold_percent" },
       { title: "Guarantor Required", dataField: "isGuarantorRequired" },
       { title: "Guarantors", dataField: "total_guarantors" }
@@ -127,15 +125,13 @@ export class AllLoanTypeComponent {
   ngOnInit() {
     this.getLoanTypes();
     this.loan_types$.pipe(takeUntil(this.destroy$)).subscribe((lt) => {
-      let loan_types = lt?.data?.filter((element: any) => {
-        // cat.tier.currency = cat?.tier?.currency ? cat?.tier.currency : "";
-        element.isGuarantorRequired = element.guarantor_required == 1
+      this.tableConfig.data = lt?.data?.map((element: any) => ({
+        ...element,
+        isGuarantorRequired: element.guarantor_required == 1
           ? `<div class="status-success"><span>Yes</span></div>`
-          : `<div class="status-danger"><span>No</span></div>`;
-        return element;
-      });
-      this.tableConfig.data = lt ? loan_types : [];
-      this.tableConfig.total = lt ? lt?.total : 0;
+          : `<div class="status-danger"><span>No</span></div>`,
+      })) ?? [];
+      this.tableConfig.total = lt?.total ?? 0;
     });
   }
 

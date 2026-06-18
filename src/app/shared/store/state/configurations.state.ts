@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { Action, Selector, State, StateContext } from "@ngxs/store";
 import { catchError, finalize, map, tap, throwError } from "rxjs";
 import { COnfigurationsService } from "../../../core/services/configurations.service";
+import { ShowButtonSpinnerAction, HideButtonSpinnerAction } from "../action/loader.action";
 import {
   SetLoadingState,
   GetCurrencies,
@@ -351,6 +352,7 @@ export class ConfigurationsState {
     { isLoading }: SetLoadingState
   ) {
     ctx.patchState({ loading: isLoading });
+    ctx.dispatch(isLoading ? new ShowButtonSpinnerAction(true) : new HideButtonSpinnerAction());
   }
 
   //Currencies
@@ -1473,14 +1475,19 @@ export class ConfigurationsState {
     ctx: StateContext<ConfigurationsStateModel>,
     { id }: EditLoanType
   ) {
+    const cached = ctx.getState().loan_types?.data?.find((lt: any) => lt.id == id);
+    if (cached) {
+      ctx.patchState({ SelectedLoanType: cached });
+      return;
+    }
+
     ctx.patchState({ loading: true });
 
-    return this.configurationsService.getLoanTypes({}).pipe(
+    return this.configurationsService.getLoanTypes({ paginate: 1000 }).pipe(
       tap((results: any) => {
-        const loanType = results.data.find((lt: any) => lt.id == id);
-        ctx.patchState({
-          SelectedLoanType: loanType || null,
-        });
+        const data: any[] = Array.isArray(results.data) ? results.data : [];
+        const loanType = data.find((lt: any) => lt.id == id);
+        ctx.patchState({ SelectedLoanType: loanType || null });
       }),
       finalize(() => ctx.patchState({ loading: false }))
     );
