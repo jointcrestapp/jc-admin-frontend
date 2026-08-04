@@ -463,6 +463,14 @@ export const menu: Sidebar[] = [
         level: 2,
         permission: ["communication.create"],
       },
+      {
+        parent_id: 31,
+        title: "push notification",
+        path: "/communication/push-notification",
+        type: "link",
+        level: 2,
+        permission: ["communication.index", "communication.create"],
+      },
     ],
   },
   {
@@ -663,7 +671,7 @@ export const menu: Sidebar[] = [
     level: 1,
     permission: ["setting.index"],
   },
-  /* {
+  {
     id: 38,
     title: "user manager",
     active: false,
@@ -697,7 +705,7 @@ export const menu: Sidebar[] = [
         permission: ["role.index"],
       },
     ],
-  }, */
+  },
   {
     id: 39,
     title: "configurations",

@@ -334,8 +334,9 @@ export class DashboardComponent {
       this.store.dispatch(new ResentNotice("recent"));
     }
     this.notice$.subscribe((data) => (this.notice = data));
-    this.user$.subscribe((user) => {
-      if (user) this.adminName = user.fname || user.name || 'Admin';
+    this.user$.subscribe((user:any) => {
+      if (user) this.adminName = user.first_name
+       || 'Admin';
     });
     config.max = 5;
     config.readonly = true;
@@ -602,7 +603,7 @@ export class DashboardComponent {
   async ngAfterViewInit() {
     if (isPlatformBrowser(this.platformId)) {
       const ApexCharts = (await import("apexcharts")).default;
-      const element = this.chart.nativeElement;
+      const element = this.chart?.nativeElement;
       var chart = new ApexCharts(element, this.chartOptions);
       chart.render();
     }

@@ -25,7 +25,7 @@ export class FormRoleComponent {
   @Input() type: string;
 
   public form: FormGroup;
-  public permissions: number[] = [];
+  public permissions: string[] = [];
   public id: number;
 
   isLoading$: Observable<boolean> = this.store.select(RoleState.isLoading);
@@ -70,7 +70,7 @@ export class FormRoleComponent {
     }
   }
 
-  setPermissions(permissions: number[]) {
+  setPermissions(permissions: string[]) {
     if(Array.isArray(permissions)) {
       this.form.controls['permissions'].setValue(permissions);
     }

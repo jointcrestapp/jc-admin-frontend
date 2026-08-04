@@ -21,6 +21,10 @@ export class  RleService extends BaseApiService {
     return this.get(`${environment.apiURL}/get_roles`, data);
   }
 
+  getRoleModules(): Observable<any> {
+    return this.get(`${environment.apiURL}/get_role_modules`);
+  }
+
   updateRole(data: any, id: number) : Observable<any> {
     return this.put(`${environment.apiURL}/update_role/${id}`, data);
   }

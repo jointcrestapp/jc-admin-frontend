@@ -83,6 +83,11 @@ export class FormUserComponent {
   }
 
   ngOnInit() {
+    // Populate the role dropdown — previously relied on the roles list already
+    // being loaded by a prior visit to /user/role, so navigating straight here
+    // (e.g. a bookmarked /user/create link) would show an empty dropdown.
+    this.store.dispatch(new GetRoles({}));
+
     if (this.type === 'edit') {
       // Clear validators if editing
       this.form.get('password')?.clearValidators();
@@ -123,6 +128,7 @@ export class FormUserComponent {
               email: user.email,
               phone: user.phone,
               dial_code: user.dial_code,
+              role: user.role_id,
               status: user.is_activated == 1 ? 1 : 0
             });
           }
@@ -159,7 +165,11 @@ export class FormUserComponent {
     payload.member_id = GLOBALF.genrateMemberId();
     payload.account_type = appConfig.roles.ADMIN;
     payload.is_activated = payload.status ? 1 : 0;
-    
+    // account_type stays the coarse "this is an admin-panel staff account" marker;
+    // role_id is the actual fine-grained RBAC role picked in the form above.
+    payload.role_id = payload.role;
+    delete payload.role;
+
     delete payload.password_confirmation;
     // Dispatch the loading action to set loading state to true in the store
     this.store.dispatch(new SetLoadingState(true));

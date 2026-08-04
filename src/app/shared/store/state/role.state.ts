@@ -10,7 +10,6 @@ import {
   DeleteRole,
   DeleteAllRole,
 } from "../action/role.action";
-import { RoleService } from "../../services/role.service";
 import { RleService } from "src/app/core/services/role.service";
 import { NotificationService } from "../../services/notification.service";
 
@@ -35,7 +34,6 @@ export interface RoleStateModel {
 @Injectable()
 export class RoleState {
   constructor(
-    private roleService: RoleService,
     private rleService: RleService
   ) {}
 
@@ -88,11 +86,11 @@ export class RoleState {
   @Action(GetRoleModules)
   getRoleModules(ctx: StateContext<RoleStateModel>) {
     ctx.patchState({ loading: true });
-    return this.roleService.getRoleModules().pipe(
+    return this.rleService.getRoleModules().pipe(
       tap({
         next: (result) => {
           ctx.patchState({
-            modules: result,
+            modules: result?.data || [],
             loading: false,
           });
         },

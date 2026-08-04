@@ -19,4 +19,8 @@ export class COmmunicationService extends BaseApiService {
   sendSms(data: any): Observable<any> {
     return this.post(`${environment.apiURL}/send_sms`, data);
   }
+
+  sendPush(data: any): Observable<any> {
+    return this.post(`${environment.apiURL}/send_push`, data);
+  }
 }

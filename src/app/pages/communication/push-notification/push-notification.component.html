@@ -1,0 +1,81 @@
+<app-page-wrapper [gridClass]="'col-sm-12'" [title]="'push notification'">
+  <form
+    class="theme-form theme-form-2 mega-form"
+    [formGroup]="form"
+    (ngSubmit)="submit()"
+  >
+    <app-form-fields
+      [labelClass]="'form-label-title col-sm-3 mb-0'"
+      [gridClass]="'col-sm-9'"
+      [label]="'recipient type'"
+      [for]="'recipient'"
+      [required]="true"
+    >
+      @if(isBrowser) {
+      <select2
+        class="custom-select"
+        [placeholder]="'select_recipient_type' | translate"
+        [data]="recipients.length ? recipients : []"
+        formControlName="recipient"
+        noResultMessage="{{ 'no_data_found' | translate }}"
+        id="recipient"
+      >
+      </select2>
+      } @if(form.controls['recipient']?.touched &&
+      form.controls['recipient'].errors?.['required']){
+      <div class="invalid-feedback">
+        {{ "recipient_is_required" | translate }}
+      </div>
+      }
+    </app-form-fields>
+    <app-form-fields
+      [labelClass]="'form-label-title col-sm-3 mb-0'"
+      [gridClass]="'col-sm-9'"
+      [label]="'title'"
+      [for]="'subject'"
+      [required]="true"
+    >
+      @if(isBrowser) {
+      <input
+        class="form-control"
+        id="subject"
+        type="text"
+        placeholder="{{ 'enter_subject' | translate }}"
+        formControlName="subject"
+      />
+      } @if(form.controls['subject']?.touched &&
+      form.controls['subject'].errors?.['required']){
+      <div class="invalid-feedback">
+        {{ "subject_is_required" | translate }}
+      </div>
+      }
+    </app-form-fields>
+    <app-form-fields
+      [labelClass]="'form-label-title col-sm-3 mb-0'"
+      [gridClass]="'col-sm-9'"
+      [label]="'message'"
+      [for]="'message'"
+      [required]="true"
+    >
+      @if(isBrowser) {
+      <textarea
+        class="form-control"
+        id="message"
+        placeholder="{{ 'enter_message' | translate }}"
+        rows="6"
+        formControlName="message"
+      ></textarea>
+      <p class="help-text">{{ "*Maximum length should be 178 characters for best display on lock screens." }}</p>
+      } @if(form.controls['message']?.touched &&
+      form.controls['message'].errors?.['required']){
+      <div class="invalid-feedback">
+        {{ "message_is_required" | translate }}
+      </div>
+      }
+    </app-form-fields>
+    <p class="help-text push-note">
+      This sends an OS-level push notification (reaches users even with the app closed) and also posts the same message to each user's in-app notifications list.
+    </p>
+    <app-button [id]="'user_btn'">{{ "send_message" | translate }}</app-button>
+  </form>
+</app-page-wrapper>

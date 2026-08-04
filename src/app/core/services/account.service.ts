@@ -14,7 +14,7 @@ export class AccountService extends BaseApiService {
   }
 
   getUserDetails(): Observable<AccountUser> {
-    return this.http.get<AccountUser>(`${environment.URL}/self.json`);
+    return this.get<AccountUser>(`${environment.apiURL}/me`);
   }
 
   updateUserProfile(data: any,id:number): Observable<any> {

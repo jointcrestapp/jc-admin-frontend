@@ -7,7 +7,7 @@ let devUrl = 'http://localhost:4200';
 
 export const environment = {
   production: false,
-  VERSION: '0.1.0',
+  VERSION: '0.2.0',
   BUILD_DATE: '224-06-06T12:00:00Z',
   SITE_URL: devUrl,
   SERVER_URL:SERVER_URL,

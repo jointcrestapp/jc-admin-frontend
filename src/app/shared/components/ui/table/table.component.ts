@@ -235,15 +235,8 @@ private pendingAction: TableClickedAction | null = null;
     }
 
     // default actions
-    this.action.emit(this.pendingAction);
-
-    if (this.hasPermission([actionType])) {
-      rowData[actionType] = value;
-      this.action.emit({ actionToPerform: actionType, data: rowData });
-    } else {
-      rowData[actionType] = value;
-      this.action.emit({ actionToPerform: actionType, data: rowData });
-    }
+    rowData[actionType] = value;
+    this.action.emit({ actionToPerform: actionType, data: rowData });
   }
 onVerified(event: TableClickedAction) {
   this.action.emit(event);

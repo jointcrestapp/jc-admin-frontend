@@ -85,8 +85,12 @@ login(ctx: StateContext<AuthStateModel>, { payload }: Login) {
       
       if (response.status == appConfig.statusCode.found) {
         const { token, expiry, data: user } = response;
-        user.role_name = user.role.id === 1 ? 'Super Admin' : user.role.id === 2 ? 'Admin' : '';
-        user.name = user.fname + ' ' + user.lname;
+        // Use the real role name resolved from the DB (works for any role,
+        // including custom ones — the old ternary only recognized ids 1/2).
+        user.role_name = user.role?.name || '';
+        // DB columns are first_name/last_name, not fname/lname — the old
+        // version always produced "undefined undefined".
+        user.name = `${user.first_name || ''} ${user.last_name || ''}`.trim();
         console.log('Data::',user);
           // Patch state with login details
         ctx.patchState({

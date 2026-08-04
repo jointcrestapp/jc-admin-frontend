@@ -14,7 +14,7 @@ export interface Role {
 }
 
 export interface Module {
-  id: number;
+  id: string;
   name: string;
   isChecked: boolean;
   created_at?: string;
@@ -22,9 +22,11 @@ export interface Module {
   module_permissions: Permission[];
 }
 
+// Permission.id/permission_id are "module.action" string keys (e.g. "credit.index") —
+// the same keys used throughout menu.ts and tableConfig.rowActions[].permission.
 export interface Permission {
-  id: number;
-  permission_id: number;
+  id: string;
+  permission_id: string;
   name: string;
   isChecked?: boolean;
   guard_name?: string;

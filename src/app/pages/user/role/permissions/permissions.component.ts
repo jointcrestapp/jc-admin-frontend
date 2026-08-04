@@ -17,9 +17,11 @@ export class PermissionsComponent {
 
   modules$: Observable<Module[]> = inject(Store).select(RoleState.roleModules);
 
-  @Input() selectedPermission: number[] = [];
+  // Permission keys are "module.action" strings (e.g. "credit.index"), not numeric
+  // junction-table IDs — see role.interface.ts.
+  @Input() selectedPermission: string[] = [];
 
-  @Output() setPermissions: EventEmitter<number[]> = new EventEmitter();
+  @Output() setPermissions: EventEmitter<string[]> = new EventEmitter();
 
   constructor(private store: Store) {
     this.store.dispatch(new GetRoleModules());
@@ -59,19 +61,19 @@ export class PermissionsComponent {
       item.isChecked = false
       if(item.name == 'index'){
         item.isChecked = !item.isChecked ? true : false;
-        this.addPermission(true, +item.id, module);
+        this.addPermission(true, item.id, module);
       }
-      this.addPermission((<HTMLInputElement>event.target)?.checked, +(<HTMLInputElement>event?.target)?.value, module);
+      this.addPermission((<HTMLInputElement>event.target)?.checked, (<HTMLInputElement>event?.target)?.value, module);
     })
   }
 
 
-  addPermission(checked: Boolean, value: number, module: Module) {
-    const index = this.selectedPermission.indexOf(Number(value));
+  addPermission(checked: Boolean, value: string, module: Module) {
+    const index = this.selectedPermission.indexOf(value);
     if(checked) {
-      if(index == -1) this.selectedPermission.push(Number(value)) ;
+      if(index == -1) this.selectedPermission.push(value) ;
     } else {
-      this.selectedPermission = this.selectedPermission.filter(id => id != Number(value));
+      this.selectedPermission = this.selectedPermission.filter(id => id != value);
     }
     this.setPermissions.emit(this.selectedPermission);
     this.updateCheckBoxStatus(module);
