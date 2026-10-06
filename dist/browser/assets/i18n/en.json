@@ -1486,5 +1486,6 @@
   "credit_sales_limit":"Credit Sales Limit",
   "investment_history":"Investment History",
   "all_investments":"All Investments",
-  "filter_by_investment_pool":"Filter by Investment Pool"
+  "filter_by_investment_pool":"Filter by Investment Pool",
+  "push_notification":"Push Notification"
 }
