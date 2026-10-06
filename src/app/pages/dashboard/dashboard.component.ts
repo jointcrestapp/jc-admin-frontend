@@ -12,7 +12,6 @@ import { Params, Router, RouterModule } from "@angular/router";
 import { NgbModule, NgbRatingConfig } from "@ng-bootstrap/ng-bootstrap";
 import { TranslateModule } from "@ngx-translate/core";
 import { Select, Store } from "@ngxs/store";
-import ApexCharts from "apexcharts";
 
 import {
   ApexAxisChartSeries,
@@ -54,19 +53,13 @@ import {
   TableConfig,
 } from "../../shared/interface/table.interface";
 import { CurrencySymbolPipe } from "../../shared/pipe/currency-symbol.pipe";
-import { GetBlogs } from "../../shared/store/action/blog.action";
-import { GetCategories } from "../../shared/store/action/category.action";
-import {
-  GetRevenueChart,
-  GetStatisticsCount,
-} from "../../shared/store/action/dashboard.action";
+import { GetStatisticsCount } from "../../shared/store/action/dashboard.action";
 import {
   MarkAsReadNotice,
   ResentNotice,
 } from "../../shared/store/action/notice.action";
 import { GetOrders } from "../../shared/store/action/order.action";
 import { GetProducts } from "../../shared/store/action/product.action";
-import { GetReviews } from "../../shared/store/action/review.action";
 import { GetStores } from "../../shared/store/action/store.action";
 import { AccountState } from "../../shared/store/state/account.state";
 import { BlogState } from "../../shared/store/state/blog.state";
@@ -610,19 +603,13 @@ export class DashboardComponent {
   }
 
   ngOnInit() {
+    // GetRevenueChart, GetProducts, GetReviews, GetBlogs, and GetCategories
+    // used to be dispatched here too, but the markup that would have
+    // rendered their data (top products, reviews, blog list, categories)
+    // is commented out below — those were real HTTP requests fired on
+    // every dashboard load for nothing. GetStatisticsCount is the only one
+    // this page actually renders.
     this.store.dispatch(new GetStatisticsCount()).subscribe((stat: any) => {});
-    this.store.dispatch(new GetRevenueChart());
-    this.store.dispatch(
-      new GetProducts({
-        status: 1,
-        top_selling: 1,
-        filter_by: "this_year",
-        paginate: 5,
-      })
-    );
-    this.store.dispatch(new GetReviews({ paginate: 5 }));
-    this.store.dispatch(new GetBlogs({ status: 1, paginate: 2 }));
-    this.store.dispatch(new GetCategories({ type: "product", status: 1 }));
   }
 
   markAsRead(id: any) {

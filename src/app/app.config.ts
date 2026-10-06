@@ -191,15 +191,15 @@ export const appConfig: ApplicationConfig = {
       ]),
       NgxsModule.forFeature([AuthState, StoreState]),
       NgxsStoragePluginModule.forRoot({
-        keys: [
-          "auth",
-          "dashboard",
-          "notification",
-          "account",
-          "country",
-          "state",
-          "setting",
-        ],
+        // "dashboard" used to be persisted here too, but its ngOnInit
+        // unconditionally re-fetches fresh statistics on every visit and
+        // re-dispatches on every recent-activity table interaction — so the
+        // persisted copy was never actually read before being overwritten.
+        // It only bought a synchronous JSON.stringify + localStorage.setItem
+        // of the whole slice (stats + 4 recent-activity arrays) on every one
+        // of those dispatches, which is most of what made the dashboard the
+        // slowest page to interact with.
+        keys: ["auth", "notification", "account", "country", "state", "setting"],
       })
     ),
     provideAnimations(),
