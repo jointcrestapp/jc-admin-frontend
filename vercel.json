@@ -1,6 +1,6 @@
 {
   "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }],
-  "buildCommand": "npm run build -- --configuration production",
+  "buildCommand": "node --max_old_space_size=8192 ./node_modules/@angular/cli/bin/ng build --aot --configuration=production",
   "outputDirectory": "dist/browser",
   "installCommand": "npm install --legacy-peer-deps",
   "env": {
